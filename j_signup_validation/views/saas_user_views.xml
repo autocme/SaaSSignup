@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- SaaS User Tree View -->
+        <record id="saas_user_tree_view" model="ir.ui.view">
+            <field name="name">saas.user.tree</field>
+            <field name="model">saas.user</field>
+            <field name="arch" type="xml">
+                <tree string="SaaS Users" default_order="create_date desc">
+                    <field name="su_display_name"/>
+                    <field name="su_email"/>
+                    <field name="su_phone"/>
+                    <field name="su_registration_date"/>
+                    <field name="su_email_validated"/>
+                    <field name="su_phone_validated"/>
+                    <field name="su_password_strength"/>
+                    <field name="su_active"/>
+                    <field name="su_portal_user_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- SaaS User Form View -->
+        <record id="saas_user_form_view" model="ir.ui.view">
+            <field name="name">saas.user.form</field>
+            <field name="model">saas.user</field>
+            <field name="arch" type="xml">
+                <form string="SaaS User">
+                    <header>
+                        <button name="%(action_validate_user_email)d" type="action" 
+                                string="Validate Email" class="btn-primary"
+                                invisible="su_email_validated == True"/>
+                        <button name="%(action_validate_user_phone)d" type="action" 
+                                string="Validate Phone" class="btn-primary"
+                                invisible="su_phone_validated == True"/>
+                        <field name="su_active" widget="boolean_toggle"/>
+                    </header>
+                    
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" type="object" name="action_view_portal_user"
+                                    invisible="su_portal_user_id == False">
+                                <field name="su_portal_user_id" widget="statinfo" string="Portal User"/>
+                            </button>
+                        </div>
+                        
+                        <div class="oe_title">
+                            <h1>
+                                <field name="su_display_name" placeholder="Display Name"/>
+                            </h1>
+                        </div>
+                        
+                        <group>
+                            <group string="Personal Information">
+                                <field name="su_first_name" placeholder="First Name"/>
+                                <field name="su_last_name" placeholder="Last Name"/>
+                                <field name="su_email" placeholder="email@example.com"/>
+                                <field name="su_phone" placeholder="+1 (555) 123-4567"/>
+                            </group>
+                            
+                            <group string="Validation Status">
+                                <field name="su_email_validated" widget="boolean_toggle"/>
+                                <field name="su_phone_validated" widget="boolean_toggle"/>
+                                <field name="su_password_strength" widget="progressbar"/>
+                            </group>
+                        </group>
+                        
+                        <group>
+                            <group string="Registration Details">
+                                <field name="su_registration_date"/>
+                                <field name="su_registration_ip"/>
+                                <field name="su_portal_user_id"/>
+                            </group>
+                            
+                            <group string="Security Information">
+                                <field name="su_password" password="True" placeholder="Encrypted Password"/>
+                                <field name="su_user_agent" placeholder="Browser User Agent"/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string="Registration Statistics">
+                                <group>
+                                    <field name="create_date" string="Record Created"/>
+                                    <field name="write_date" string="Last Modified"/>
+                                    <field name="create_uid" string="Created By"/>
+                                    <field name="write_uid" string="Modified By"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- SaaS User Search View -->
+        <record id="saas_user_search_view" model="ir.ui.view">
+            <field name="name">saas.user.search</field>
+            <field name="model">saas.user</field>
+            <field name="arch" type="xml">
+                <search string="SaaS Users">
+                    <field name="su_display_name" string="Name"/>
+                    <field name="su_email" string="Email"/>
+                    <field name="su_phone" string="Phone"/>
+                    
+                    <filter name="active_users" string="Active Users" 
+                            domain="[('su_active', '=', True)]"/>
+                    <filter name="inactive_users" string="Inactive Users" 
+                            domain="[('su_active', '=', False)]"/>
+                    <filter name="email_validated" string="Email Validated" 
+                            domain="[('su_email_validated', '=', True)]"/>
+                    <filter name="email_not_validated" string="Email Not Validated" 
+                            domain="[('su_email_validated', '=', False)]"/>
+                    <filter name="phone_validated" string="Phone Validated" 
+                            domain="[('su_phone_validated', '=', True)]"/>
+                    <filter name="phone_not_validated" string="Phone Not Validated" 
+                            domain="[('su_phone_validated', '=', False)]"/>
+                    
+                    <separator/>
+                    <filter name="recent_registrations" string="Recent Registrations" 
+                            domain="[('su_registration_date', '&gt;=', (context_today() - datetime.timedelta(days=7)).strftime('%Y-%m-%d'))]"/>
+                    <filter name="this_month" string="This Month" 
+                            domain="[('su_registration_date', '&gt;=', (context_today().replace(day=1)).strftime('%Y-%m-%d'))]"/>
+                    
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_registration_date" string="Registration Date" 
+                                context="{'group_by': 'su_registration_date:month'}"/>
+                        <filter name="group_by_email_validated" string="Email Validation Status" 
+                                context="{'group_by': 'su_email_validated'}"/>
+                        <filter name="group_by_phone_validated" string="Phone Validation Status" 
+                                context="{'group_by': 'su_phone_validated'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- SaaS User Action -->
+        <record id="action_saas_user" model="ir.actions.act_window">
+            <field name="name">SaaS Users</field>
+            <field name="res_model">saas.user</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="saas_user_search_view"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No SaaS users found!
+                </p>
+                <p>
+                    SaaS users are created automatically when users register through the custom signup form.
+                    This view allows you to manage and monitor user registrations.
+                </p>
+            </field>
+        </record>
+
+        <!-- Menu Items -->
+        <menuitem id="menu_saas_user_root" name="SaaS Users" sequence="10"/>
+        <menuitem id="menu_saas_user" name="SaaS Users" parent="menu_saas_user_root" 
+                  action="action_saas_user" sequence="10"/>
+
+        <!-- Action Buttons -->
+        <record id="action_validate_user_email" model="ir.actions.server">
+            <field name="name">Validate Email</field>
+            <field name="model_id" ref="model_saas_user"/>
+            <field name="binding_model_id" ref="model_saas_user"/>
+            <field name="state">code</field>
+            <field name="code">
+                # Add email validation logic here
+                for record in records:
+                    record.su_email_validated = True
+                    record.message_post(body="Email validation completed manually.")
+            </field>
+        </record>
+
+        <record id="action_validate_user_phone" model="ir.actions.server">
+            <field name="name">Validate Phone</field>
+            <field name="model_id" ref="model_saas_user"/>
+            <field name="binding_model_id" ref="model_saas_user"/>
+            <field name="state">code</field>
+            <field name="code">
+                # Add phone validation logic here
+                for record in records:
+                    record.su_phone_validated = True
+                    record.message_post(body="Phone validation completed manually.")
+            </field>
+        </record>
+    </data>
+</odoo>
