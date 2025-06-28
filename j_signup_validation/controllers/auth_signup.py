@@ -193,6 +193,9 @@ class CustomAuthSignup(Home):
         Comprehensive validation of signup data.
         """
         errors = []
+        email_validation = {'valid': False}
+        phone_validation = {'valid': False}
+        password_validation = {'valid': False, 'score': 0}
         
         # Basic field validation
         if not form_data['first_name']:
@@ -234,9 +237,9 @@ class CustomAuthSignup(Home):
         return {
             'valid': len(errors) == 0,
             'errors': errors,
-            'password_score': password_validation.get('score', 0) if form_data['password'] else 0,
-            'email_validated': email_validation.get('valid', False) if form_data['email'] else False,
-            'phone_validated': phone_validation.get('valid', False) if form_data['phone'] else False,
+            'password_score': password_validation.get('score', 0),
+            'email_validated': email_validation.get('valid', False),
+            'phone_validated': phone_validation.get('valid', False),
         }
 
     def _validate_email(self, email, rules):

@@ -417,18 +417,19 @@
                     right: 10px;
                     top: 50%;
                     transform: translateY(-50%);
-                    z-index: 10;
+                    z-index: 5;
                     border: none;
                     background: transparent;
                     padding: 0.25rem 0.5rem;
+                    font-size: 0.875rem;
                 `;
                 
                 toggle.addEventListener('click', () => {
-                    const type = input.type === 'password' ? 'text' : 'password';
-                    input.type = type;
-                    toggle.innerHTML = type === 'password' ? 
-                        '<i class="fa fa-eye"></i>' : 
-                        '<i class="fa fa-eye-slash"></i>';
+                    const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                    input.setAttribute('type', type);
+                    
+                    const icon = toggle.querySelector('i');
+                    icon.className = type === 'password' ? 'fa fa-eye' : 'fa fa-eye-slash';
                 });
                 
                 wrapper.style.position = 'relative';
@@ -442,29 +443,51 @@
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify({
+                    jsonrpc: '2.0',
+                    method: 'call',
+                    params: data,
+                    id: Date.now()
+                })
             });
-
+            
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-
-            return await response.json();
+            
+            const result = await response.json();
+            
+            if (result.error) {
+                throw new Error(result.error.message || 'Server error');
+            }
+            
+            return result.result;
         }
     }
 
-    // Initialize validation when DOM is ready
+    // Initialize signup validation
     function initSignupValidation() {
-        new SignupValidator();
+        const form = document.getElementById('signupForm');
+        
+        if (!form) {
+            console.warn('Signup form not found');
+            return;
+        }
+
+        // Create and initialize validator
+        const validator = new SignupValidator();
+
+        console.log('Signup form validation initialized');
     }
 
+    // Initialize when DOM is ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initSignupValidation);
     } else {
         initSignupValidation();
     }
 
-    // Export for testing
+    // Export for testing purposes
     window.SignupValidator = SignupValidator;
 
 })();
