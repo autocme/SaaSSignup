@@ -1,0 +1,46 @@
+modules = ["python-3.11"]
+
+[nix]
+channel = "stable-24_05"
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Odoo Server"
+
+[[workflows.workflow]]
+name = "Odoo Server"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = """
+python3 -m pip install --upgrade pip && pip install odoo==17.0 verify-email disposable-email-validator phonenumbers psycopg2-binary && python3 -c \"
+import odoo
+from odoo import api, SUPERUSER_ID
+import os
+
+# Set up Odoo configuration
+config = odoo.tools.config
+config['db_host'] = os.environ.get('PGHOST', 'localhost')
+config['db_port'] = int(os.environ.get('PGPORT', 5432))
+config['db_user'] = os.environ.get('PGUSER', 'postgres')
+config['db_password'] = os.environ.get('PGPASSWORD', '')
+config['db_name'] = os.environ.get('PGDATABASE', 'odoo')
+config['addons_path'] = '/home/runner/' + os.path.basename(os.getcwd())
+config['http_port'] = 5000
+config['workers'] = 0
+config['limit_time_cpu'] = 600
+config['limit_time_real'] = 1200
+
+# Initialize Odoo
+odoo.service.server.start(preload=[], stop=False)
+\""""
+waitForPort = 5000
