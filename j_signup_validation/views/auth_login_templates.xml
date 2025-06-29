@@ -20,10 +20,19 @@
 
         <!-- Custom Signup Form Template -->
         <template id="custom_signup_form" name="Custom Signup Form">
-            <t t-call="web.login_layout">
-                <div class="container-fluid py-5">
-                    <div class="row justify-content-center">
-                        <div class="col-12 col-md-10 col-lg-8 col-xl-6">
+            <html>
+                <head>
+                    <meta charset="utf-8"/>
+                    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+                    <title>Create Your Account</title>
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css"/>
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+                    <link rel="stylesheet" href="/j_signup_validation/static/src/css/signup_form.css"/>
+                </head>
+                <body class="standalone-signup-body">
+                    <div class="container-fluid vh-100 d-flex align-items-center justify-content-center">
+                        <div class="row w-100 justify-content-center">
+                            <div class="col-12 col-sm-11 col-md-9 col-lg-7 col-xl-6">
                             <div class="card custom-signup-card shadow-lg">
                                 <div class="card-header text-center bg-primary text-white">
                                     <h3 class="mb-0">
@@ -238,15 +247,22 @@
                     </div>
                 </div>
                 
-                <!-- Pass validation rules to JavaScript -->
-                <script type="text/javascript">
-                    window.signupValidationRules = {
-                        password: <t t-raw="json.dumps(password_rules)"/>,
-                        email: <t t-raw="json.dumps(email_rules)"/>,
-                        phone: <t t-raw="json.dumps(phone_rules)"/>
-                    };
-                </script>
-            </t>
+                    <!-- Pass validation rules to JavaScript -->
+                    <script type="text/javascript">
+                        window.signupValidationRules = {
+                            password: <t t-raw="json.dumps(password_rules)"/>,
+                            email: <t t-raw="json.dumps(email_rules)"/>,
+                            phone: <t t-raw="json.dumps(phone_rules)"/>
+                        };
+                    </script>
+                    
+                    <!-- Include JavaScript modules -->
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+                    <script src="/j_signup_validation/static/src/js/password_strength.js"></script>
+                    <script src="/j_signup_validation/static/src/js/country_phone_selector.js"></script>
+                    <script src="/j_signup_validation/static/src/js/signup_validation.js"></script>
+                </body>
+            </html>
         </template>
     </data>
 </odoo>
