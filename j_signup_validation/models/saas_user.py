@@ -189,6 +189,7 @@ class SaasUser(models.Model):
                 'su_last_name': user_data.get('last_name'),
                 'su_email': user_data.get('email'),
                 'su_phone': user_data.get('phone'),
+                'su_phone_country_id': user_data.get('phone_country'),
                 'su_password': user_data.get('password'),  # Should be encrypted
                 'su_email_validated': user_data.get('email_validated', False),
                 'su_phone_validated': user_data.get('phone_validated', False),
@@ -197,15 +198,19 @@ class SaasUser(models.Model):
                 'su_user_agent': user_data.get('user_agent'),
             })
             
-            # Create portal user
-            portal_user = self.env['res.users'].create({
+            # Create portal user using Odoo's signup mechanism
+            portal_user = self.env['res.users'].sudo().with_context(no_reset_password=True)._signup_create_user({
                 'name': saas_user.su_complete_name,
                 'login': saas_user.su_email,
                 'email': saas_user.su_email,
                 'phone': saas_user.su_phone,
-                'groups_id': [(6, 0, [self.env.ref('base.group_portal').id])],
-                'active': True,
+                'password': user_data.get('password'),
             })
+            
+            # Add portal group to the user
+            portal_group = self.env.ref('base.group_portal')
+            portal_user.write({'groups_id': [(6, 0, [portal_group.id])]})
+            portal_user.write({'active': True})
             
             # Link the records
             saas_user.su_portal_user_id = portal_user.id

@@ -401,6 +401,7 @@ class CustomAuthSignup(http.Controller):
             'last_name': form_data['last_name'],
             'email': form_data['email'],
             'phone': form_data['phone'],
+            'phone_country': form_data.get('phone_country'),
             'password': form_data['password'],  # This should be encrypted in production
             'email_validated': validation_result['email_validated'],
             'phone_validated': validation_result['phone_validated'],
