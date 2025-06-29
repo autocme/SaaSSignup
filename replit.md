@@ -112,7 +112,8 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - Fixed External ID reference error by removing unnecessary server actions and their references
   - Simplified SaaS User form view by removing validation buttons that weren't needed
   - Added missing action_view_portal_user method to SaaS User model for portal user navigation
-  - Removed chatter fields (message_follower_ids, activity_ids, message_ids) from SaaS User form view since model doesn't inherit mail.thread
+  - Added mail.thread and mail.activity.mixin inheritance to SaaS User model for messaging capabilities
+  - Restored chatter section in SaaS User form view with messaging and activity tracking
   - Module ready for local Odoo installation and testing
 
 ## User Preferences

@@ -19,6 +19,7 @@ class SaasUser(models.Model):
     """
     _name = 'saas.user'
     _description = 'SaaS User Registration Data'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'create_date desc'
     _rec_name = 'su_display_name'
 
