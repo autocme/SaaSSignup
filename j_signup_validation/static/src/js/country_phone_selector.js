@@ -42,16 +42,40 @@
             
             if (saudiOption) {
                 saudiOption.selected = true;
+                // Auto-populate phone field with country code
+                this.updatePhoneFieldWithCountryCode();
                 this.updatePhonePreview();
             }
         }
 
         handleCountryChange(event) {
+            this.updatePhoneFieldWithCountryCode();
             this.updatePhonePreview();
             
             // Clear and re-validate phone number when country changes
             if (this.phoneInput.value) {
                 this.validatePhoneNumber();
+            }
+        }
+        
+        updatePhoneFieldWithCountryCode() {
+            const selectedOption = this.countrySelect.options[this.countrySelect.selectedIndex];
+            if (selectedOption && selectedOption.getAttribute('data-code')) {
+                const countryCode = selectedOption.getAttribute('data-code');
+                const currentPhone = this.phoneInput.value;
+                
+                // Remove any existing country code from the phone input
+                let phoneWithoutCode = currentPhone;
+                if (currentPhone.startsWith('+')) {
+                    // Remove existing country code (1-4 digits after +)
+                    phoneWithoutCode = currentPhone.replace(/^\+\d{1,4}\s*/, '');
+                }
+                
+                // Add the new country code to the phone input
+                this.phoneInput.value = `+${countryCode} ${phoneWithoutCode}`.trim();
+                
+                // Trigger input event to update validation and preview
+                this.phoneInput.dispatchEvent(new Event('input'));
             }
         }
 

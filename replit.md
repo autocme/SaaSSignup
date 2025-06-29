@@ -160,6 +160,10 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - Enhanced DNS/MX record validation to properly reject parked domains (like foo.com with MX pointing to 0.0.0.0)
   - Added dnspython dependency for robust domain existence checking
   - Improved email validation now properly rejects non-functional domains while accepting valid ones
+  - FIXED: Added missing return statement in disposable email validation to properly reject temporary emails
+  - ENHANCED: Phone field now automatically populates with country code when country is selected
+  - Phone country code updates automatically when user changes country selection
+  - Default Saudi Arabia selection now pre-fills phone field with +966 country code
   - Module ready for local Odoo installation and testing
 
 ## User Preferences
