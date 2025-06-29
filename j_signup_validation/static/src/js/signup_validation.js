@@ -188,8 +188,15 @@
                     return;
                 }
 
+                // Get selected country ID
+                const countrySelect = document.getElementById('phone_country');
+                const countryId = countrySelect ? countrySelect.value : null;
+
                 // Server-side validation
-                const response = await this.makeAjaxRequest('/j_signup_validation/validate_phone', { phone });
+                const response = await this.makeAjaxRequest('/j_signup_validation/validate_phone', { 
+                    phone: phone,
+                    country_id: countryId
+                });
                 
                 this.phoneInput.classList.remove('loading');
 
