@@ -15,14 +15,26 @@ from werkzeug.exceptions import BadRequest
 # External validation libraries
 try:
     from verify_email import verify_email
+except ImportError:
+    verify_email = None
+
+try:
     from disposable_email_validator import is_disposable_email
+except ImportError:
+    is_disposable_email = None
+
+try:
     import phonenumbers
     from phonenumbers import NumberParseException
-except ImportError as e:
-    logging.getLogger(__name__).warning(f"Missing validation libraries: {str(e)}")
-    verify_email = None
-    is_disposable_email = None
+except ImportError:
     phonenumbers = None
+
+try:
+    import dns.resolver
+    DNS_AVAILABLE = True
+except ImportError:
+    DNS_AVAILABLE = False
+    dns = None
 
 _logger = logging.getLogger(__name__)
 
@@ -273,8 +285,7 @@ class CustomAuthSignup(http.Controller):
                 domain_valid = False
                 
                 # First try DNS resolution
-                try:
-                    import dns.resolver
+                if DNS_AVAILABLE:
                     try:
                         # Try MX record first
                         mx_records = dns.resolver.resolve(domain, 'MX')
@@ -310,23 +321,22 @@ class CustomAuthSignup(http.Controller):
                             pass
                     except Exception as e:
                         _logger.warning(f"DNS check failed for {domain}: {str(e)}")
-                        
-                except ImportError:
+                else:
                     _logger.warning("dnspython not available for DNS verification")
                 
-                # If DNS checks inconclusive, use verify-email library
-                if not domain_valid and verify_email:
-                    try:
-                        verification_result = verify_email(email)
-                        if not verification_result:
-                            messages.append(_('Email address cannot receive emails'))
-                            return {'valid': False, 'messages': messages}
-                    except Exception as e:
-                        _logger.warning(f"verify-email check failed for {email}: {str(e)}")
-                        # If verify-email also fails, block invalid-looking domains
-                        if '.' not in domain or len(domain.split('.')[-1]) < 2:
-                            messages.append(_('Email domain appears to be invalid'))
-                            return {'valid': False, 'messages': messages}
+                # If DNS checks failed but we have verify-email, try basic domain check
+                if not domain_valid:
+                    # Basic domain structure validation as fallback
+                    domain_parts = domain.split('.')
+                    if len(domain_parts) < 2 or len(domain_parts[-1]) < 2:
+                        messages.append(_('Email domain appears to be invalid'))
+                        return {'valid': False, 'messages': messages}
+                    
+                    # For common parked/invalid domains, reject them
+                    parked_domains = ['foo.com', 'bar.com', 'test.com', 'example.com', 'temp.com']
+                    if domain.lower() in parked_domains:
+                        messages.append(_('Email domain does not accept emails'))
+                        return {'valid': False, 'messages': messages}
         
         # Disposable email check
         if rules.get('disposable_check', True) and is_disposable_email:
