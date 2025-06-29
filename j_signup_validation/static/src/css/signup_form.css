@@ -304,44 +304,21 @@
     color: #667eea;
 }
 
-/* Password field with toggle button styling */
-.password-field-container {
-    position: relative;
-}
-
-.password-input-with-toggle {
-    padding-right: 3rem !important; /* Make space for the toggle button */
-}
-
-.password-toggle-btn {
+/* Password toggle button */
+.password-toggle {
     position: absolute;
-    right: 12px;
+    right: 10px;
     top: 50%;
     transform: translateY(-50%);
     background: none;
     border: none;
     color: #6c757d;
     cursor: pointer;
-    font-size: 16px;
     z-index: 10;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 4px;
-    transition: all 0.2s ease;
 }
 
-.password-toggle-btn:hover {
+.password-toggle:hover {
     color: #495057;
-    background-color: rgba(0, 0, 0, 0.05);
-}
-
-.password-toggle-btn:focus {
-    outline: none;
-    color: #667eea;
-    background-color: rgba(102, 126, 234, 0.1);
 }
 
 /* Country selector styling */
