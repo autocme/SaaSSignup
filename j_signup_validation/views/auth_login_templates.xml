@@ -148,11 +148,11 @@
                                                            class="form-control" 
                                                            id="phone" 
                                                            name="phone" 
-                                                           placeholder="Phone Number"
+                                                           placeholder="Enter phone without country code"
                                                            required="required"
                                                            autocomplete="tel"/>
                                                     <label for="phone">
-                                                        <i class="fa fa-phone me-1"></i>Phone Number *
+                                                        <i class="fa fa-phone me-1"></i>Phone Number (no country code) *
                                                     </label>
                                                     <div class="invalid-feedback"></div>
                                                 </div>
@@ -162,8 +162,11 @@
                                         <!-- Phone validation feedback -->
                                         <div class="form-text mb-3">
                                             <span class="phone-validation-status"></span>
-                                            <div class="phone-preview mt-2">
-                                                <small class="text-muted">Full number: <span id="phone-preview-text">+966 </span></small>
+                                            <div class="phone-help mt-1">
+                                                <small class="text-muted">
+                                                    <i class="fa fa-info-circle me-1"></i>
+                                                    Enter your phone number without the country code. We'll add it automatically based on your selected country.
+                                                </small>
                                             </div>
                                         </div>
                                         
