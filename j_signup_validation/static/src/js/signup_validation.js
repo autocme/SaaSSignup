@@ -15,7 +15,7 @@
             this.passwordInput = document.getElementById('password');
             this.confirmPasswordInput = document.getElementById('confirm_password');
             this.submitBtn = document.getElementById('submitBtn');
-            
+
             this.validationRules = window.signupValidationRules || {};
             this.validationTimeouts = {};
             this.validationStates = {
@@ -49,8 +49,13 @@
             this.emailInput?.addEventListener('input', this.handleEmailInput.bind(this));
             this.emailInput?.addEventListener('blur', this.handleEmailBlur.bind(this));
 
-            this.phoneInput?.addEventListener('input', this.handlePhoneInput.bind(this));
-            this.phoneInput?.addEventListener('blur', this.handlePhoneBlur.bind(this));
+            // Phone events
+            if (this.phoneInput) {
+                this.phoneInput.addEventListener('input', this.handlePhoneInput.bind(this));
+                this.phoneInput.addEventListener('blur', this.handlePhoneBlur.bind(this));
+                // Listen for validation events from CountryPhoneSelector
+                this.phoneInput.addEventListener('phoneValidationChanged', this.handlePhoneValidationChanged.bind(this));
+            }
 
             this.passwordInput?.addEventListener('input', this.handlePasswordInput.bind(this));
             this.confirmPasswordInput?.addEventListener('input', this.handleConfirmPasswordInput.bind(this));
@@ -71,7 +76,7 @@
         // Email validation
         handleEmailInput(event) {
             const email = event.target.value.trim();
-            
+
             // Clear previous timeout
             if (this.validationTimeouts.email) {
                 clearTimeout(this.validationTimeouts.email);
@@ -114,7 +119,7 @@
 
                 // Server-side validation
                 const response = await this.makeAjaxRequest('/j_signup_validation/validate_email', { email });
-                
+
                 this.emailInput.classList.remove('loading');
 
                 if (response.valid) {
@@ -156,7 +161,7 @@
         // Phone validation
         handlePhoneInput(event) {
             const phone = event.target.value.trim();
-            
+
             // Clear previous timeout
             if (this.validationTimeouts.phone) {
                 clearTimeout(this.validationTimeouts.phone);
@@ -190,7 +195,7 @@
 
                 // Server-side validation
                 const response = await this.makeAjaxRequest('/j_signup_validation/validate_phone', { phone });
-                
+
                 this.phoneInput.classList.remove('loading');
 
                 if (response.valid) {
@@ -212,6 +217,12 @@
                 this.validationStates.phone = false;
             }
 
+            this.updateSubmitButton();
+        }
+
+         handlePhoneValidationChanged(event) {
+            this.validationStates.phone = event.detail.isValid;
+            this.setPhoneValidationStatus(event.detail.isValid ? 'valid' : 'invalid', event.detail.message);
             this.updateSubmitButton();
         }
 
@@ -337,7 +348,7 @@
         updateSubmitButton() {
             const isValid = this.isFormValid();
             this.submitBtn.disabled = !isValid;
-            
+
             if (isValid) {
                 this.submitBtn.classList.remove('btn-secondary');
                 this.submitBtn.classList.add('btn-primary');
@@ -372,7 +383,7 @@
 
         showFormErrors() {
             const errors = [];
-            
+
             if (!this.validationStates.firstName) errors.push('First name is required');
             if (!this.validationStates.lastName) errors.push('Last name is required');
             if (!this.validationStates.email) errors.push('Valid email is required');
@@ -396,36 +407,36 @@
                 `;
                 this.form.insertBefore(alert, this.form.firstChild);
             }
-            
+
             alert.querySelector('.error-message').textContent = message;
             alert.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
         addPasswordToggle() {
             const passwordInputs = [this.passwordInput, this.confirmPasswordInput];
-            
+
             passwordInputs.forEach(input => {
                 if (!input) return;
-                
+
                 const wrapper = input.parentNode;
-                
+
                 // Add proper CSS classes
                 wrapper.classList.add('password-field-container');
                 input.classList.add('password-input-with-toggle');
-                
+
                 const toggle = document.createElement('button');
                 toggle.type = 'button';
                 toggle.className = 'password-toggle-btn';
                 toggle.innerHTML = '<i class="fa fa-eye"></i>';
-                
+
                 toggle.addEventListener('click', () => {
                     const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
                     input.setAttribute('type', type);
-                    
+
                     const icon = toggle.querySelector('i');
                     icon.className = type === 'password' ? 'fa fa-eye' : 'fa fa-eye-slash';
                 });
-                
+
                 wrapper.appendChild(toggle);
             });
         }
@@ -443,17 +454,17 @@
                     id: Date.now()
                 })
             });
-            
+
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            
+
             const result = await response.json();
-            
+
             if (result.error) {
                 throw new Error(result.error.message || 'Server error');
             }
-            
+
             return result.result;
         }
     }
@@ -461,7 +472,7 @@
     // Initialize signup validation
     function initSignupValidation() {
         const form = document.getElementById('signupForm');
-        
+
         if (!form) {
             console.warn('Signup form not found');
             return;

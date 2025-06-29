@@ -205,6 +205,17 @@ console.log('CountryPhoneSelector: Script file loaded');
                     statusElement.innerHTML = `<i class="fa fa-exclamation-triangle"></i> ${message}`;
                     break;
             }
+            
+            // Notify signup validator of validation state change
+            this.notifyValidationChange(status === 'valid');
+        }
+        
+        notifyValidationChange(isValid) {
+            // Trigger a custom event that the signup validator can listen to
+            const event = new CustomEvent('phoneValidationChanged', {
+                detail: { isValid: isValid }
+            });
+            this.phoneInput.dispatchEvent(event);
         }
 
         makeSelectSearchable() {
