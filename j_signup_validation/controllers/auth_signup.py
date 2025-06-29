@@ -10,7 +10,6 @@ import re
 from odoo import http, _
 from odoo.http import request
 from odoo.exceptions import ValidationError, UserError
-from odoo.addons.web.controllers.main import Home
 from werkzeug.exceptions import BadRequest
 
 # External validation libraries
@@ -28,12 +27,17 @@ except ImportError as e:
 _logger = logging.getLogger(__name__)
 
 
-class CustomAuthSignup(Home):
+class CustomAuthSignup(http.Controller):
     """
     Custom authentication controller for handling signup with validation.
     """
 
-    @http.route('/web/custom_signup', type='http', auth='public', website=True, sitemap=False)
+    @http.route('/j_signup_validation/test', type='http', auth='public', csrf=False)
+    def test_route(self, **kw):
+        """Test route to verify controller is working."""
+        return "Custom signup controller is working!"
+
+    @http.route('/j_signup_validation/signup', type='http', auth='public', csrf=False)
     def web_auth_signup(self, **kw):
         """
         Display custom signup form.
@@ -62,7 +66,7 @@ class CustomAuthSignup(Home):
             _logger.error(f"Error loading signup form: {str(e)}")
             return request.render('web.login', {'error': _('Unable to load signup form. Please try again.')})
 
-    @http.route('/web/custom_signup/submit', type='http', auth='public', methods=['POST'], csrf=False)
+    @http.route('/j_signup_validation/submit', type='http', auth='public', methods=['POST'], csrf=False)
     def web_auth_signup_submit(self, **post):
         """
         Process signup form submission with validation.
@@ -97,7 +101,7 @@ class CustomAuthSignup(Home):
             _logger.error(f"Unexpected error during signup: {str(e)}")
             return self._redirect_with_error(_('Registration failed. Please try again.'))
 
-    @http.route('/web/custom_signup/validate_email', type='json', auth='public')
+    @http.route('/j_signup_validation/validate_email', type='json', auth='public')
     def validate_email_ajax(self, email):
         """
         AJAX endpoint for real-time email validation.
@@ -122,7 +126,7 @@ class CustomAuthSignup(Home):
                 'messages': [_('Email validation service temporarily unavailable')]
             }
 
-    @http.route('/web/custom_signup/validate_phone', type='json', auth='public')
+    @http.route('/j_signup_validation/validate_phone', type='json', auth='public')
     def validate_phone_ajax(self, phone):
         """
         AJAX endpoint for real-time phone validation.
@@ -148,7 +152,7 @@ class CustomAuthSignup(Home):
                 'messages': [_('Phone validation service temporarily unavailable')]
             }
 
-    @http.route('/web/custom_signup/validate_password', type='json', auth='public')
+    @http.route('/j_signup_validation/validate_password', type='json', auth='public')
     def validate_password_ajax(self, password):
         """
         AJAX endpoint for real-time password strength validation.
