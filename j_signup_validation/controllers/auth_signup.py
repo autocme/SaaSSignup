@@ -15,13 +15,13 @@ from werkzeug.exceptions import BadRequest
 # External validation libraries
 try:
     from verify_email import verify_email
-    from disposable_email_validator import is_disposable
+    from disposable_email_validator import is_disposable_email
     import phonenumbers
     from phonenumbers import NumberParseException
 except ImportError as e:
     logging.getLogger(__name__).warning(f"Missing validation libraries: {str(e)}")
     verify_email = None
-    is_disposable = None
+    is_disposable_email = None
     phonenumbers = None
 
 _logger = logging.getLogger(__name__)
@@ -307,9 +307,9 @@ class CustomAuthSignup(http.Controller):
                     # Don't block if DNS check fails due to network issues
         
         # Disposable email check
-        if rules.get('disposable_check', True) and is_disposable:
+        if rules.get('disposable_check', True) and is_disposable_email:
             try:
-                if is_disposable(email):
+                if is_disposable_email(email):
                     messages.append(_('Temporary or disposable email addresses are not allowed'))
             except Exception as e:
                 _logger.warning(f"Disposable email check failed for {email}: {str(e)}")
