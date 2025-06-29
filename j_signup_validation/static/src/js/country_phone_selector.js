@@ -8,14 +8,23 @@
 
     class CountryPhoneSelector {
         constructor() {
+            console.log('CountryPhoneSelector: Constructor called');
+            
             this.countrySelect = document.getElementById('phone_country');
             this.phoneInput = document.getElementById('phone');
             this.phonePreview = document.getElementById('phone-preview-text');
             
+            console.log('CountryPhoneSelector: Elements found:', {
+                countrySelect: !!this.countrySelect,
+                phoneInput: !!this.phoneInput,
+                phonePreview: !!this.phonePreview
+            });
 
-            
             if (this.countrySelect && this.phoneInput) {
+                console.log('CountryPhoneSelector: Initializing...');
                 this.init();
+            } else {
+                console.log('CountryPhoneSelector: Required elements not found, skipping initialization');
             }
         }
 
