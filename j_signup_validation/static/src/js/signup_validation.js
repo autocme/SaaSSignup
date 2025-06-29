@@ -408,21 +408,15 @@
                 if (!input) return;
                 
                 const wrapper = input.parentNode;
+                
+                // Add proper CSS classes
+                wrapper.classList.add('password-field-container');
+                input.classList.add('password-input-with-toggle');
+                
                 const toggle = document.createElement('button');
                 toggle.type = 'button';
-                toggle.className = 'btn btn-outline-secondary password-toggle';
+                toggle.className = 'password-toggle-btn';
                 toggle.innerHTML = '<i class="fa fa-eye"></i>';
-                toggle.style.cssText = `
-                    position: absolute;
-                    right: 10px;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    z-index: 5;
-                    border: none;
-                    background: transparent;
-                    padding: 0.25rem 0.5rem;
-                    font-size: 0.875rem;
-                `;
                 
                 toggle.addEventListener('click', () => {
                     const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -432,7 +426,6 @@
                     icon.className = type === 'password' ? 'fa fa-eye' : 'fa fa-eye-slash';
                 });
                 
-                wrapper.style.position = 'relative';
                 wrapper.appendChild(toggle);
             });
         }
