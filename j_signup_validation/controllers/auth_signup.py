@@ -375,10 +375,10 @@ class CustomAuthSignup(Home):
         Redirect back to signup form with error messages.
         """
         error_message = '; '.join(errors) if isinstance(errors, list) else str(errors)
-        return request.redirect(f'/web/signup?error={error_message}')
+        return request.redirect(f'/web/custom_signup?error={error_message}')
 
     def _redirect_with_success(self, message):
         """
         Redirect to signup form with success message.
         """
-        return request.redirect(f'/web/signup?success={message}')
+        return request.redirect(f'/web/custom_signup?success={message}')

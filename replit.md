@@ -117,7 +117,10 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - Added tracking=True to all important SaaS User fields for comprehensive change tracking in chatter
   - Fixed XPath template inheritance error by using JavaScript to dynamically add signup link to login page
   - Added "Create Account" button to login page with elegant styling and proper asset loading
-  - Signup link correctly opens custom signup form at /web/signup instead of default Odoo signup
+  - Changed signup routes from /web/signup to /web/custom_signup to avoid conflicts with Odoo's default auth_signup module
+  - Updated all controller routes and AJAX endpoints to use /web/custom_signup prefix
+  - Updated JavaScript validation to use correct custom API endpoints
+  - Signup link now correctly opens custom signup form instead of default Odoo signup
   - Module ready for local Odoo installation and testing
 
 ## User Preferences
