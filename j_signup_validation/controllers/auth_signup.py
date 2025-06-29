@@ -51,11 +51,17 @@ class CustomAuthSignup(http.Controller):
             email_rules = config_settings.get_email_validation_rules()
             phone_rules = config_settings.get_phone_validation_rules()
             
+            # Get countries for phone number selection
+            countries = request.env['res.country'].sudo().search([
+                ('phone_code', '!=', False)
+            ], order='name')
+            
             # Prepare context for template
             values = {
                 'password_rules': password_rules,
                 'email_rules': email_rules,
                 'phone_rules': phone_rules,
+                'countries': countries,
                 'error': kw.get('error', ''),
                 'success': kw.get('success', ''),
             }

@@ -52,6 +52,15 @@ class SaasUser(models.Model):
         help='User\'s email address used for registration and login'
     )
     
+    su_phone_country_id = fields.Many2one(
+        'res.country',
+        'Phone Country',
+        default=lambda self: self.env.ref('base.sa'),  # Saudi Arabia as default
+        required=True,
+        tracking=True,
+        help='Country for phone number validation and formatting'
+    )
+    
     su_phone = fields.Char(
         'Phone Number',
         required=True,
