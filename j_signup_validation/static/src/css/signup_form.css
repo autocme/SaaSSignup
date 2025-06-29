@@ -15,10 +15,10 @@
 
 .custom-signup-card {
     border: none;
-    border-radius: 15px;
+    border-radius: 20px;
     overflow: hidden;
     width: 100%;
-    max-width: 600px;
+    max-width: 700px;
     margin: 0 auto;
     min-width: 320px;
     display: block;
@@ -26,27 +26,28 @@
 
 .custom-signup-card .card-header {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 2rem;
+    padding: 3rem 2rem;
     border: none;
 }
 
 .custom-signup-card .card-body {
-    padding: 2rem;
+    padding: 3rem 2.5rem;
     background: #ffffff;
 }
 
 /* Form styling */
 .form-floating {
     position: relative;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .form-floating > .form-control {
-    height: calc(3.5rem + 2px);
-    padding: 1rem 0.75rem;
+    height: calc(4rem + 2px);
+    padding: 1.25rem 1rem;
     border: 2px solid #e9ecef;
-    border-radius: 10px;
+    border-radius: 12px;
     transition: all 0.3s ease;
+    font-size: 1rem;
 }
 
 .form-floating > .form-control:focus {
@@ -55,9 +56,10 @@
 }
 
 .form-floating > label {
-    padding: 1rem 0.75rem;
+    padding: 1.25rem 1rem;
     color: #6c757d;
     font-weight: 500;
+    font-size: 0.95rem;
 }
 
 /* Validation feedback */
@@ -165,27 +167,29 @@
 }
 
 /* Submit button */
-.btn-signup {
+.btn-signup, .btn-primary.btn-lg {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border: none;
     color: white;
-    padding: 0.75rem 2rem;
-    border-radius: 25px;
+    padding: 1rem 2rem;
+    border-radius: 12px;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    font-size: 1.1rem;
     transition: all 0.3s ease;
     width: 100%;
-    margin-top: 1rem;
+    margin-top: 2rem;
+    height: auto;
+    min-height: 56px;
 }
 
-.btn-signup:hover {
+.btn-signup:hover, .btn-primary.btn-lg:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
     color: white;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
-.btn-signup:disabled {
+.btn-signup:disabled, .btn-primary.btn-lg:disabled {
     opacity: 0.6;
     cursor: not-allowed;
     transform: none;
@@ -217,18 +221,37 @@
 @media (max-width: 768px) {
     .custom-signup-card {
         margin: 1rem;
-        border-radius: 10px;
+        border-radius: 15px;
     }
     
-    .custom-signup-card .card-header,
+    .custom-signup-card .card-header {
+        padding: 2rem 1.5rem;
+    }
+    
     .custom-signup-card .card-body {
-        padding: 1.5rem;
+        padding: 2rem 1.5rem;
     }
     
     .col-md-6 {
         flex: 0 0 100%;
         max-width: 100%;
         margin-bottom: 0;
+    }
+    
+    .form-floating {
+        margin-bottom: 1.25rem;
+    }
+    
+    .form-floating > .form-control {
+        height: calc(3.75rem + 2px);
+        padding: 1rem 0.875rem;
+        font-size: 16px; /* Prevent zoom on iOS */
+    }
+    
+    .country-selector {
+        height: calc(3.75rem + 2px);
+        padding: 1rem 0.875rem;
+        font-size: 16px; /* Prevent zoom on iOS */
     }
 }
 
@@ -290,10 +313,13 @@
 
 /* Country selector styling */
 .country-selector {
-    height: calc(3.5rem + 2px);
+    height: calc(4rem + 2px);
     border: 2px solid #e9ecef;
-    border-radius: 10px;
+    border-radius: 12px;
     transition: all 0.3s ease;
+    font-size: 1rem;
+    padding: 1.25rem 1rem;
+    background-color: #fff;
 }
 
 .country-selector:focus {
