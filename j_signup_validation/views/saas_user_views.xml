@@ -101,7 +101,7 @@
             <field name="model">saas.user</field>
             <field name="arch" type="xml">
                 <search string="SaaS Users">
-                    <field name="su_display_name" string="Name"/>
+                    <field name="su_complete_name" string="Name"/>
                     <field name="su_email" string="Email"/>
                     <field name="su_phone" string="Phone"/>
                     

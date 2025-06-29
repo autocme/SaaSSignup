@@ -57,7 +57,7 @@
                                             <strong>Name:</strong>
                                         </td>
                                         <td style="color: #333; font-size: 14px; padding: 5px 0;">
-                                            {{ object.su_display_name }}
+                                            {{ object.su_complete_name }}
                                         </td>
                                     </tr>
                                     <tr>

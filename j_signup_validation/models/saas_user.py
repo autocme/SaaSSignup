@@ -199,7 +199,7 @@ class SaasUser(models.Model):
             
             # Create portal user
             portal_user = self.env['res.users'].create({
-                'name': saas_user.su_display_name,
+                'name': saas_user.su_complete_name,
                 'login': saas_user.su_email,
                 'email': saas_user.su_email,
                 'phone': saas_user.su_phone,

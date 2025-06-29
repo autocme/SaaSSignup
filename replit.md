@@ -131,7 +131,7 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - Improved email validation with DNS MX record checking and domain existence verification
   - Fixed SaaS User display name compute method error by adding exception handling
   - Added dnspython dependency for proper email domain validation
-  - Renamed field su_display_name to su_complete_name and updated all references in model and views
+  - Renamed field su_display_name to su_complete_name and updated all references in model, views, and mail templates
   - Added country selector for phone numbers with Saudi Arabia as default
   - Implemented searchable country dropdown with phone code display
   - Added su_phone_country_id field to SaaS User model with res.country relation
