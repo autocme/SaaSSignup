@@ -402,7 +402,7 @@
         }
 
         addPasswordToggle() {
-            // Handle password field toggle only
+            // Handle password field toggle
             const passwordToggle = document.getElementById('passwordToggle');
             if (passwordToggle && this.passwordInput) {
                 passwordToggle.addEventListener('click', () => {
@@ -410,6 +410,18 @@
                     this.passwordInput.setAttribute('type', type);
                     
                     const icon = passwordToggle.querySelector('i');
+                    icon.className = type === 'password' ? 'fa fa-eye' : 'fa fa-eye-slash';
+                });
+            }
+            
+            // Handle confirm password field toggle
+            const confirmPasswordToggle = document.getElementById('confirmPasswordToggle');
+            if (confirmPasswordToggle && this.confirmPasswordInput) {
+                confirmPasswordToggle.addEventListener('click', () => {
+                    const type = this.confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    this.confirmPasswordInput.setAttribute('type', type);
+                    
+                    const icon = confirmPasswordToggle.querySelector('i');
                     icon.className = type === 'password' ? 'fa fa-eye' : 'fa fa-eye-slash';
                 });
             }

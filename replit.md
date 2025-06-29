@@ -152,10 +152,10 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - Fixed login issue by ensuring passwords are properly hashed and set during user creation
   - Added phone_country field handling in user data flow between controller and model
   - SUCCESS CONFIRMED: Portal user creation and login functionality working perfectly as expected
-  - Added password show/hide toggle button inside the password field on the right side
-  - Updated CSS for proper positioning and styling of the in-field toggle button
-  - Modified JavaScript to handle the password toggle button functionality
-  - Confirm password field remains standard without toggle button
+  - Added password show/hide toggle buttons inside both password and confirm password fields on the right side
+  - Updated CSS for proper positioning and styling of the in-field toggle buttons
+  - Modified JavaScript to handle both password toggle button functionalities
+  - Both password fields now have consistent toggle button styling and behavior
   - Module ready for local Odoo installation and testing
 
 ## User Preferences

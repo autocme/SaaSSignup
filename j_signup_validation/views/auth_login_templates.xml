@@ -212,9 +212,9 @@
                                         </div>
                                         
                                         <!-- Confirm Password Field -->
-                                        <div class="form-floating mb-4">
+                                        <div class="form-floating mb-4 password-field-container">
                                             <input type="password" 
-                                                   class="form-control" 
+                                                   class="form-control password-input-with-toggle" 
                                                    id="confirm_password" 
                                                    name="confirm_password" 
                                                    placeholder="Confirm Password"
@@ -223,6 +223,9 @@
                                             <label for="confirm_password">
                                                 <i class="fa fa-lock me-1"></i>Confirm Password *
                                             </label>
+                                            <button type="button" class="password-toggle-btn" id="confirmPasswordToggle">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
                                             <div class="invalid-feedback"></div>
                                         </div>
                                         
