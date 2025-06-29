@@ -192,6 +192,7 @@ class CustomAuthSignup(http.Controller):
             'last_name': post.get('last_name', '').strip(),
             'email': post.get('email', '').strip().lower(),
             'phone': post.get('phone', '').strip(),
+            'phone_country': post.get('phone_country', ''),
             'password': post.get('password', ''),
             'confirm_password': post.get('confirm_password', ''),
             'registration_ip': request.httprequest.environ.get('REMOTE_ADDR'),
@@ -233,7 +234,7 @@ class CustomAuthSignup(http.Controller):
         if form_data['phone']:
             config_settings = request.env['res.config.settings']
             phone_rules = config_settings.get_phone_validation_rules()
-            phone_validation = self._validate_phone(form_data['phone'], phone_rules)
+            phone_validation = self._validate_phone(form_data['phone'], phone_rules, form_data.get('phone_country'))
             if not phone_validation['valid']:
                 errors.extend(phone_validation['messages'])
         
@@ -323,9 +324,9 @@ class CustomAuthSignup(http.Controller):
             'messages': messages
         }
 
-    def _validate_phone(self, phone, rules):
+    def _validate_phone(self, phone, rules, country_id=None):
         """
-        Validate phone number based on configuration rules.
+        Validate phone number based on configuration rules and selected country.
         """
         messages = []
         formatted_phone = phone
@@ -335,35 +336,39 @@ class CustomAuthSignup(http.Controller):
         
         if phonenumbers:
             try:
-                # Try to parse phone number with different regions
+                # Get country code from selected country
+                country_code = None
+                if country_id:
+                    country = request.env['res.country'].sudo().browse(int(country_id))
+                    if country.exists():
+                        country_code = country.code
+                
+                # Parse phone number with selected country
                 parsed = None
-                regions_to_try = ['US', 'GB', 'CA', 'AU', 'DE', 'FR', 'IT', 'ES', 'BR', 'IN', 'CN', 'JP']
-                
-                # First try to parse without region (for numbers with country code)
-                try:
-                    parsed = phonenumbers.parse(phone, None)
-                    if phonenumbers.is_valid_number(parsed):
-                        formatted_phone = phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
-                    else:
+                if country_code:
+                    try:
+                        parsed = phonenumbers.parse(phone, country_code)
+                        if phonenumbers.is_valid_number(parsed):
+                            formatted_phone = phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+                        else:
+                            parsed = None
+                    except:
                         parsed = None
-                except:
-                    parsed = None
                 
-                # If no country code detected, try common regions
+                # If country parsing failed, try with country code prefix
                 if not parsed:
-                    for region in regions_to_try:
-                        try:
-                            test_parsed = phonenumbers.parse(phone, region)
-                            if phonenumbers.is_valid_number(test_parsed):
-                                parsed = test_parsed
-                                formatted_phone = phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
-                                break
-                        except:
-                            continue
+                    try:
+                        parsed = phonenumbers.parse(phone, None)
+                        if phonenumbers.is_valid_number(parsed):
+                            formatted_phone = phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+                        else:
+                            parsed = None
+                    except:
+                        parsed = None
                 
                 # Final validation
                 if not parsed or not phonenumbers.is_valid_number(parsed):
-                    messages.append(_('Invalid phone number. Please include country code (e.g., +1 for US, +44 for UK)'))
+                    messages.append(_('Invalid phone number for the selected country. Please check the number format.'))
                     return {'valid': False, 'messages': messages}
                 
                 # Check if mobile required
@@ -374,7 +379,7 @@ class CustomAuthSignup(http.Controller):
                 
             except Exception as e:
                 _logger.error(f"Phone validation error: {str(e)}")
-                messages.append(_('Phone validation failed. Please enter a valid phone number with country code.'))
+                messages.append(_('Phone validation failed. Please enter a valid phone number.'))
         else:
             # Basic validation if phonenumbers library is not available
             if not re.match(r'^\+?[1-9]\d{1,14}$', phone.replace(' ', '').replace('-', '')):

@@ -132,6 +132,13 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - Fixed SaaS User display name compute method error by adding exception handling
   - Added dnspython dependency for proper email domain validation
   - Renamed field su_display_name to su_complete_name and updated all references in model and views
+  - Added country selector for phone numbers with Saudi Arabia as default
+  - Implemented searchable country dropdown with phone code display
+  - Added su_phone_country_id field to SaaS User model with res.country relation
+  - Created country_phone_selector.js for real-time phone preview and validation
+  - Enhanced phone validation to use selected country for better accuracy
+  - Added CSS styling for country selector and phone preview functionality
+  - Updated form extraction to handle phone country selection
   - Module ready for local Odoo installation and testing
 
 ## User Preferences

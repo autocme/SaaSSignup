@@ -9,6 +9,7 @@
                 <tree string="SaaS Users" default_order="create_date desc">
                     <field name="su_complete_name"/>
                     <field name="su_email"/>
+                    <field name="su_phone_country_id"/>
                     <field name="su_phone"/>
                     <field name="su_registration_date"/>
                     <field name="su_email_validated"/>
@@ -49,6 +50,7 @@
                                 <field name="su_first_name" placeholder="First Name"/>
                                 <field name="su_last_name" placeholder="Last Name"/>
                                 <field name="su_email" placeholder="email@example.com"/>
+                                <field name="su_phone_country_id" placeholder="Select Country"/>
                                 <field name="su_phone" placeholder="+1 (555) 123-4567"/>
                             </group>
                             
