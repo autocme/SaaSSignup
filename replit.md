@@ -156,6 +156,10 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - Updated CSS for proper positioning and styling of the in-field toggle buttons
   - Modified JavaScript to handle both password toggle button functionalities
   - Both password fields now have consistent toggle button styling and behavior
+  - CRITICAL EMAIL VALIDATION FIX: Corrected disposable email validator import from `is_disposable` to `is_disposable_email`
+  - Enhanced DNS/MX record validation to properly reject parked domains (like foo.com with MX pointing to 0.0.0.0)
+  - Added dnspython dependency for robust domain existence checking
+  - Improved email validation now properly rejects non-functional domains while accepting valid ones
   - Module ready for local Odoo installation and testing
 
 ## User Preferences
