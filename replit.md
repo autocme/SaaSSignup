@@ -111,6 +111,7 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - Fixed XPath template inheritance error by removing problematic login template modifications
   - Fixed External ID reference error by removing unnecessary server actions and their references
   - Simplified SaaS User form view by removing validation buttons that weren't needed
+  - Added missing action_view_portal_user method to SaaS User model for portal user navigation
   - Module ready for local Odoo installation and testing
 
 ## User Preferences

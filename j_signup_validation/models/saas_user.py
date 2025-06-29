@@ -6,7 +6,7 @@ Custom model to store user registration information for future reference.
 
 import logging
 from odoo import models, fields, api, _
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 
 _logger = logging.getLogger(__name__)
 
@@ -209,4 +209,27 @@ class SaasUser(models.Model):
             'phone_validated': self.su_phone_validated,
             'password_strength': self.su_password_strength,
             'portal_user_active': self.su_portal_user_id.active if self.su_portal_user_id else False,
+        }
+
+    def action_view_portal_user(self):
+        """
+        Open the related portal user record.
+        
+        Returns:
+            dict: Action to open portal user form view
+        """
+        self.ensure_one()
+        
+        if not self.su_portal_user_id:
+            raise UserError(_('No portal user is linked to this SaaS user record.'))
+        
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Portal User'),
+            'res_model': 'res.users',
+            'res_id': self.su_portal_user_id.id,
+            'view_mode': 'form',
+            'view_type': 'form',
+            'target': 'current',
+            'context': self.env.context,
         }
