@@ -27,25 +27,51 @@
             this.countrySelect.addEventListener('change', this.handleCountryChange.bind(this));
             this.phoneInput.addEventListener('input', this.handlePhoneInput.bind(this));
             
+            // Add focus event to ensure country code is added when user focuses on phone field
+            this.phoneInput.addEventListener('focus', this.handlePhoneFocus.bind(this));
+            
             // Make country selector searchable
             this.makeSelectSearchable();
             
             // Initial phone preview update
             this.updatePhonePreview();
         }
+        
+        handlePhoneFocus(event) {
+            // If phone field is empty when focused, add country code
+            if (!this.phoneInput.value.trim()) {
+                const selectedOption = this.countrySelect.options[this.countrySelect.selectedIndex];
+                if (selectedOption && selectedOption.getAttribute('data-code')) {
+                    const countryCode = selectedOption.getAttribute('data-code');
+                    this.phoneInput.value = `+${countryCode} `;
+                    console.log('CountryPhoneSelector: Added country code on focus:', this.phoneInput.value);
+                }
+            }
+        }
 
         setDefaultCountry() {
-            // Set Saudi Arabia as default
-            const saudiOption = Array.from(this.countrySelect.options).find(option => 
-                option.textContent.includes('Saudi Arabia') || option.getAttribute('data-code') === '966'
-            );
+            console.log('CountryPhoneSelector: Setting default country');
             
-            if (saudiOption) {
-                saudiOption.selected = true;
-                // Auto-populate phone field with country code
-                this.updatePhoneFieldWithCountryCode();
-                this.updatePhonePreview();
-            }
+            // Use setTimeout to ensure DOM is ready
+            setTimeout(() => {
+                // Set Saudi Arabia as default
+                const saudiOption = Array.from(this.countrySelect.options).find(option => 
+                    option.textContent.includes('Saudi Arabia') || option.getAttribute('data-code') === '966'
+                );
+                
+                console.log('CountryPhoneSelector: Saudi option found:', saudiOption);
+                
+                if (saudiOption) {
+                    saudiOption.selected = true;
+                    console.log('CountryPhoneSelector: Saudi Arabia selected, updating phone field');
+                    
+                    // Auto-populate phone field with country code
+                    this.updatePhoneFieldWithCountryCode();
+                    this.updatePhonePreview();
+                } else {
+                    console.log('CountryPhoneSelector: Saudi Arabia option not found');
+                }
+            }, 100);
         }
 
         handleCountryChange(event) {
@@ -59,10 +85,19 @@
         }
         
         updatePhoneFieldWithCountryCode() {
+            if (!this.countrySelect || !this.phoneInput) {
+                console.log('CountryPhoneSelector: Elements not found');
+                return;
+            }
+            
             const selectedOption = this.countrySelect.options[this.countrySelect.selectedIndex];
+            console.log('CountryPhoneSelector: Selected option:', selectedOption);
+            
             if (selectedOption && selectedOption.getAttribute('data-code')) {
                 const countryCode = selectedOption.getAttribute('data-code');
-                const currentPhone = this.phoneInput.value;
+                const currentPhone = this.phoneInput.value || '';
+                
+                console.log('CountryPhoneSelector: Country code:', countryCode, 'Current phone:', currentPhone);
                 
                 // Remove any existing country code from the phone input
                 let phoneWithoutCode = currentPhone;
@@ -72,10 +107,16 @@
                 }
                 
                 // Add the new country code to the phone input
-                this.phoneInput.value = `+${countryCode} ${phoneWithoutCode}`.trim();
+                const newPhoneValue = `+${countryCode} ${phoneWithoutCode}`.trim();
+                console.log('CountryPhoneSelector: Setting phone to:', newPhoneValue);
+                
+                this.phoneInput.value = newPhoneValue;
                 
                 // Trigger input event to update validation and preview
-                this.phoneInput.dispatchEvent(new Event('input'));
+                this.phoneInput.dispatchEvent(new Event('input', { bubbles: true }));
+                this.phoneInput.dispatchEvent(new Event('change', { bubbles: true }));
+            } else {
+                console.log('CountryPhoneSelector: No selected option or data-code found');
             }
         }
 
