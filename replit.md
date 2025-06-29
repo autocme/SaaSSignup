@@ -109,7 +109,8 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - Added real-time JavaScript validation with visual feedback
   - Cleaned up project structure - all files now properly organized in j_signup_validation/ directory
   - Fixed XPath template inheritance error by removing problematic login template modifications
-  - Fixed External ID reference error by reordering action definitions in saas_user_views.xml
+  - Fixed External ID reference error by removing unnecessary server actions and their references
+  - Simplified SaaS User form view by removing validation buttons that weren't needed
   - Module ready for local Odoo installation and testing
 
 ## User Preferences

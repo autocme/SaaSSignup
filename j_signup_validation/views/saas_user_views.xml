@@ -1,33 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <!-- Action Buttons (Define before using in form view) -->
-        <record id="action_validate_user_email" model="ir.actions.server">
-            <field name="name">Validate Email</field>
-            <field name="model_id" ref="model_saas_user"/>
-            <field name="binding_model_id" ref="model_saas_user"/>
-            <field name="state">code</field>
-            <field name="code">
-                # Add email validation logic here
-                for record in records:
-                    record.su_email_validated = True
-                    record.message_post(body="Email validation completed manually.")
-            </field>
-        </record>
-
-        <record id="action_validate_user_phone" model="ir.actions.server">
-            <field name="name">Validate Phone</field>
-            <field name="model_id" ref="model_saas_user"/>
-            <field name="binding_model_id" ref="model_saas_user"/>
-            <field name="state">code</field>
-            <field name="code">
-                # Add phone validation logic here
-                for record in records:
-                    record.su_phone_validated = True
-                    record.message_post(body="Phone validation completed manually.")
-            </field>
-        </record>
-
         <!-- SaaS User Tree View -->
         <record id="saas_user_tree_view" model="ir.ui.view">
             <field name="name">saas.user.tree</field>
@@ -54,12 +27,6 @@
             <field name="arch" type="xml">
                 <form string="SaaS User">
                     <header>
-                        <button name="%(action_validate_user_email)d" type="action" 
-                                string="Validate Email" class="btn-primary"
-                                invisible="su_email_validated == True"/>
-                        <button name="%(action_validate_user_phone)d" type="action" 
-                                string="Validate Phone" class="btn-primary"
-                                invisible="su_phone_validated == True"/>
                         <field name="su_active" widget="boolean_toggle"/>
                     </header>
                     
