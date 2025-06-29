@@ -145,17 +145,17 @@ class CustomAuthSignup(http.Controller):
             }
 
     @http.route('/j_signup_validation/validate_phone', type='json', auth='public')
-    def validate_phone_ajax(self, phone, country_id=None):
+    def validate_phone_ajax(self, phone, country_id=None, phone_code=None):
         """
         AJAX endpoint for real-time phone validation.
         """
         try:
-            _logger.info(f"Validating phone via AJAX: {phone} for country_id: {country_id}")
+            _logger.info(f"Validating phone via AJAX: {phone} for country_id: {country_id}, phone_code: {phone_code}")
             
             config_settings = request.env['res.config.settings']
             phone_rules = config_settings.get_phone_validation_rules()
             
-            validation_result = self._validate_phone(phone, phone_rules, country_id)
+            validation_result = self._validate_phone(phone, phone_rules, country_id, phone_code)
             
             return {
                 'valid': validation_result['valid'],
@@ -357,7 +357,7 @@ class CustomAuthSignup(http.Controller):
             'messages': messages
         }
 
-    def _validate_phone(self, phone, rules, country_id=None):
+    def _validate_phone(self, phone, rules, country_id=None, phone_code=None):
         """
         Validate phone number based on configuration rules and selected country.
         """
@@ -372,15 +372,26 @@ class CustomAuthSignup(http.Controller):
                 # Get country info from selected country
                 country = None
                 country_code = None
-                phone_code = None
+                current_phone_code = phone_code  # Use provided phone_code first
                 
                 if country_id:
-                    country = request.env['res.country'].sudo().browse(int(country_id))
-                    if country.exists():
-                        country_code = country.code  # e.g., 'JO'
-                        phone_code = country.phone_code  # e.g., '962'
+                    try:
+                        country = request.env['res.country'].sudo().browse(int(country_id))
+                        if country.exists():
+                            country_code = country.code  # e.g., 'JO'
+                            # If no phone_code provided, try to get it from country (may not exist in standard Odoo)
+                            if not current_phone_code:
+                                current_phone_code = getattr(country, 'phone_code', None)
+                            _logger.info(f"Country found: {country.name}, code: {country_code}, using phone_code: {current_phone_code}")
+                        else:
+                            _logger.error(f"Country with ID {country_id} does not exist")
+                    except Exception as e:
+                        _logger.error(f"Error accessing country with ID {country_id}: {str(e)}")
+                        country = None
+                        country_code = None
                 
-                if not country or not country_code or not phone_code:
+                if not country or not country_code or not current_phone_code:
+                    _logger.error(f"Validation failed - country: {bool(country)}, country_code: {country_code}, phone_code: {current_phone_code}")
                     messages.append(_('Please select a valid country for phone number validation.'))
                     return {'valid': False, 'messages': messages}
                 
@@ -398,7 +409,7 @@ class CustomAuthSignup(http.Controller):
                 
                 # Build complete international number: +[country_phone_code][clean_phone]
                 # Example: +962777771111
-                international_number = f"+{phone_code}{clean_phone}"
+                international_number = f"+{current_phone_code}{clean_phone}"
                 
                 _logger.info(f"Phone validation: '{phone}' -> '{clean_phone}' -> '{international_number}' for {country.name}")
                 
