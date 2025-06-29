@@ -28,6 +28,7 @@
             'verify-email',
             'disposable-email-validator',
             'phonenumbers',
+            'dnspython',
         ],
     },
     'data': [

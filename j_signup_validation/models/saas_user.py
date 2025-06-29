@@ -127,14 +127,18 @@ class SaasUser(models.Model):
         Compute the display name from first and last name.
         """
         for record in self:
-            if record.su_first_name and record.su_last_name:
-                record.su_display_name = f"{record.su_first_name} {record.su_last_name}"
-            elif record.su_first_name:
-                record.su_display_name = record.su_first_name
-            elif record.su_last_name:
-                record.su_display_name = record.su_last_name
-            else:
-                record.su_display_name = _('Unnamed User')
+            try:
+                if record.su_first_name and record.su_last_name:
+                    record.su_display_name = f"{record.su_first_name} {record.su_last_name}"
+                elif record.su_first_name:
+                    record.su_display_name = record.su_first_name
+                elif record.su_last_name:
+                    record.su_display_name = record.su_last_name
+                else:
+                    record.su_display_name = 'Unnamed User'
+            except Exception as e:
+                _logger.error(f"Error computing display name for SaaS user {record.id}: {str(e)}")
+                record.su_display_name = f"User {record.id}"
         
         _logger.info(f"Computed display names for {len(self)} SaaS user records")
 

@@ -126,6 +126,11 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - Fixed narrow vertical layout issue by creating proper CSS file with container, row, and column layout fixes
   - Added signup_form.css with responsive design, proper form styling, and Bootstrap-compatible layout
   - Updated manifest.py to include new CSS file in assets bundle
+  - Fixed password strength bar display issues by updating CSS classes and JavaScript element targeting
+  - Enhanced phone validation to properly detect country codes and validate international numbers
+  - Improved email validation with DNS MX record checking and domain existence verification
+  - Fixed SaaS User display name compute method error by adding exception handling
+  - Added dnspython dependency for proper email domain validation
   - Module ready for local Odoo installation and testing
 
 ## User Preferences
