@@ -402,39 +402,29 @@
         }
 
         addPasswordToggle() {
-            const passwordInputs = [this.passwordInput, this.confirmPasswordInput];
-            
-            passwordInputs.forEach(input => {
-                if (!input) return;
-                
-                const wrapper = input.parentNode;
-                const toggle = document.createElement('button');
-                toggle.type = 'button';
-                toggle.className = 'btn btn-outline-secondary password-toggle';
-                toggle.innerHTML = '<i class="fa fa-eye"></i>';
-                toggle.style.cssText = `
-                    position: absolute;
-                    right: 10px;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    z-index: 5;
-                    border: none;
-                    background: transparent;
-                    padding: 0.25rem 0.5rem;
-                    font-size: 0.875rem;
-                `;
-                
-                toggle.addEventListener('click', () => {
-                    const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
-                    input.setAttribute('type', type);
+            // Handle password field toggle
+            const passwordToggle = document.getElementById('passwordToggle');
+            if (passwordToggle && this.passwordInput) {
+                passwordToggle.addEventListener('click', () => {
+                    const type = this.passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    this.passwordInput.setAttribute('type', type);
                     
-                    const icon = toggle.querySelector('i');
+                    const icon = passwordToggle.querySelector('i');
                     icon.className = type === 'password' ? 'fa fa-eye' : 'fa fa-eye-slash';
                 });
-                
-                wrapper.style.position = 'relative';
-                wrapper.appendChild(toggle);
-            });
+            }
+            
+            // Handle confirm password field toggle
+            const confirmPasswordToggle = document.getElementById('confirmPasswordToggle');
+            if (confirmPasswordToggle && this.confirmPasswordInput) {
+                confirmPasswordToggle.addEventListener('click', () => {
+                    const type = this.confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    this.confirmPasswordInput.setAttribute('type', type);
+                    
+                    const icon = confirmPasswordToggle.querySelector('i');
+                    icon.className = type === 'password' ? 'fa fa-eye' : 'fa fa-eye-slash';
+                });
+            }
         }
 
         async makeAjaxRequest(url, data) {
