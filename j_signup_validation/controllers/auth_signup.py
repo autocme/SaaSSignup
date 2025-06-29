@@ -33,7 +33,7 @@ class CustomAuthSignup(Home):
     Custom authentication controller for handling signup with validation.
     """
 
-    @http.route('/web/signup', type='http', auth='public', website=True, sitemap=False)
+    @http.route('/web/custom_signup', type='http', auth='public', website=True, sitemap=False)
     def web_auth_signup(self, **kw):
         """
         Display custom signup form.
@@ -62,7 +62,7 @@ class CustomAuthSignup(Home):
             _logger.error(f"Error loading signup form: {str(e)}")
             return request.render('web.login', {'error': _('Unable to load signup form. Please try again.')})
 
-    @http.route('/web/signup/submit', type='http', auth='public', methods=['POST'], csrf=False)
+    @http.route('/web/custom_signup/submit', type='http', auth='public', methods=['POST'], csrf=False)
     def web_auth_signup_submit(self, **post):
         """
         Process signup form submission with validation.
@@ -97,7 +97,7 @@ class CustomAuthSignup(Home):
             _logger.error(f"Unexpected error during signup: {str(e)}")
             return self._redirect_with_error(_('Registration failed. Please try again.'))
 
-    @http.route('/web/signup/validate_email', type='json', auth='public')
+    @http.route('/web/custom_signup/validate_email', type='json', auth='public')
     def validate_email_ajax(self, email):
         """
         AJAX endpoint for real-time email validation.
@@ -122,7 +122,7 @@ class CustomAuthSignup(Home):
                 'messages': [_('Email validation service temporarily unavailable')]
             }
 
-    @http.route('/web/signup/validate_phone', type='json', auth='public')
+    @http.route('/web/custom_signup/validate_phone', type='json', auth='public')
     def validate_phone_ajax(self, phone):
         """
         AJAX endpoint for real-time phone validation.
@@ -148,7 +148,7 @@ class CustomAuthSignup(Home):
                 'messages': [_('Phone validation service temporarily unavailable')]
             }
 
-    @http.route('/web/signup/validate_password', type='json', auth='public')
+    @http.route('/web/custom_signup/validate_password', type='json', auth='public')
     def validate_password_ajax(self, password):
         """
         AJAX endpoint for real-time password strength validation.

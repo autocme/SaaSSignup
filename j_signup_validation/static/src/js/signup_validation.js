@@ -113,7 +113,7 @@
                 }
 
                 // Server-side validation
-                const response = await this.makeAjaxRequest('/web/signup/validate_email', { email });
+                const response = await this.makeAjaxRequest('/web/custom_signup/validate_email', { email });
                 
                 this.emailInput.classList.remove('loading');
 
@@ -189,7 +189,7 @@
                 }
 
                 // Server-side validation
-                const response = await this.makeAjaxRequest('/web/signup/validate_phone', { phone });
+                const response = await this.makeAjaxRequest('/web/custom_signup/validate_phone', { phone });
                 
                 this.phoneInput.classList.remove('loading');
 
