@@ -17,7 +17,7 @@
                                 <p class="mb-2 text-muted" style="font-size: 14px;">
                                     Don't have an account?
                                 </p>
-                                <a href="/web/custom_signup" class="btn btn-outline-primary btn-sm mt-1" 
+                                <a href="/j_signup_validation/signup" class="btn btn-outline-primary btn-sm mt-1" 
                                    style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; color: white; border-radius: 25px; padding: 8px 20px; font-weight: 500; text-decoration: none; display: inline-block; transition: all 0.3s ease;">
                                     <i class="fa fa-user-plus me-1"></i>
                                     Create Account
@@ -65,7 +65,7 @@
                                     </t>
                                     
                                     <!-- Signup Form -->
-                                    <form method="POST" action="/web/custom_signup/submit" id="signupForm" novalidate="novalidate">
+                                    <form method="POST" action="/j_signup_validation/submit" id="signupForm" novalidate="novalidate">
                                         <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                         
                                         <!-- Name Fields Row -->
