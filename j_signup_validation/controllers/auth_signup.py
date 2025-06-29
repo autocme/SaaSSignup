@@ -343,6 +343,7 @@ class CustomAuthSignup(http.Controller):
             try:
                 if is_disposable_email(email):
                     messages.append(_('Temporary or disposable email addresses are not allowed'))
+                    return {'valid': False, 'messages': messages}
             except Exception as e:
                 _logger.warning(f"Disposable email check failed for {email}: {str(e)}")
         
