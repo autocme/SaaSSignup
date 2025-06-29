@@ -78,8 +78,10 @@ console.log('CountryPhoneSelector: Script file loaded');
                     saudiOption.selected = true;
                     console.log('CountryPhoneSelector: Saudi Arabia selected, updating phone field');
                     
-                    // Auto-populate phone field with country code
-                    this.updatePhoneFieldWithCountryCode();
+                    // Auto-populate phone field with country code if empty
+                    if (!this.phoneInput.value.trim()) {
+                        this.phoneInput.value = '+966 ';
+                    }
                     this.updatePhonePreview();
                 } else {
                     console.log('CountryPhoneSelector: Saudi Arabia option not found');
@@ -116,11 +118,11 @@ console.log('CountryPhoneSelector: Script file loaded');
                 let phoneWithoutCode = currentPhone;
                 if (currentPhone.startsWith('+')) {
                     // Remove existing country code (1-4 digits after +)
-                    phoneWithoutCode = currentPhone.replace(/^\+\d{1,4}\s*/, '');
+                    phoneWithoutCode = currentPhone.replace(/^\+\d{1,4}\s*/, '').trim();
                 }
                 
                 // Add the new country code to the phone input
-                const newPhoneValue = `+${countryCode} ${phoneWithoutCode}`.trim();
+                const newPhoneValue = phoneWithoutCode ? `+${countryCode} ${phoneWithoutCode}` : `+${countryCode} `;
                 console.log('CountryPhoneSelector: Setting phone to:', newPhoneValue);
                 
                 this.phoneInput.value = newPhoneValue;
@@ -144,16 +146,8 @@ console.log('CountryPhoneSelector: Script file loaded');
         }
 
         updatePhonePreview() {
-            const selectedOption = this.countrySelect.selectedOptions[0];
-            const countryCode = selectedOption ? selectedOption.getAttribute('data-code') : '';
             const phoneNumber = this.phoneInput.value.trim();
-            
-            if (countryCode) {
-                const fullNumber = phoneNumber ? `+${countryCode} ${phoneNumber}` : `+${countryCode} `;
-                this.phonePreview.textContent = fullNumber;
-            } else {
-                this.phonePreview.textContent = phoneNumber;
-            }
+            this.phonePreview.textContent = phoneNumber || '+966 ';
         }
 
         async validatePhoneNumber() {
