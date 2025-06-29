@@ -281,59 +281,6 @@
     }
 }
 
-/* Phone input container styling */
-.phone-input-container {
-    display: flex;
-    gap: 0;
-    border: 2px solid #e9ecef;
-    border-radius: 12px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(5px);
-}
-
-.phone-input-container:focus-within {
-    border-color: #667eea;
-    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
-    transform: translateY(-2px);
-}
-
-.country-code-selector {
-    flex: 0 0 120px;
-    border: none;
-    border-right: 1px solid #e9ecef;
-    border-radius: 0;
-    background: rgba(248, 249, 250, 0.9);
-    font-weight: 600;
-    font-size: 1rem;
-    padding: 1rem 0.75rem;
-    height: calc(4rem + 2px);
-}
-
-.country-code-selector:focus {
-    border: none;
-    border-right: 1px solid #e9ecef;
-    box-shadow: none;
-    outline: none;
-}
-
-.phone-number-input {
-    flex: 1;
-    border: none;
-    border-radius: 0;
-    font-size: 1rem;
-    padding: 1rem 0.75rem;
-    height: calc(4rem + 2px);
-    background: transparent;
-}
-
-.phone-number-input:focus {
-    border: none;
-    box-shadow: none;
-    outline: none;
-}
-
 /* Password toggle button styling */
 .password-field-container {
     position: relative;

@@ -117,39 +117,53 @@
                                             </div>
                                         </div>
                                         
-                                        <!-- Phone Number Field (Country + Phone in one line) -->
-                                        <div class="mb-3">
-                                            <label class="form-label">
-                                                <i class="fa fa-phone me-1"></i>Phone Number *
-                                            </label>
-                                            <div class="phone-input-container">
-                                                <select class="form-control country-code-selector" 
-                                                        id="phone_country" 
-                                                        name="phone_country" 
-                                                        required="required">
-                                                    <option value="" disabled="">+966</option>
-                                                    <t t-foreach="countries" t-as="country">
-                                                        <option t-att-value="country.id" 
-                                                                t-att-data-code="country.phone_code"
-                                                                t-att-selected="'selected' if country.code == 'SA' else None">
-                                                            +<t t-esc="country.phone_code"/>
-                                                        </option>
-                                                    </t>
-                                                </select>
-                                                <input type="tel" 
-                                                       class="form-control phone-number-input" 
-                                                       id="phone" 
-                                                       name="phone" 
-                                                       placeholder="51 234 5678"
-                                                       required="required"
-                                                       autocomplete="tel"/>
-                                            </div>
-                                            <div class="invalid-feedback"></div>
-                                            <div class="form-text">
-                                                <span class="phone-validation-status"></span>
-                                                <div class="phone-preview mt-2">
-                                                    <small class="text-muted">Full number: <span id="phone-preview-text">+966 </span></small>
+                                        <!-- Phone Fields in Same Row -->
+                                        <div class="row mb-3">
+                                            <!-- Country Selector -->
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+                                                    <select class="form-control country-selector" 
+                                                            id="phone_country" 
+                                                            name="phone_country" 
+                                                            required="required">
+                                                        <option value="" disabled="">Select Country</option>
+                                                        <t t-foreach="countries" t-as="country">
+                                                            <option t-att-value="country.id" 
+                                                                    t-att-data-code="country.phone_code"
+                                                                    t-att-selected="'selected' if country.code == 'SA' else None">
+                                                                <t t-esc="country.name"/> +<t t-esc="country.phone_code"/>
+                                                            </option>
+                                                        </t>
+                                                    </select>
+                                                    <label for="phone_country">
+                                                        <i class="fa fa-globe me-1"></i>Country *
+                                                    </label>
                                                 </div>
+                                            </div>
+                                            
+                                            <!-- Phone Number Field -->
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+                                                    <input type="tel" 
+                                                           class="form-control" 
+                                                           id="phone" 
+                                                           name="phone" 
+                                                           placeholder="Phone Number"
+                                                           required="required"
+                                                           autocomplete="tel"/>
+                                                    <label for="phone">
+                                                        <i class="fa fa-phone me-1"></i>Phone Number *
+                                                    </label>
+                                                    <div class="invalid-feedback"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Phone validation feedback -->
+                                        <div class="form-text mb-3">
+                                            <span class="phone-validation-status"></span>
+                                            <div class="phone-preview mt-2">
+                                                <small class="text-muted">Full number: <span id="phone-preview-text">+966 </span></small>
                                             </div>
                                         </div>
                                         
