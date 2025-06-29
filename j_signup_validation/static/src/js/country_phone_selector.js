@@ -3,32 +3,19 @@
  * Handles country selection and phone number formatting
  */
 
-console.log('CountryPhoneSelector: Script file loaded');
-
 (function() {
     'use strict';
-    
-    console.log('CountryPhoneSelector: IIFE started');
 
     class CountryPhoneSelector {
         constructor() {
-            console.log('CountryPhoneSelector: Constructor called');
-            
             this.countrySelect = document.getElementById('phone_country');
             this.phoneInput = document.getElementById('phone');
             this.phonePreview = document.getElementById('phone-preview-text');
             
-            console.log('CountryPhoneSelector: Elements found:', {
-                countrySelect: !!this.countrySelect,
-                phoneInput: !!this.phoneInput,
-                phonePreview: !!this.phonePreview
-            });
 
+            
             if (this.countrySelect && this.phoneInput) {
-                console.log('CountryPhoneSelector: Initializing...');
                 this.init();
-            } else {
-                console.log('CountryPhoneSelector: Required elements not found, skipping initialization');
             }
         }
 
@@ -40,98 +27,31 @@ console.log('CountryPhoneSelector: Script file loaded');
             this.countrySelect.addEventListener('change', this.handleCountryChange.bind(this));
             this.phoneInput.addEventListener('input', this.handlePhoneInput.bind(this));
             
-            // Add focus event to ensure country code is added when user focuses on phone field
-            this.phoneInput.addEventListener('focus', this.handlePhoneFocus.bind(this));
-            
             // Make country selector searchable
             this.makeSelectSearchable();
             
             // Initial phone preview update
             this.updatePhonePreview();
         }
-        
-        handlePhoneFocus(event) {
-            // If phone field is empty when focused, add country code
-            if (!this.phoneInput.value.trim()) {
-                const selectedOption = this.countrySelect.options[this.countrySelect.selectedIndex];
-                if (selectedOption && selectedOption.getAttribute('data-code')) {
-                    const countryCode = selectedOption.getAttribute('data-code');
-                    this.phoneInput.value = `+${countryCode} `;
-                    console.log('CountryPhoneSelector: Added country code on focus:', this.phoneInput.value);
-                }
+
+        setDefaultCountry() {
+            // Set Saudi Arabia as default
+            const saudiOption = Array.from(this.countrySelect.options).find(option => 
+                option.textContent.includes('Saudi Arabia') || option.getAttribute('data-code') === '966'
+            );
+            
+            if (saudiOption) {
+                saudiOption.selected = true;
+                this.updatePhonePreview();
             }
         }
 
-        setDefaultCountry() {
-            console.log('CountryPhoneSelector: Setting default country');
-            
-            // Use setTimeout to ensure DOM is ready
-            setTimeout(() => {
-                // Set Saudi Arabia as default
-                const saudiOption = Array.from(this.countrySelect.options).find(option => 
-                    option.textContent.includes('Saudi Arabia') || option.getAttribute('data-code') === '966'
-                );
-                
-                console.log('CountryPhoneSelector: Saudi option found:', saudiOption);
-                
-                if (saudiOption) {
-                    saudiOption.selected = true;
-                    console.log('CountryPhoneSelector: Saudi Arabia selected, updating phone field');
-                    
-                    // Auto-populate phone field with country code if empty
-                    if (!this.phoneInput.value.trim()) {
-                        this.phoneInput.value = '+966 ';
-                    }
-                    this.updatePhonePreview();
-                } else {
-                    console.log('CountryPhoneSelector: Saudi Arabia option not found');
-                }
-            }, 100);
-        }
-
         handleCountryChange(event) {
-            this.updatePhoneFieldWithCountryCode();
             this.updatePhonePreview();
             
             // Clear and re-validate phone number when country changes
             if (this.phoneInput.value) {
                 this.validatePhoneNumber();
-            }
-        }
-        
-        updatePhoneFieldWithCountryCode() {
-            if (!this.countrySelect || !this.phoneInput) {
-                console.log('CountryPhoneSelector: Elements not found');
-                return;
-            }
-            
-            const selectedOption = this.countrySelect.options[this.countrySelect.selectedIndex];
-            console.log('CountryPhoneSelector: Selected option:', selectedOption);
-            
-            if (selectedOption && selectedOption.getAttribute('data-code')) {
-                const countryCode = selectedOption.getAttribute('data-code');
-                const currentPhone = this.phoneInput.value || '';
-                
-                console.log('CountryPhoneSelector: Country code:', countryCode, 'Current phone:', currentPhone);
-                
-                // Remove any existing country code from the phone input
-                let phoneWithoutCode = currentPhone;
-                if (currentPhone.startsWith('+')) {
-                    // Remove existing country code (1-4 digits after +)
-                    phoneWithoutCode = currentPhone.replace(/^\+\d{1,4}\s*/, '').trim();
-                }
-                
-                // Add the new country code to the phone input
-                const newPhoneValue = phoneWithoutCode ? `+${countryCode} ${phoneWithoutCode}` : `+${countryCode} `;
-                console.log('CountryPhoneSelector: Setting phone to:', newPhoneValue);
-                
-                this.phoneInput.value = newPhoneValue;
-                
-                // Trigger input event to update validation and preview
-                this.phoneInput.dispatchEvent(new Event('input', { bubbles: true }));
-                this.phoneInput.dispatchEvent(new Event('change', { bubbles: true }));
-            } else {
-                console.log('CountryPhoneSelector: No selected option or data-code found');
             }
         }
 
@@ -146,8 +66,16 @@ console.log('CountryPhoneSelector: Script file loaded');
         }
 
         updatePhonePreview() {
+            const selectedOption = this.countrySelect.selectedOptions[0];
+            const countryCode = selectedOption ? selectedOption.getAttribute('data-code') : '';
             const phoneNumber = this.phoneInput.value.trim();
-            this.phonePreview.textContent = phoneNumber || '+966 ';
+            
+            if (countryCode) {
+                const fullNumber = phoneNumber ? `+${countryCode} ${phoneNumber}` : `+${countryCode} `;
+                this.phonePreview.textContent = fullNumber;
+            } else {
+                this.phonePreview.textContent = phoneNumber;
+            }
         }
 
         async validatePhoneNumber() {
@@ -205,17 +133,6 @@ console.log('CountryPhoneSelector: Script file loaded');
                     statusElement.innerHTML = `<i class="fa fa-exclamation-triangle"></i> ${message}`;
                     break;
             }
-            
-            // Notify signup validator of validation state change
-            this.notifyValidationChange(status === 'valid');
-        }
-        
-        notifyValidationChange(isValid) {
-            // Trigger a custom event that the signup validator can listen to
-            const event = new CustomEvent('phoneValidationChanged', {
-                detail: { isValid: isValid }
-            });
-            this.phoneInput.dispatchEvent(event);
         }
 
         makeSelectSearchable() {
@@ -284,55 +201,5 @@ console.log('CountryPhoneSelector: Script file loaded');
 
     // Auto-initialize
     initCountryPhoneSelector();
-    
-    console.log('CountryPhoneSelector: IIFE completed');
 
 })();
-
-// Fallback initialization outside IIFE
-console.log('CountryPhoneSelector: Fallback initialization attempt');
-setTimeout(() => {
-    const countrySelect = document.getElementById('phone_country');
-    const phoneInput = document.getElementById('phone');
-    
-    console.log('CountryPhoneSelector: Fallback - Elements check:', {
-        countrySelect: !!countrySelect,
-        phoneInput: !!phoneInput
-    });
-    
-    if (countrySelect && phoneInput && !countrySelect.hasAttribute('data-initialized')) {
-        console.log('CountryPhoneSelector: Fallback - Manual initialization');
-        countrySelect.setAttribute('data-initialized', 'true');
-        
-        // Manual country code addition
-        countrySelect.addEventListener('change', function() {
-            const selectedOption = this.options[this.selectedIndex];
-            if (selectedOption && selectedOption.getAttribute('data-code')) {
-                const countryCode = selectedOption.getAttribute('data-code');
-                const currentPhone = phoneInput.value || '';
-                let phoneWithoutCode = currentPhone;
-                
-                if (currentPhone.startsWith('+')) {
-                    phoneWithoutCode = currentPhone.replace(/^\+\d{1,4}\s*/, '');
-                }
-                
-                phoneInput.value = `+${countryCode} ${phoneWithoutCode}`.trim();
-                console.log('CountryPhoneSelector: Fallback - Phone updated to:', phoneInput.value);
-            }
-        });
-        
-        // Set default Saudi Arabia
-        const saudiOption = Array.from(countrySelect.options).find(option => 
-            option.textContent.includes('Saudi Arabia') || option.getAttribute('data-code') === '966'
-        );
-        
-        if (saudiOption) {
-            saudiOption.selected = true;
-            const countryCode = saudiOption.getAttribute('data-code');
-            if (countryCode && !phoneInput.value.trim()) {
-                phoneInput.value = `+${countryCode} `;
-                console.log('CountryPhoneSelector: Fallback - Default phone set to:', phoneInput.value);
-            }
-        }
-    }
-}, 1000);
