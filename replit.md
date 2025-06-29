@@ -131,6 +131,7 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - Improved email validation with DNS MX record checking and domain existence verification
   - Fixed SaaS User display name compute method error by adding exception handling
   - Added dnspython dependency for proper email domain validation
+  - Renamed field su_display_name to su_complete_name and updated all references in model and views
   - Module ready for local Odoo installation and testing
 
 ## User Preferences

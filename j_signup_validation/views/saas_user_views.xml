@@ -7,7 +7,7 @@
             <field name="model">saas.user</field>
             <field name="arch" type="xml">
                 <tree string="SaaS Users" default_order="create_date desc">
-                    <field name="su_display_name"/>
+                    <field name="su_complete_name"/>
                     <field name="su_email"/>
                     <field name="su_phone"/>
                     <field name="su_registration_date"/>
@@ -40,7 +40,7 @@
                         
                         <div class="oe_title">
                             <h1>
-                                <field name="su_display_name" placeholder="Display Name"/>
+                                <field name="su_complete_name" placeholder="Complete Name"/>
                             </h1>
                         </div>
                         

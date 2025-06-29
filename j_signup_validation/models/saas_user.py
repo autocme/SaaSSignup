@@ -21,7 +21,7 @@ class SaasUser(models.Model):
     _description = 'SaaS User Registration Data'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'create_date desc'
-    _rec_name = 'su_display_name'
+    _rec_name = 'su_complete_name'
 
     # Basic Information Fields
     su_first_name = fields.Char(
@@ -38,9 +38,9 @@ class SaasUser(models.Model):
         help='User\'s last name as provided during registration'
     )
     
-    su_display_name = fields.Char(
-        'Display Name',
-        compute='_compute_display_name',
+    su_complete_name = fields.Char(
+        'Complete Name',
+        compute='_compute_complete_name',
         store=True,
         help='Full name computed from first and last name'
     )
@@ -122,25 +122,25 @@ class SaasUser(models.Model):
     )
 
     @api.depends('su_first_name', 'su_last_name')
-    def _compute_display_name(self):
+    def _compute_complete_name(self):
         """
-        Compute the display name from first and last name.
+        Compute the complete name from first and last name.
         """
         for record in self:
             try:
                 if record.su_first_name and record.su_last_name:
-                    record.su_display_name = f"{record.su_first_name} {record.su_last_name}"
+                    record.su_complete_name = f"{record.su_first_name} {record.su_last_name}"
                 elif record.su_first_name:
-                    record.su_display_name = record.su_first_name
+                    record.su_complete_name = record.su_first_name
                 elif record.su_last_name:
-                    record.su_display_name = record.su_last_name
+                    record.su_complete_name = record.su_last_name
                 else:
-                    record.su_display_name = 'Unnamed User'
+                    record.su_complete_name = 'Unnamed User'
             except Exception as e:
-                _logger.error(f"Error computing display name for SaaS user {record.id}: {str(e)}")
-                record.su_display_name = f"User {record.id}"
+                _logger.error(f"Error computing complete name for SaaS user {record.id}: {str(e)}")
+                record.su_complete_name = f"User {record.id}"
         
-        _logger.info(f"Computed display names for {len(self)} SaaS user records")
+        _logger.info(f"Computed complete names for {len(self)} SaaS user records")
 
     @api.constrains('su_email')
     def _check_email_unique(self):
