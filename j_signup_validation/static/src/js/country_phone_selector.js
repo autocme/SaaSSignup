@@ -3,8 +3,12 @@
  * Handles country selection and phone number formatting
  */
 
+console.log('CountryPhoneSelector: Script file loaded');
+
 (function() {
     'use strict';
+    
+    console.log('CountryPhoneSelector: IIFE started');
 
     class CountryPhoneSelector {
         constructor() {
@@ -275,5 +279,55 @@
 
     // Auto-initialize
     initCountryPhoneSelector();
+    
+    console.log('CountryPhoneSelector: IIFE completed');
 
 })();
+
+// Fallback initialization outside IIFE
+console.log('CountryPhoneSelector: Fallback initialization attempt');
+setTimeout(() => {
+    const countrySelect = document.getElementById('phone_country');
+    const phoneInput = document.getElementById('phone');
+    
+    console.log('CountryPhoneSelector: Fallback - Elements check:', {
+        countrySelect: !!countrySelect,
+        phoneInput: !!phoneInput
+    });
+    
+    if (countrySelect && phoneInput && !countrySelect.hasAttribute('data-initialized')) {
+        console.log('CountryPhoneSelector: Fallback - Manual initialization');
+        countrySelect.setAttribute('data-initialized', 'true');
+        
+        // Manual country code addition
+        countrySelect.addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            if (selectedOption && selectedOption.getAttribute('data-code')) {
+                const countryCode = selectedOption.getAttribute('data-code');
+                const currentPhone = phoneInput.value || '';
+                let phoneWithoutCode = currentPhone;
+                
+                if (currentPhone.startsWith('+')) {
+                    phoneWithoutCode = currentPhone.replace(/^\+\d{1,4}\s*/, '');
+                }
+                
+                phoneInput.value = `+${countryCode} ${phoneWithoutCode}`.trim();
+                console.log('CountryPhoneSelector: Fallback - Phone updated to:', phoneInput.value);
+            }
+        });
+        
+        // Set default Saudi Arabia
+        const saudiOption = Array.from(countrySelect.options).find(option => 
+            option.textContent.includes('Saudi Arabia') || option.getAttribute('data-code') === '966'
+        );
+        
+        if (saudiOption) {
+            saudiOption.selected = true;
+            const countryCode = saudiOption.getAttribute('data-code');
+            if (countryCode && !phoneInput.value.trim()) {
+                phoneInput.value = `+${countryCode} `;
+                console.log('CountryPhoneSelector: Fallback - Default phone set to:', phoneInput.value);
+            }
+        }
+    }
+}, 1000);
