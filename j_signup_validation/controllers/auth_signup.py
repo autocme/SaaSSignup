@@ -259,14 +259,45 @@ class CustomAuthSignup(http.Controller):
                 messages.append(_('Invalid email address format'))
                 return {'valid': False, 'messages': messages}
         
-        # MX record verification
-        if rules.get('mx_verification', True) and verify_email:
-            try:
-                if not verify_email(email):
-                    messages.append(_('Email domain does not exist or cannot receive emails'))
-            except Exception as e:
-                _logger.warning(f"MX verification failed for {email}: {str(e)}")
-                # Don't block registration if MX check fails due to network issues
+        # MX record verification and domain existence
+        if rules.get('mx_verification', True):
+            domain = email.split('@')[1] if '@' in email else ''
+            if domain:
+                try:
+                    # Check if domain exists using MX or A records
+                    import dns.resolver
+                    try:
+                        # Try MX record first
+                        dns.resolver.resolve(domain, 'MX')
+                    except:
+                        try:
+                            # If MX fails, try A record
+                            dns.resolver.resolve(domain, 'A')
+                        except:
+                            messages.append(_('Email domain does not exist or cannot receive emails'))
+                            return {'valid': False, 'messages': messages}
+                    
+                    # Additional verification with verify-email library if available
+                    if verify_email:
+                        try:
+                            if not verify_email(email):
+                                messages.append(_('Email address cannot receive emails'))
+                                return {'valid': False, 'messages': messages}
+                        except Exception as e:
+                            _logger.warning(f"verify-email check failed for {email}: {str(e)}")
+                            
+                except ImportError:
+                    # If dns.resolver not available, use basic verification
+                    if verify_email:
+                        try:
+                            if not verify_email(email):
+                                messages.append(_('Email domain verification failed'))
+                                return {'valid': False, 'messages': messages}
+                        except Exception as e:
+                            _logger.warning(f"Email verification failed for {email}: {str(e)}")
+                except Exception as e:
+                    _logger.warning(f"Domain verification failed for {email}: {str(e)}")
+                    # Don't block if DNS check fails due to network issues
         
         # Disposable email check
         if rules.get('disposable_check', True) and is_disposable:
@@ -298,16 +329,36 @@ class CustomAuthSignup(http.Controller):
         
         if phonenumbers:
             try:
-                # Parse phone number
-                parsed = phonenumbers.parse(phone, None)
+                # Try to parse phone number with different regions
+                parsed = None
+                regions_to_try = ['US', 'GB', 'CA', 'AU', 'DE', 'FR', 'IT', 'ES', 'BR', 'IN', 'CN', 'JP']
                 
-                # Check if valid
-                if not phonenumbers.is_valid_number(parsed):
-                    messages.append(_('Invalid phone number'))
+                # First try to parse without region (for numbers with country code)
+                try:
+                    parsed = phonenumbers.parse(phone, None)
+                    if phonenumbers.is_valid_number(parsed):
+                        formatted_phone = phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+                    else:
+                        parsed = None
+                except:
+                    parsed = None
+                
+                # If no country code detected, try common regions
+                if not parsed:
+                    for region in regions_to_try:
+                        try:
+                            test_parsed = phonenumbers.parse(phone, region)
+                            if phonenumbers.is_valid_number(test_parsed):
+                                parsed = test_parsed
+                                formatted_phone = phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+                                break
+                        except:
+                            continue
+                
+                # Final validation
+                if not parsed or not phonenumbers.is_valid_number(parsed):
+                    messages.append(_('Invalid phone number. Please include country code (e.g., +1 for US, +44 for UK)'))
                     return {'valid': False, 'messages': messages}
-                
-                # Format phone number
-                formatted_phone = phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
                 
                 # Check if mobile required
                 if rules.get('require_mobile', False):
@@ -315,11 +366,9 @@ class CustomAuthSignup(http.Controller):
                     if number_type != phonenumbers.PhoneNumberType.MOBILE:
                         messages.append(_('Only mobile phone numbers are allowed'))
                 
-            except NumberParseException as e:
-                messages.append(_('Invalid phone number format'))
             except Exception as e:
                 _logger.error(f"Phone validation error: {str(e)}")
-                messages.append(_('Phone validation failed'))
+                messages.append(_('Phone validation failed. Please enter a valid phone number with country code.'))
         else:
             # Basic validation if phonenumbers library is not available
             if not re.match(r'^\+?[1-9]\d{1,14}$', phone.replace(' ', '').replace('-', '')):

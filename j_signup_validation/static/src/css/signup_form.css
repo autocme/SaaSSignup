@@ -104,30 +104,43 @@
     margin-bottom: 0.5rem;
 }
 
-.password-strength-fill {
+.password-strength-progress {
     height: 100%;
     transition: all 0.3s ease;
     border-radius: 2px;
+    width: 0%;
 }
 
-.strength-weak .password-strength-fill {
+.password-strength-progress.weak {
     background-color: #dc3545;
-    width: 25%;
 }
 
-.strength-fair .password-strength-fill {
+.password-strength-progress.fair {
     background-color: #fd7e14;
-    width: 50%;
 }
 
-.strength-good .password-strength-fill {
+.password-strength-progress.good {
     background-color: #ffc107;
-    width: 75%;
 }
 
-.strength-strong .password-strength-fill {
+.password-strength-progress.strong {
     background-color: #28a745;
-    width: 100%;
+}
+
+.strength-label.weak {
+    color: #dc3545;
+}
+
+.strength-label.fair {
+    color: #fd7e14;
+}
+
+.strength-label.good {
+    color: #ffc107;
+}
+
+.strength-label.strong {
+    color: #28a745;
 }
 
 .password-requirements {

@@ -197,11 +197,15 @@
             this.passwordInput = passwordInput;
             this.validator = validator;
             this.container = this.passwordInput.closest('.form-floating').querySelector('.password-strength-container');
-            this.progressBar = this.container.querySelector('.password-strength-progress');
-            this.strengthLabel = this.container.querySelector('.strength-label');
-            this.requirementsList = this.container.querySelector('.password-requirements-list');
             
-            this.init();
+            if (this.container) {
+                this.progressBar = this.container.querySelector('.password-strength-progress');
+                this.strengthLabel = this.container.querySelector('.strength-label');
+                this.requirementsList = this.container.querySelector('.password-requirements-list');
+                this.init();
+            } else {
+                console.warn('Password strength container not found');
+            }
         }
 
         init() {
@@ -252,19 +256,20 @@
         }
 
         updateRequirementsList(requirements) {
-            const items = this.requirementsList.querySelectorAll('.requirement');
+            if (!this.requirementsList) return;
             
-            requirements.forEach((requirement, index) => {
-                const item = items[index];
+            // Update each requirement by matching data attributes
+            requirements.forEach(requirement => {
+                const item = this.requirementsList.querySelector(`[data-requirement="${requirement.id}"]`);
                 if (item) {
                     const icon = item.querySelector('i');
                     
                     if (requirement.met) {
                         item.classList.add('met');
-                        icon.className = 'fa fa-check text-success';
+                        if (icon) icon.className = 'fa fa-check text-success';
                     } else {
                         item.classList.remove('met');
-                        icon.className = 'fa fa-times text-danger';
+                        if (icon) icon.className = 'fa fa-times text-danger';
                     }
                 }
             });
