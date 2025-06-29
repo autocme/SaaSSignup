@@ -1,3 +1,26 @@
+/* Login Page Signup Link Styles */
+.o_database_list .border-top {
+    border-color: #e9ecef !important;
+}
+
+.o_database_list .btn-outline-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    color: white;
+    border-radius: 25px;
+    padding: 8px 20px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(102, 126, 234, 0.2);
+}
+
+.o_database_list .btn-outline-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    color: white;
+}
+
 /* Custom Signup Form Styles */
 .custom-signup-btn {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);

@@ -2,6 +2,22 @@
 <odoo>
     <data>
 
+        <!-- Add Signup Link to Login Page -->
+        <template id="login_signup_link" inherit_id="web.login" name="Add Signup Link">
+            <xpath expr="//div[hasclass('card-body')]//form" position="after">
+                <div class="text-center mt-4 pt-3" style="border-top: 1px solid #e9ecef;">
+                    <p class="mb-2 text-muted" style="font-size: 14px;">
+                        Don't have an account?
+                    </p>
+                    <a href="/web/signup" class="btn btn-outline-primary btn-sm mt-1" 
+                       style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; color: white; border-radius: 25px; padding: 8px 20px; font-weight: 500; text-decoration: none; display: inline-block; transition: all 0.3s ease;">
+                        <i class="fa fa-user-plus me-1"></i>
+                        Create Account
+                    </a>
+                </div>
+            </xpath>
+        </template>
+
         <!-- Custom Signup Form Template -->
         <template id="custom_signup_form" name="Custom Signup Form">
             <t t-call="web.login_layout">

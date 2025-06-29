@@ -115,6 +115,7 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - Added mail.thread and mail.activity.mixin inheritance to SaaS User model for messaging capabilities
   - Restored chatter section in SaaS User form view with messaging and activity tracking
   - Added tracking=True to all important SaaS User fields for comprehensive change tracking in chatter
+  - Added "Create Account" button to login page with elegant styling and proper asset loading
   - Module ready for local Odoo installation and testing
 
 ## User Preferences
