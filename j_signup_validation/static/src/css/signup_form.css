@@ -36,12 +36,12 @@
 
 .custom-signup-card .card-header {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 3rem 2rem;
+    padding: 3.5rem 3rem;
     border: none;
 }
 
 .custom-signup-card .card-body {
-    padding: 3rem 2.5rem;
+    padding: 3.5rem 3rem;
     background: #ffffff;
 }
 

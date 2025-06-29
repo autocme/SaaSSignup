@@ -144,6 +144,10 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - Separated country selector and phone number into individual full-width fields
   - Improved button styling with larger size and better visual hierarchy
   - Enhanced responsive design for mobile devices with proper font sizes
+  - MAJOR CHANGE: Converted signup form to completely standalone page without Odoo's login layout or background logo
+  - Created independent HTML template with custom body styling and clean gradient background
+  - Increased form size significantly (900px max-width) with more spacious padding (3.5rem)
+  - Form now appears as isolated page exactly like requested design reference
   - Module ready for local Odoo installation and testing
 
 ## User Preferences
