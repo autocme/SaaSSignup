@@ -123,6 +123,9 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - Updated JavaScript validation to call correct custom API endpoints
   - Added test route /j_signup_validation/test to verify controller loading
   - Signup link now correctly opens custom signup form instead of default Odoo signup
+  - Fixed narrow vertical layout issue by creating proper CSS file with container, row, and column layout fixes
+  - Added signup_form.css with responsive design, proper form styling, and Bootstrap-compatible layout
+  - Updated manifest.py to include new CSS file in assets bundle
   - Module ready for local Odoo installation and testing
 
 ## User Preferences

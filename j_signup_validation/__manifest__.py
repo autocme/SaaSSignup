@@ -39,12 +39,12 @@
     ],
     'assets': {
         'web.assets_frontend': [
-            'j_signup_validation/static/src/css/custom_signup.css',
+            'j_signup_validation/static/src/css/signup_form.css',
             'j_signup_validation/static/src/js/password_strength.js',
             'j_signup_validation/static/src/js/signup_validation.js',
         ],
         'web.assets_backend': [
-            'j_signup_validation/static/src/css/custom_signup.css',
+            'j_signup_validation/static/src/css/signup_form.css',
         ],
     },
     'installable': True,

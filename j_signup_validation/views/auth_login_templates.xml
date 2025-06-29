@@ -21,9 +21,9 @@
         <!-- Custom Signup Form Template -->
         <template id="custom_signup_form" name="Custom Signup Form">
             <t t-call="web.login_layout">
-                <div class="container-fluid">
+                <div class="container-fluid py-4">
                     <div class="row justify-content-center">
-                        <div class="col-md-6 col-lg-5">
+                        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
                             <div class="card custom-signup-card shadow-lg">
                                 <div class="card-header text-center bg-primary text-white">
                                     <h3 class="mb-0">
