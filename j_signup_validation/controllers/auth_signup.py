@@ -270,41 +270,63 @@ class CustomAuthSignup(http.Controller):
         if rules.get('mx_verification', True):
             domain = email.split('@')[1] if '@' in email else ''
             if domain:
+                domain_valid = False
+                
+                # First try DNS resolution
                 try:
-                    # Check if domain exists using MX or A records
                     import dns.resolver
                     try:
                         # Try MX record first
-                        dns.resolver.resolve(domain, 'MX')
-                    except:
+                        mx_records = dns.resolver.resolve(domain, 'MX')
+                        # Check if MX records point to valid mail servers
+                        valid_mx = False
+                        for mx in mx_records:
+                            mx_host = str(mx.exchange).rstrip('.')
+                            # Reject invalid/parked domain indicators
+                            if mx_host not in ['0.0.0.0', 'localhost', '127.0.0.1', ''] and not mx_host.startswith('0.'):
+                                valid_mx = True
+                                break
+                        
+                        if valid_mx:
+                            domain_valid = True
+                        else:
+                            messages.append(_('Email domain does not accept emails'))
+                            return {'valid': False, 'messages': messages}
+                            
+                    except dns.resolver.NXDOMAIN:
+                        messages.append(_('Email domain does not exist'))
+                        return {'valid': False, 'messages': messages}
+                    except dns.resolver.NoAnswer:
                         try:
                             # If MX fails, try A record
                             dns.resolver.resolve(domain, 'A')
-                        except:
-                            messages.append(_('Email domain does not exist or cannot receive emails'))
+                            # Domain exists but no mail service - still reject for email registration
+                            messages.append(_('Email domain does not support email delivery'))
                             return {'valid': False, 'messages': messages}
-                    
-                    # Additional verification with verify-email library if available
-                    if verify_email:
-                        try:
-                            if not verify_email(email):
-                                messages.append(_('Email address cannot receive emails'))
-                                return {'valid': False, 'messages': messages}
-                        except Exception as e:
-                            _logger.warning(f"verify-email check failed for {email}: {str(e)}")
-                            
+                        except dns.resolver.NXDOMAIN:
+                            messages.append(_('Email domain does not exist'))
+                            return {'valid': False, 'messages': messages}
+                        except:
+                            pass
+                    except Exception as e:
+                        _logger.warning(f"DNS check failed for {domain}: {str(e)}")
+                        
                 except ImportError:
-                    # If dns.resolver not available, use basic verification
-                    if verify_email:
-                        try:
-                            if not verify_email(email):
-                                messages.append(_('Email domain verification failed'))
-                                return {'valid': False, 'messages': messages}
-                        except Exception as e:
-                            _logger.warning(f"Email verification failed for {email}: {str(e)}")
-                except Exception as e:
-                    _logger.warning(f"Domain verification failed for {email}: {str(e)}")
-                    # Don't block if DNS check fails due to network issues
+                    _logger.warning("dnspython not available for DNS verification")
+                
+                # If DNS checks inconclusive, use verify-email library
+                if not domain_valid and verify_email:
+                    try:
+                        verification_result = verify_email(email)
+                        if not verification_result:
+                            messages.append(_('Email address cannot receive emails'))
+                            return {'valid': False, 'messages': messages}
+                    except Exception as e:
+                        _logger.warning(f"verify-email check failed for {email}: {str(e)}")
+                        # If verify-email also fails, block invalid-looking domains
+                        if '.' not in domain or len(domain.split('.')[-1]) < 2:
+                            messages.append(_('Email domain appears to be invalid'))
+                            return {'valid': False, 'messages': messages}
         
         # Disposable email check
         if rules.get('disposable_check', True) and is_disposable_email:

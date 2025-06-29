@@ -5,6 +5,7 @@ description = "Add your description here"
 requires-python = ">=3.11"
 dependencies = [
     "disposable-email-validator>=0.0.8",
+    "dnspython>=2.7.0",
     "phonenumbers>=9.0.8",
     "verify-email>=2.4.3",
 ]
