@@ -27,12 +27,14 @@ class SaasUser(models.Model):
     su_first_name = fields.Char(
         'First Name',
         required=True,
+        tracking=True,
         help='User\'s first name as provided during registration'
     )
     
     su_last_name = fields.Char(
         'Last Name',
         required=True,
+        tracking=True,
         help='User\'s last name as provided during registration'
     )
     
@@ -46,12 +48,14 @@ class SaasUser(models.Model):
     su_email = fields.Char(
         'Email Address',
         required=True,
+        tracking=True,
         help='User\'s email address used for registration and login'
     )
     
     su_phone = fields.Char(
         'Phone Number',
         required=True,
+        tracking=True,
         help='User\'s phone number with international format validation'
     )
     
@@ -65,30 +69,35 @@ class SaasUser(models.Model):
     su_email_validated = fields.Boolean(
         'Email Validated',
         default=False,
+        tracking=True,
         help='Indicates if email passed all validation checks'
     )
     
     su_phone_validated = fields.Boolean(
         'Phone Validated',
         default=False,
+        tracking=True,
         help='Indicates if phone number passed validation checks'
     )
     
     su_password_strength = fields.Integer(
         'Password Strength Score',
         default=0,
+        tracking=True,
         help='Password strength score from 0-100 based on validation rules'
     )
     
     # Registration Details
     su_registration_ip = fields.Char(
         'Registration IP',
+        tracking=True,
         help='IP address from which the user registered'
     )
     
     su_registration_date = fields.Datetime(
         'Registration Date',
         default=fields.Datetime.now,
+        tracking=True,
         help='Date and time when user completed registration'
     )
     
@@ -101,12 +110,14 @@ class SaasUser(models.Model):
     su_portal_user_id = fields.Many2one(
         'res.users',
         'Portal User',
+        tracking=True,
         help='Related portal user account created during registration'
     )
     
     su_active = fields.Boolean(
         'Active',
         default=True,
+        tracking=True,
         help='Indicates if the SaaS user record is active'
     )
 
