@@ -108,6 +108,7 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - Created beautiful email templates for welcome and verification
   - Added real-time JavaScript validation with visual feedback
   - Cleaned up project structure - all files now properly organized in j_signup_validation/ directory
+  - Fixed XPath template inheritance error by removing problematic login template modifications
   - Module ready for local Odoo installation and testing
 
 ## User Preferences
