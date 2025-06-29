@@ -76,29 +76,132 @@
         }
         
         addFlagsToCountryOptions() {
-            // Add flag emojis to all country options
+            // Create custom dropdown with flag images
+            this.createCustomCountryDropdown();
+        }
+        
+        createCustomCountryDropdown() {
+            // Hide the original select
+            this.countrySelect.style.display = 'none';
+            
+            // Create custom dropdown container
+            const customDropdown = document.createElement('div');
+            customDropdown.className = 'custom-country-dropdown';
+            customDropdown.innerHTML = `
+                <div class="country-selected" id="country-selected">
+                    <span class="country-flag"></span>
+                    <span class="country-text">Select Country</span>
+                    <i class="fa fa-chevron-down dropdown-arrow"></i>
+                </div>
+                <div class="country-options" id="country-options" style="display: none;">
+                    <!-- Options will be populated by JavaScript -->
+                </div>
+            `;
+            
+            // Insert after the original select
+            this.countrySelect.parentNode.insertBefore(customDropdown, this.countrySelect.nextSibling);
+            
+            // Populate options
+            this.populateCustomOptions();
+            
+            // Bind events
+            this.bindCustomDropdownEvents();
+        }
+        
+        populateCustomOptions() {
+            const optionsContainer = document.getElementById('country-options');
+            
             Array.from(this.countrySelect.options).forEach(option => {
-                if (option.value && option.hasAttribute('data-country-code')) {
+                if (option.value) {
+                    const flagUrl = option.getAttribute('data-flag-url');
                     const countryCode = option.getAttribute('data-country-code');
-                    const flag = this.countryFlags[countryCode] || '🏳️';
-                    const originalText = option.textContent;
+                    const phoneCode = option.getAttribute('data-code');
+                    const countryName = option.textContent.split(' +')[0]; // Remove phone code from name
                     
-                    // Format: Flag + Country Name + Phone Code
-                    option.textContent = `${flag} ${originalText}`;
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'country-option';
+                    optionDiv.setAttribute('data-value', option.value);
+                    optionDiv.setAttribute('data-code', phoneCode);
+                    optionDiv.setAttribute('data-country-code', countryCode);
+                    
+                    // Use flag image if available, otherwise use emoji fallback
+                    let flagDisplay = '';
+                    if (flagUrl && flagUrl !== 'False') {
+                        flagDisplay = `<img class="country-flag-img" src="${flagUrl}" alt="${countryCode}"/>`;
+                    } else {
+                        const flag = this.countryFlags[countryCode] || '🏳️';
+                        flagDisplay = `<span class="country-flag-emoji">${flag}</span>`;
+                    }
+                    
+                    optionDiv.innerHTML = `
+                        ${flagDisplay}
+                        <span class="country-name">${countryName}</span>
+                        <span class="country-phone-code">+${phoneCode}</span>
+                    `;
+                    
+                    optionsContainer.appendChild(optionDiv);
+                }
+            });
+        }
+        
+        bindCustomDropdownEvents() {
+            const selectedDiv = document.getElementById('country-selected');
+            const optionsDiv = document.getElementById('country-options');
+            
+            // Toggle dropdown
+            selectedDiv.addEventListener('click', () => {
+                const isVisible = optionsDiv.style.display === 'block';
+                optionsDiv.style.display = isVisible ? 'none' : 'block';
+                selectedDiv.classList.toggle('active', !isVisible);
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.custom-country-dropdown')) {
+                    optionsDiv.style.display = 'none';
+                    selectedDiv.classList.remove('active');
+                }
+            });
+            
+            // Handle option selection
+            optionsDiv.addEventListener('click', (e) => {
+                const option = e.target.closest('.country-option');
+                if (option) {
+                    const value = option.getAttribute('data-value');
+                    const phoneCode = option.getAttribute('data-code');
+                    const countryCode = option.getAttribute('data-country-code');
+                    
+                    // Update original select
+                    this.countrySelect.value = value;
+                    
+                    // Update display
+                    const flagElement = option.querySelector('.country-flag-img, .country-flag-emoji');
+                    const nameElement = option.querySelector('.country-name');
+                    
+                    selectedDiv.querySelector('.country-flag').innerHTML = flagElement.outerHTML;
+                    selectedDiv.querySelector('.country-text').textContent = `${nameElement.textContent} +${phoneCode}`;
+                    
+                    // Close dropdown
+                    optionsDiv.style.display = 'none';
+                    selectedDiv.classList.remove('active');
+                    
+                    // Trigger change event
+                    this.countrySelect.dispatchEvent(new Event('change'));
                 }
             });
         }
 
         setDefaultCountry() {
-            // Set Saudi Arabia as default
-            const saudiOption = Array.from(this.countrySelect.options).find(option => 
-                option.textContent.includes('Saudi Arabia') || option.getAttribute('data-code') === '966'
-            );
-            
-            if (saudiOption) {
-                saudiOption.selected = true;
-                this.updatePhonePreview();
-            }
+            // Set Saudi Arabia as default after custom dropdown is created
+            setTimeout(() => {
+                const selectedDiv = document.getElementById('country-selected');
+                const saudiOption = document.querySelector('.country-option[data-country-code="SA"]');
+                
+                if (saudiOption && selectedDiv) {
+                    // Trigger selection of Saudi Arabia
+                    saudiOption.click();
+                }
+            }, 100);
         }
 
         handleCountryChange(event) {
