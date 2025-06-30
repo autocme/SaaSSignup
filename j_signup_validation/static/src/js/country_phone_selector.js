@@ -12,8 +12,89 @@
             this.phoneInput = document.getElementById('phone');
             this.phonePreview = document.getElementById('phone-preview-text');
             
+            // Phone number examples by country code
+            this.phoneExamples = {
+                '966': '51 234 5678',  // Saudi Arabia
+                '962': '7 9012 3456',  // Jordan
+                '971': '50 123 4567',  // UAE
+                '965': '9123 4567',    // Kuwait
+                '973': '3612 3456',    // Bahrain
+                '974': '5512 3456',    // Qatar
+                '968': '9123 4567',    // Oman
+                '1': '555 123 4567',   // USA/Canada
+                '44': '7700 900123',   // UK
+                '33': '6 12 34 56 78', // France
+                '49': '30 12345678',   // Germany
+                '39': '320 123 4567',  // Italy
+                '34': '612 34 56 78',  // Spain
+                '31': '6 12345678',    // Netherlands
+                '32': '470 12 34 56',  // Belgium
+                '41': '78 123 45 67',  // Switzerland
+                '43': '664 123456',    // Austria
+                '46': '70 123 45 67',  // Sweden
+                '47': '412 34 567',    // Norway
+                '45': '12 34 56 78',   // Denmark
+                '358': '50 123 4567',  // Finland
+                '91': '98765 43210',   // India
+                '86': '138 0013 8000', // China
+                '81': '90 1234 5678',  // Japan
+                '82': '10 1234 5678',  // South Korea
+                '60': '12 345 6789',   // Malaysia
+                '65': '8123 4567',     // Singapore
+                '852': '5123 4567',    // Hong Kong
+                '61': '412 345 678',   // Australia
+                '64': '21 123 4567',   // New Zealand
+                '27': '82 123 4567',   // South Africa
+                '20': '100 123 4567',  // Egypt
+                '90': '532 123 45 67', // Turkey
+                '98': '912 123 4567',  // Iran
+                '92': '300 1234567',   // Pakistan
+                '880': '171 2345678',  // Bangladesh
+                '94': '71 234 5678',   // Sri Lanka
+                '95': '9 123 456 789', // Myanmar
+                '63': '917 123 4567',  // Philippines
+                '66': '81 234 5678',   // Thailand
+                '84': '91 234 56 78',  // Vietnam
+                '62': '812 3456 789',  // Indonesia
+                '7': '912 345 67 89',  // Russia/Kazakhstan
+                '380': '67 123 4567',  // Ukraine
+                '48': '512 345 678',   // Poland
+                '420': '601 123 456',  // Czech Republic
+                '421': '905 123 456',  // Slovakia
+                '36': '20 123 4567',   // Hungary
+                '40': '721 123 456',   // Romania
+                '359': '87 123 4567',  // Bulgaria
+                '385': '91 123 4567',  // Croatia
+                '381': '60 1234567',   // Serbia
+                '386': '31 123 456',   // Slovenia
+                '387': '61 123 456',   // Bosnia and Herzegovina
+                '389': '70 123 456',   // North Macedonia
+                '382': '67 123 456',   // Montenegro
+                '383': '44 123 456',   // Kosovo
+                '355': '67 212 3456',  // Albania
+                '30': '694 123 4567',  // Greece
+                '357': '99 123456',    // Cyprus
+                '356': '7921 2345',    // Malta
+                '212': '6 12 34 56 78', // Morocco
+                '213': '550 12 34 56', // Algeria
+                '216': '20 123 456',   // Tunisia
+                '218': '91 234 5678',  // Libya
+                '249': '91 123 4567',  // Sudan
+                '251': '91 123 4567',  // Ethiopia
+                '254': '712 345678',   // Kenya
+                '256': '712 345678',   // Uganda
+                '255': '621 234 567',  // Tanzania
+                '250': '788 123 456',  // Rwanda
+                '257': '79 12 34 56',  // Burundi
+                '260': '97 1234567',   // Zambia
+                '263': '71 234 5678',  // Zimbabwe
+                '265': '888 12 34 56', // Malawi
+                '267': '71 123 456',   // Botswana
+                '268': '7612 3456',    // Eswatini
+                '266': '5012 3456',    // Lesotho
+                '264': '81 123 4567'   // Namibia
+            };
 
-            
             if (this.countrySelect && this.phoneInput) {
                 this.init();
             }
@@ -30,8 +111,9 @@
             // Make country selector searchable
             this.makeSelectSearchable();
             
-            // Initial phone preview update
+            // Initial phone preview update and placeholder
             this.updatePhonePreview();
+            this.updatePhonePlaceholder();
         }
 
         setDefaultCountry() {
@@ -50,6 +132,7 @@
                 }
                 
                 this.updatePhonePreview();
+                this.updatePhonePlaceholder();
             }
         }
 
@@ -84,6 +167,7 @@
             }
             
             this.updatePhonePreview();
+            this.updatePhonePlaceholder();
             
             // Re-validate phone number when country changes
             if (this.phoneInput.value) {
@@ -116,6 +200,19 @@
                 }
             } else {
                 this.phonePreview.textContent = phoneNumber;
+            }
+        }
+
+        updatePhonePlaceholder() {
+            const selectedOption = this.countrySelect.selectedOptions[0];
+            const countryCode = selectedOption ? selectedOption.getAttribute('data-code') : '';
+            
+            if (countryCode && this.phoneExamples[countryCode]) {
+                const exampleNumber = this.phoneExamples[countryCode];
+                this.phoneInput.setAttribute('placeholder', exampleNumber);
+            } else {
+                // Default placeholder if no specific example found
+                this.phoneInput.setAttribute('placeholder', 'Enter your phone number');
             }
         }
 

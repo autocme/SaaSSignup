@@ -192,6 +192,12 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - Added smooth CSS animations for showing/hiding VAT/CR field based on account type selection
   - Updated controller to handle account type and VAT/CR validation and storage
   - Enhanced form validation to require VAT/CR for company accounts while keeping individual accounts unchanged
+- June 30, 2025: DYNAMIC PHONE PLACEHOLDERS - Enhanced user experience with country-specific phone number examples
+  - Added comprehensive phone number format examples for 70+ countries (Saudi Arabia, Jordan, UAE, etc.)
+  - Phone input placeholder dynamically updates when country is selected (e.g., "51 234 5678" for Saudi Arabia, "7 9012 3456" for Jordan)
+  - Enhanced country_phone_selector.js with phoneExamples mapping and updatePhonePlaceholder method
+  - Placeholders show realistic phone number formats specific to each country's numbering system
+  - Improved user guidance by showing expected phone number format before typing
 
 ## User Preferences
 
