@@ -430,13 +430,21 @@
                 // For confirm password, just append to wrapper
                 if (input.id === 'password') {
                     const passwordStrengthContainer = wrapper.querySelector('.password-strength-container');
-                    if (passwordStrengthContainer) {
+                    const invalidFeedback = wrapper.querySelector('.invalid-feedback');
+                    
+                    // Insert after input and label, but before other elements
+                    if (invalidFeedback) {
+                        wrapper.insertBefore(toggle, invalidFeedback);
+                    } else if (passwordStrengthContainer) {
                         wrapper.insertBefore(toggle, passwordStrengthContainer);
                     } else {
                         wrapper.appendChild(toggle);
                     }
+                    
+                    console.log('Password toggle added for password field:', toggle);
                 } else {
                     wrapper.appendChild(toggle);
+                    console.log('Password toggle added for confirm password field:', toggle);
                 }
             });
         }

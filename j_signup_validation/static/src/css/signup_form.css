@@ -223,9 +223,9 @@
 .password-toggle-btn {
     position: absolute !important;
     right: 12px !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    z-index: 10 !important;
+    top: 12px !important;
+    height: calc(100% - 24px) !important;
+    z-index: 1000 !important;
     border: none !important;
     background: transparent !important;
     color: #6c757d !important;
@@ -233,6 +233,9 @@
     font-size: 14px !important;
     cursor: pointer !important;
     transition: color 0.2s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
 
 .password-toggle-btn:hover {
@@ -246,6 +249,30 @@
     outline: none !important;
     background: transparent !important;
     border: none !important;
+}
+
+/* Password field container specific styling */
+.password-field-container {
+    position: relative !important;
+}
+
+.password-field-container .password-toggle-btn {
+    position: absolute !important;
+    right: 15px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    z-index: 999 !important;
+    width: 30px !important;
+    height: 30px !important;
+    border: none !important;
+    background: rgba(255, 255, 255, 0.8) !important;
+    color: #6c757d !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    font-size: 12px !important;
 }
 
 /* Submit button */
