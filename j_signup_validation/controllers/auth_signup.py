@@ -145,17 +145,17 @@ class CustomAuthSignup(http.Controller):
             }
 
     @http.route('/j_signup_validation/validate_phone', type='json', auth='public')
-    def validate_phone_ajax(self, phone, country_id=None, phone_code=None):
+    def validate_phone_ajax(self, phone):
         """
         AJAX endpoint for real-time phone validation.
         """
         try:
-            _logger.info(f"Validating phone via AJAX: {phone} for country_id: {country_id}, phone_code: {phone_code}")
+            _logger.info(f"Validating phone via AJAX: {phone}")
             
             config_settings = request.env['res.config.settings']
             phone_rules = config_settings.get_phone_validation_rules()
             
-            validation_result = self._validate_phone(phone, phone_rules, country_id, phone_code)
+            validation_result = self._validate_phone(phone, phone_rules)
             
             return {
                 'valid': validation_result['valid'],
@@ -357,7 +357,7 @@ class CustomAuthSignup(http.Controller):
             'messages': messages
         }
 
-    def _validate_phone(self, phone, rules, country_id=None, phone_code=None):
+    def _validate_phone(self, phone, rules, country_id=None):
         """
         Validate phone number based on configuration rules and selected country.
         """
@@ -369,84 +369,50 @@ class CustomAuthSignup(http.Controller):
         
         if phonenumbers:
             try:
-                # Get country info from selected country
-                country = None
+                # Get country code from selected country
                 country_code = None
-                current_phone_code = phone_code  # Use provided phone_code first
-                
                 if country_id:
+                    country = request.env['res.country'].sudo().browse(int(country_id))
+                    if country.exists():
+                        country_code = country.code
+                
+                # Parse phone number with selected country
+                parsed = None
+                if country_code:
                     try:
-                        country = request.env['res.country'].sudo().browse(int(country_id))
-                        if country.exists():
-                            country_code = country.code  # e.g., 'JO'
-                            # If no phone_code provided, try to get it from country (may not exist in standard Odoo)
-                            if not current_phone_code:
-                                current_phone_code = getattr(country, 'phone_code', None)
-                            _logger.info(f"Country found: {country.name}, code: {country_code}, using phone_code: {current_phone_code}")
+                        parsed = phonenumbers.parse(phone, country_code)
+                        if phonenumbers.is_valid_number(parsed):
+                            formatted_phone = phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
                         else:
-                            _logger.error(f"Country with ID {country_id} does not exist")
-                    except Exception as e:
-                        _logger.error(f"Error accessing country with ID {country_id}: {str(e)}")
-                        country = None
-                        country_code = None
+                            parsed = None
+                    except:
+                        parsed = None
                 
-                if not country or not country_code or not current_phone_code:
-                    _logger.error(f"Validation failed - country: {bool(country)}, country_code: {country_code}, phone_code: {current_phone_code}")
-                    messages.append(_('Please select a valid country for phone number validation.'))
+                # If country parsing failed, try with country code prefix
+                if not parsed:
+                    try:
+                        parsed = phonenumbers.parse(phone, None)
+                        if phonenumbers.is_valid_number(parsed):
+                            formatted_phone = phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+                        else:
+                            parsed = None
+                    except:
+                        parsed = None
+                
+                # Final validation
+                if not parsed or not phonenumbers.is_valid_number(parsed):
+                    messages.append(_('Invalid phone number for the selected country. Please check the number format.'))
                     return {'valid': False, 'messages': messages}
-                
-                # Clean and prepare phone number
-                # Accept both formats: "0777771111" and "777771111"
-                clean_phone = re.sub(r'[^\d]', '', phone)  # Remove all non-digits
-                
-                # Remove leading zero if present (0777771111 -> 777771111)
-                if clean_phone.startswith('0'):
-                    clean_phone = clean_phone[1:]
-                
-                if not clean_phone:
-                    messages.append(_('Please enter a valid phone number.'))
-                    return {'valid': False, 'messages': messages}
-                
-                # Build complete international number: +[country_phone_code][clean_phone]
-                # Example: +962777771111
-                international_number = f"+{current_phone_code}{clean_phone}"
-                
-                _logger.info(f"Phone validation: '{phone}' -> '{clean_phone}' -> '{international_number}' for {country.name}")
-                
-                # Parse and validate the complete international number
-                try:
-                    parsed = phonenumbers.parse(international_number, None)
-                except phonenumbers.NumberParseException as e:
-                    _logger.error(f"Phone parsing failed: {str(e)} for {international_number}")
-                    messages.append(_('Invalid phone number format. Please check the number.'))
-                    return {'valid': False, 'messages': messages}
-                
-                # Validate the parsed number
-                if not phonenumbers.is_valid_number(parsed):
-                    messages.append(_('Invalid phone number for the selected country.'))
-                    return {'valid': False, 'messages': messages}
-                
-                # Verify the number belongs to the selected country
-                number_region = phonenumbers.region_code_for_number(parsed)
-                if number_region != country_code:
-                    messages.append(_(f'Phone number does not match the selected country ({country.name}).'))
-                    return {'valid': False, 'messages': messages}
-                
-                # Format for storage (international format)
-                formatted_phone = phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
                 
                 # Check if mobile required
                 if rules.get('require_mobile', False):
                     number_type = phonenumbers.number_type(parsed)
                     if number_type != phonenumbers.PhoneNumberType.MOBILE:
-                        messages.append(_('Only mobile phone numbers are allowed.'))
-                        return {'valid': False, 'messages': messages}
-                
-                _logger.info(f"Phone validation SUCCESS: {formatted_phone}")
+                        messages.append(_('Only mobile phone numbers are allowed'))
                 
             except Exception as e:
                 _logger.error(f"Phone validation error: {str(e)}")
-                messages.append(_('Phone validation failed. Please try again.'))
+                messages.append(_('Phone validation failed. Please enter a valid phone number.'))
         else:
             # Basic validation if phonenumbers library is not available
             if not re.match(r'^\+?[1-9]\d{1,14}$', phone.replace(' ', '').replace('-', '')):
