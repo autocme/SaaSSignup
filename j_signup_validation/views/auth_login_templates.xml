@@ -20,7 +20,7 @@
 
         <!-- Custom Signup Form Template -->
         <template id="custom_signup_form" name="Custom Signup Form" inherit_id="web.login" primary="True">
-            <xpath expr="//div[hasclass('oe_single_form_container')]" position="replace">
+            <xpath expr="//form[@class='oe_login_form']" position="replace">
                 <div class="oe_single_form_container">
                     <div class="row justify-content-center">
                         <div class="col-md-8 col-lg-6">
