@@ -3,20 +3,24 @@
 /* Standalone page styling */
 .standalone-signup-body {
     margin: 0;
-    padding: 0;
+    padding: 2rem 0;
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
+    display: flex;
+    align-items: center;
 }
 
 /* Container and layout fixes */
 .container-fluid {
     width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
+    padding: 2rem 15px;
     margin-right: auto;
     margin-left: auto;
+    min-height: calc(100vh - 4rem);
+    display: flex;
+    align-items: center;
 }
 
 .justify-content-center {
@@ -29,9 +33,10 @@
     overflow: hidden;
     width: 100%;
     max-width: 900px;
-    margin: 0 auto;
+    margin: 2rem auto;
     min-width: 320px;
     display: block;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
 }
 
 .custom-signup-card .card-header {
@@ -229,8 +234,16 @@
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+    .standalone-signup-body {
+        padding: 1rem 0;
+    }
+    
+    .container-fluid {
+        padding: 1rem 15px;
+    }
+    
     .custom-signup-card {
-        margin: 1rem;
+        margin: 1rem auto;
         border-radius: 15px;
     }
     
