@@ -183,6 +183,8 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - Form displays within Odoo's standard auth_signup layout with website navigation and footer
   - JavaScript validation integrated with password strength indicator and phone/email validation
   - CSS updated to work with auth_signup form structure (.oe_signup_form)
+  - ENHANCED: Password requirements now display in 3-column layout for better space efficiency
+  - ENHANCED: Password toggle button positioning improved to appear inside password input field using form-floating specific CSS
 
 ## User Preferences
 
