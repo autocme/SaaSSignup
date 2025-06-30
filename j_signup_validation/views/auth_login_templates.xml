@@ -232,35 +232,33 @@
                                                     </small>
                                                 </div>
                                                 <div class="password-requirements mt-2">
-                                                    <small class="text-muted">Password Requirements:</small>
-                                                    <ul class="password-requirements-list">
-                                                        <li class="requirement" data-requirement="length">
+                                                    <small class="text-muted">Requirements:</small>
+                                                    <div class="requirements-grid password-requirements-list">
+                                                        <div class="requirement" data-requirement="length">
                                                             <i class="fa fa-times text-danger"></i>
-                                                            At least
-                                                            <span t-esc="password_rules.get('min_length', 8)"/>
-                                                            characters
-                                                        </li>
-                                                        <li class="requirement" data-requirement="number"
+                                                            <span t-esc="password_rules.get('min_length', 8)"/>+ chars
+                                                        </div>
+                                                        <div class="requirement" data-requirement="number"
                                                             t-if="password_rules.get('require_number')">
                                                             <i class="fa fa-times text-danger"></i>
-                                                            At least one number
-                                                        </li>
-                                                        <li class="requirement" data-requirement="uppercase"
+                                                            One number
+                                                        </div>
+                                                        <div class="requirement" data-requirement="uppercase"
                                                             t-if="password_rules.get('require_uppercase')">
                                                             <i class="fa fa-times text-danger"></i>
-                                                            At least one uppercase letter
-                                                        </li>
-                                                        <li class="requirement" data-requirement="lowercase"
+                                                            Uppercase letter
+                                                        </div>
+                                                        <div class="requirement" data-requirement="lowercase"
                                                             t-if="password_rules.get('require_lowercase')">
                                                             <i class="fa fa-times text-danger"></i>
-                                                            At least one lowercase letter
-                                                        </li>
-                                                        <li class="requirement" data-requirement="special"
+                                                            Lowercase letter
+                                                        </div>
+                                                        <div class="requirement" data-requirement="special"
                                                             t-if="password_rules.get('require_special')">
                                                             <i class="fa fa-times text-danger"></i>
-                                                            At least one special character
-                                                        </li>
-                                                    </ul>
+                                                            Special character
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
