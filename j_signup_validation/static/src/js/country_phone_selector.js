@@ -103,12 +103,17 @@
 
         updatePhonePreview() {
             const selectedOption = this.countrySelect.selectedOptions[0];
-            const countryCode = selectedOption ? selectedOption.getAttribute('data-code') : '';
+            const countryCode = selectedOption ? selectedOption.getAttribute('data-phone-code') : '';
             const phoneNumber = this.phoneInput.value.trim();
             
             if (countryCode) {
-                const fullNumber = phoneNumber ? `+${countryCode} ${phoneNumber}` : `+${countryCode} `;
-                this.phonePreview.textContent = fullNumber;
+                // If phone number already starts with +, use it as-is, otherwise add country code
+                if (phoneNumber.startsWith('+')) {
+                    this.phonePreview.textContent = phoneNumber;
+                } else {
+                    const fullNumber = phoneNumber ? `+${countryCode} ${phoneNumber}` : `+${countryCode} `;
+                    this.phonePreview.textContent = fullNumber;
+                }
             } else {
                 this.phonePreview.textContent = phoneNumber;
             }
