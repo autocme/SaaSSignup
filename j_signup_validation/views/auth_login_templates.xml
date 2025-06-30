@@ -129,7 +129,7 @@
                                                         <option value="" disabled="">Select Country</option>
                                                         <t t-foreach="countries" t-as="country">
                                                             <option t-att-value="country.id" 
-                                                                    t-att-data-code="country.phone_code"
+                                                                    t-att-data-phone-code="country.phone_code"
                                                                     t-att-selected="'selected' if country.code == 'SA' else None">
                                                                 <t t-esc="country.name"/> +<t t-esc="country.phone_code"/>
                                                             </option>

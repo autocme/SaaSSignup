@@ -188,8 +188,17 @@
                     return;
                 }
 
+                // Get country information
+                const countrySelect = document.getElementById('phone_country');
+                const country_id = countrySelect ? countrySelect.value : null;
+                const phone_code = countrySelect ? countrySelect.selectedOptions[0]?.dataset.phoneCode : null;
+
                 // Server-side validation
-                const response = await this.makeAjaxRequest('/j_signup_validation/validate_phone', { phone });
+                const response = await this.makeAjaxRequest('/j_signup_validation/validate_phone', { 
+                    phone, 
+                    country_id, 
+                    phone_code 
+                });
                 
                 this.phoneInput.classList.remove('loading');
 

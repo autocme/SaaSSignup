@@ -37,7 +37,7 @@
         setDefaultCountry() {
             // Set Saudi Arabia as default
             const saudiOption = Array.from(this.countrySelect.options).find(option => 
-                option.textContent.includes('Saudi Arabia') || option.getAttribute('data-code') === '966'
+                option.textContent.includes('Saudi Arabia') || option.getAttribute('data-phone-code') === '966'
             );
             
             if (saudiOption) {

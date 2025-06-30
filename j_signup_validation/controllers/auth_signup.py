@@ -145,17 +145,17 @@ class CustomAuthSignup(http.Controller):
             }
 
     @http.route('/j_signup_validation/validate_phone', type='json', auth='public')
-    def validate_phone_ajax(self, phone):
+    def validate_phone_ajax(self, phone, country_id=None, phone_code=None):
         """
         AJAX endpoint for real-time phone validation.
         """
         try:
-            _logger.info(f"Validating phone via AJAX: {phone}")
+            _logger.info(f"Validating phone via AJAX: {phone}, country_id: {country_id}, phone_code: {phone_code}")
             
             config_settings = request.env['res.config.settings']
             phone_rules = config_settings.get_phone_validation_rules()
             
-            validation_result = self._validate_phone(phone, phone_rules)
+            validation_result = self._validate_phone(phone, phone_rules, country_id, phone_code)
             
             return {
                 'valid': validation_result['valid'],
@@ -357,7 +357,7 @@ class CustomAuthSignup(http.Controller):
             'messages': messages
         }
 
-    def _validate_phone(self, phone, rules, country_id=None):
+    def _validate_phone(self, phone, rules, country_id=None, phone_code=None):
         """
         Validate phone number based on configuration rules and selected country.
         """
