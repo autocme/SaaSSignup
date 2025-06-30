@@ -18,23 +18,31 @@
             </xpath>
         </template>
 
-        <!-- Override Original Signup Template -->
-        <template id="signup_custom" name="Custom Signup Form" inherit_id="auth_signup.signup" primary="True">
-            <xpath expr="//form[@role='form']" position="replace">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-md-8 col-lg-6">
-                            <!-- Signup Header -->
-                            <div class="text-center mb-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; border-radius: 15px 15px 0 0;">
-                                <h3 class="mb-2">
-                                    <i class="fa fa-user-plus me-2"></i>
-                                    Create Your Account
-                                </h3>
-                                <p class="mb-0">Join us today and get started!</p>
-                            </div>
-                            
-                            <!-- Signup Form -->
-                            <div class="bg-white p-4 shadow" style="border-radius: 0 0 15px 15px;">
+        <!-- Custom Signup Form Template -->
+        <template id="custom_signup_form" name="Custom Signup Form">
+            <html>
+                <head>
+                    <meta charset="utf-8"/>
+                    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+                    <title>Create Your Account</title>
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css"/>
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+                    <link rel="stylesheet" href="/j_signup_validation/static/src/css/signup_form.css"/>
+                </head>
+                <body class="standalone-signup-body">
+                    <div class="container-fluid vh-100 d-flex align-items-center justify-content-center">
+                        <div class="row w-100 justify-content-center">
+                            <div class="col-12 col-sm-11 col-md-9 col-lg-7 col-xl-6">
+                            <div class="card custom-signup-card shadow-lg">
+                                <div class="card-header text-center bg-primary text-white">
+                                    <h3 class="mb-0">
+                                        <i class="fa fa-user-plus me-2"></i>
+                                        Create Your Account
+                                    </h3>
+                                    <p class="mb-0 mt-2">Join us today and get started!</p>
+                                </div>
+                                
+                                <div class="card-body p-4">
                                     <!-- Error Messages -->
                                     <t t-if="error">
                                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -242,40 +250,28 @@
                                             </p>
                                         </div>
                                     </form>
-                                    
-                                    <!-- Pass validation rules to JavaScript -->
-                                    <script type="text/javascript">
-                                        window.signupValidationRules = {
-                                            password: <t t-raw="json.dumps(password_rules)"/>,
-                                            email: <t t-raw="json.dumps(email_rules)"/>,
-                                            phone: <t t-raw="json.dumps(phone_rules)"/>
-                                        };
-                                    </script>
-                                    
-                                    <!-- Include JavaScript modules -->
-                                    <script src="/j_signup_validation/static/src/js/password_strength.js"></script>
-                                    <script src="/j_signup_validation/static/src/js/country_phone_selector.js"></script>
-                                    <script src="/j_signup_validation/static/src/js/signup_validation.js"></script>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
                 
-                <!-- Pass validation rules to JavaScript -->
-                <script type="text/javascript">
-                    window.signupValidationRules = {
-                        password: <t t-raw="json.dumps(password_rules)"/>,
-                        email: <t t-raw="json.dumps(email_rules)"/>,
-                        phone: <t t-raw="json.dumps(phone_rules)"/>
-                    };
-                </script>
-                
-                <!-- Include JavaScript modules -->
-                <script src="/j_signup_validation/static/src/js/password_strength.js"></script>
-                <script src="/j_signup_validation/static/src/js/country_phone_selector.js"></script>
-                <script src="/j_signup_validation/static/src/js/signup_validation.js"></script>
-            </xpath>
-        </template>
+                    <!-- Pass validation rules to JavaScript -->
+                    <script type="text/javascript">
+                        window.signupValidationRules = {
+                            password: <t t-raw="json.dumps(password_rules)"/>,
+                            email: <t t-raw="json.dumps(email_rules)"/>,
+                            phone: <t t-raw="json.dumps(phone_rules)"/>
+                        };
+                    </script>
+                    
+                    <!-- Include JavaScript modules -->
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+                    <script src="/j_signup_validation/static/src/js/password_strength.js"></script>
+                    <script src="/j_signup_validation/static/src/js/country_phone_selector.js"></script>
+                    <script src="/j_signup_validation/static/src/js/signup_validation.js"></script>
+                </body>
+            </html>
         </template>
     </data>
 </odoo>

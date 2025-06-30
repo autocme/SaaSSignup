@@ -1,16 +1,48 @@
 /* J Signup Validation - Custom Signup Form Styles */
 
-/* Override auth_signup layout styling */
-.container {
-    max-width: 100% !important;
+/* Standalone page styling */
+.standalone-signup-body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 
-/* Custom form styling */
-.bg-white.p-4.shadow {
-    background: #ffffff !important;
-    padding: 2rem !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
-    border-radius: 0 0 15px 15px !important;
+/* Container and layout fixes */
+.container-fluid {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.justify-content-center {
+    justify-content: center !important;
+}
+
+.custom-signup-card {
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    min-width: 320px;
+    display: block;
+}
+
+.custom-signup-card .card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 3.5rem 3rem;
+    border: none;
+}
+
+.custom-signup-card .card-body {
+    padding: 3.5rem 3rem;
+    background: #ffffff;
 }
 
 /* Form styling */
