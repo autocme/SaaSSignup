@@ -506,6 +506,8 @@ class CustomAuthSignup(http.Controller):
             'phone': form_data['phone'],
             'phone_country': form_data.get('phone_country'),
             'password': form_data['password'],  # This should be encrypted in production
+            'account_type': form_data.get('account_type', 'individual'),
+            'vat_cr_number': form_data.get('vat_cr_number', ''),
             'email_validated': validation_result['email_validated'],
             'phone_validated': validation_result['phone_validated'],
             'password_strength': validation_result['password_score'],

@@ -185,6 +185,13 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - CSS updated to work with auth_signup form structure (.oe_signup_form)
   - ENHANCED: Password requirements now display in 3-column layout for better space efficiency
   - ENHANCED: Password toggle button positioning improved to appear inside password input field using form-floating specific CSS
+  - MAJOR FEATURE: Added Individual/Company account type selection with radio buttons at top of form
+  - Added conditional VAT/CR number field that appears when Company is selected (required for companies)
+  - Enhanced SaaS User model with su_account_type (individual/company) and su_vat_cr_number fields
+  - Added JavaScript validation for VAT/CR field (minimum 10 alphanumeric characters)
+  - Added smooth CSS animations for showing/hiding VAT/CR field based on account type selection
+  - Updated controller to handle account type and VAT/CR validation and storage
+  - Enhanced form validation to require VAT/CR for company accounts while keeping individual accounts unchanged
 
 ## User Preferences
 

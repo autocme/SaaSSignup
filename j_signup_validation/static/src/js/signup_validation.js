@@ -307,8 +307,11 @@
             const accountType = event.target.value;
             
             if (accountType === 'company') {
-                // Show VAT/CR field and make it required
+                // Show VAT/CR field with animation and make it required
                 this.vatCrField.style.display = 'block';
+                setTimeout(() => {
+                    this.vatCrField.classList.add('show');
+                }, 10);
                 this.vatCrInput.setAttribute('required', 'required');
                 this.validationStates.vatCr = false; // Reset validation state
                 
@@ -317,8 +320,11 @@
                     this.validateVatCr(this.vatCrInput.value.trim());
                 }
             } else {
-                // Hide VAT/CR field and remove requirement
-                this.vatCrField.style.display = 'none';
+                // Hide VAT/CR field with animation and remove requirement
+                this.vatCrField.classList.remove('show');
+                setTimeout(() => {
+                    this.vatCrField.style.display = 'none';
+                }, 300);
                 this.vatCrInput.removeAttribute('required');
                 this.vatCrInput.classList.remove('is-valid', 'is-invalid');
                 this.validationStates.vatCr = true; // Valid for individual

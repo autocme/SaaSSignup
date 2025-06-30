@@ -207,6 +207,8 @@ class SaasUser(models.Model):
                 'su_phone': user_data.get('phone'),
                 'su_phone_country_id': user_data.get('phone_country'),
                 'su_password': user_data.get('password'),  # Should be encrypted
+                'su_account_type': user_data.get('account_type', 'individual'),
+                'su_vat_cr_number': user_data.get('vat_cr_number', ''),
                 'su_email_validated': user_data.get('email_validated', False),
                 'su_phone_validated': user_data.get('phone_validated', False),
                 'su_password_strength': user_data.get('password_strength', 0),
