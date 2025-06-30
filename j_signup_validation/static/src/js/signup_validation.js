@@ -15,6 +15,9 @@
             this.passwordInput = document.getElementById('password');
             this.confirmPasswordInput = document.getElementById('confirm_password');
             this.submitBtn = document.getElementById('submitBtn');
+            this.accountTypeRadios = document.querySelectorAll('input[name="account_type"]');
+            this.vatCrField = document.getElementById('vat_cr_field');
+            this.vatCrInput = document.getElementById('vat_cr_number');
             
             this.validationRules = window.signupValidationRules || {};
             this.validationTimeouts = {};
@@ -24,7 +27,8 @@
                 password: false,
                 confirmPassword: false,
                 firstName: false,
-                lastName: false
+                lastName: false,
+                vatCr: true // Default true for individual, false for company
             };
 
             this.init();
@@ -58,6 +62,14 @@
             // Name validation
             document.getElementById('first_name')?.addEventListener('input', this.handleNameInput.bind(this));
             document.getElementById('last_name')?.addEventListener('input', this.handleNameInput.bind(this));
+
+            // Account type changes
+            this.accountTypeRadios.forEach(radio => {
+                radio.addEventListener('change', this.handleAccountTypeChange.bind(this));
+            });
+
+            // VAT/CR validation
+            this.vatCrInput?.addEventListener('input', this.handleVatCrInput.bind(this));
 
             // Show/hide password toggle
             this.addPasswordToggle();
@@ -288,6 +300,63 @@
             }
 
             this.updateSubmitButton();
+        }
+
+        // Account type change handler
+        handleAccountTypeChange(event) {
+            const accountType = event.target.value;
+            
+            if (accountType === 'company') {
+                // Show VAT/CR field and make it required
+                this.vatCrField.style.display = 'block';
+                this.vatCrInput.setAttribute('required', 'required');
+                this.validationStates.vatCr = false; // Reset validation state
+                
+                // Validate if there's already a value
+                if (this.vatCrInput.value.trim()) {
+                    this.validateVatCr(this.vatCrInput.value.trim());
+                }
+            } else {
+                // Hide VAT/CR field and remove requirement
+                this.vatCrField.style.display = 'none';
+                this.vatCrInput.removeAttribute('required');
+                this.vatCrInput.classList.remove('is-valid', 'is-invalid');
+                this.validationStates.vatCr = true; // Valid for individual
+            }
+            
+            this.updateSubmitButton();
+        }
+
+        // VAT/CR validation
+        handleVatCrInput(event) {
+            const value = event.target.value.trim();
+            this.validateVatCr(value);
+            this.updateSubmitButton();
+        }
+
+        validateVatCr(value) {
+            const input = this.vatCrInput;
+            
+            if (!value) {
+                this.validationStates.vatCr = false;
+                input.classList.remove('is-valid', 'is-invalid');
+                return;
+            }
+
+            // Basic VAT/CR validation (at least 10 characters, alphanumeric)
+            const vatCrRegex = /^[A-Za-z0-9]{10,}$/;
+            
+            if (vatCrRegex.test(value)) {
+                this.validationStates.vatCr = true;
+                input.classList.remove('is-invalid');
+                input.classList.add('is-valid');
+                this.setInputFeedback(input, 'VAT/CR number format is valid', 'valid');
+            } else {
+                this.validationStates.vatCr = false;
+                input.classList.remove('is-valid');
+                input.classList.add('is-invalid');
+                this.setInputFeedback(input, 'VAT/CR number must be at least 10 alphanumeric characters', 'invalid');
+            }
         }
 
         // Form submission

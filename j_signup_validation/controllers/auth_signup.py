@@ -207,6 +207,8 @@ class CustomAuthSignup(http.Controller):
             'phone_country': post.get('phone_country', ''),
             'password': post.get('password', ''),
             'confirm_password': post.get('confirm_password', ''),
+            'account_type': post.get('account_type', 'individual').strip(),
+            'vat_cr_number': post.get('vat_cr_number', '').strip(),
             'registration_ip': request.httprequest.environ.get('REMOTE_ADDR'),
             'user_agent': request.httprequest.environ.get('HTTP_USER_AGENT'),
         }
@@ -256,6 +258,14 @@ class CustomAuthSignup(http.Controller):
             password_validation = config_settings.validate_password_strength(form_data['password'])
             if not password_validation['valid']:
                 errors.extend(password_validation['messages'])
+        
+        # VAT/CR validation for company accounts
+        if form_data.get('account_type') == 'company':
+            vat_cr = form_data.get('vat_cr_number', '').strip()
+            if not vat_cr:
+                errors.append(_('VAT/CR number is required for company accounts'))
+            elif len(vat_cr) < 10 or not re.match(r'^[A-Za-z0-9]+$', vat_cr):
+                errors.append(_('VAT/CR number must be at least 10 alphanumeric characters'))
         
         return {
             'valid': len(errors) == 0,

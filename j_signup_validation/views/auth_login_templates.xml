@@ -1,40 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="advance_signup_portal_fields_0"
-              inherit_id="auth_signup.fields"
-              name="Auth Signup/ResetPassword form fields">
-        <xpath expr="//div[hasclass('field-confirm_password')]"
-               position="after">
-            <div class="form-floating mb-3">
-                <input type="text"
-                       class="form-control"
-                       id="first_name"
-                       name="first_name"
-                       placeholder="First Name"
-                       required="required"
-                       autocomplete="given-name"/>
-                <label for="first_name">
-                    <i class="fa fa-user me-1"></i>First Name *
-                </label>
-                <div class="invalid-feedback"></div>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text"
-                       class="form-control"
-                       id="last_name"
-                       name="last_name"
-                       placeholder="Last Name"
-                       required="required"
-                       autocomplete="family-name"/>
-                <label for="last_name">
-                    <i class="fa fa-user me-1"></i>Last Name *
-                </label>
-                <div class="invalid-feedback"></div>
-            </div>
-
-        </xpath>
-    </template>
-
+    
     <!-- Add Signup Link to Login Form -->
     <template id="login_signup_link" inherit_id="web.login" name="Add Signup Link">
         <xpath expr="//form[@class='oe_login_form']" position="after">
@@ -100,6 +66,45 @@
                                     <form method="POST" action="/j_signup_validation/submit" id="signupForm"
                                           novalidate="novalidate">
                                         <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                                        <!-- Account Type Selection -->
+                                        <div class="mb-4">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <label class="form-label fw-bold mb-3">Account Type</label>
+                                                    <div class="d-flex justify-content-center gap-4">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="account_type" 
+                                                                   id="individual" value="individual" checked="checked"/>
+                                                            <label class="form-check-label" for="individual">
+                                                                <i class="fa fa-user me-2"></i>Individual
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="account_type" 
+                                                                   id="company" value="company"/>
+                                                            <label class="form-check-label" for="company">
+                                                                <i class="fa fa-building me-2"></i>Company
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- VAT/CR Field (Hidden by default) -->
+                                        <div class="form-floating mb-3" id="vat_cr_field" style="display: none;">
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id="vat_cr_number"
+                                                   name="vat_cr_number"
+                                                   placeholder="VAT/CR Number"
+                                                   autocomplete="organization"/>
+                                            <label for="vat_cr_number">
+                                                <i class="fa fa-file-text me-1"></i>VAT/CR Number *
+                                            </label>
+                                            <div class="invalid-feedback"></div>
+                                        </div>
 
                                         <!-- Name Fields Row -->
                                         <div class="row">

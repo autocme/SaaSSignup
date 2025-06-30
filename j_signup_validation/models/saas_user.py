@@ -67,6 +67,22 @@ class SaasUser(models.Model):
         tracking=True,
         help='User\'s phone number with international format validation'
     )
+
+    su_account_type = fields.Selection([
+        ('individual', 'Individual'),
+        ('company', 'Company')
+    ], 'Account Type', 
+        required=True, 
+        default='individual',
+        tracking=True,
+        help='Type of account registration - Individual or Company'
+    )
+
+    su_vat_cr_number = fields.Char(
+        'VAT/CR Number',
+        tracking=True,
+        help='VAT or Commercial Registration number for company accounts'
+    )
     
     su_password = fields.Char(
         'Password',
