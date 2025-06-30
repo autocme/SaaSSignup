@@ -397,35 +397,54 @@ class CustomAuthSignup(http.Controller):
                 
                 # Handle phone numbers that may already contain country codes
                 # User input examples: "+962 777771111", "962777771111", "0777771111", "777771111"
-                clean_phone = re.sub(r'[^\d]', '', phone)  # Remove all non-digits
                 
-                # If phone already starts with country code, remove it to get local number
-                if clean_phone.startswith(current_phone_code):
-                    clean_phone = clean_phone[len(current_phone_code):]
+                parsed = None
+                international_number = phone  # Default to original input
                 
-                # Remove leading zero if present (0777771111 -> 777771111)
-                if clean_phone.startswith('0'):
-                    clean_phone = clean_phone[1:]
-                
-                if not clean_phone:
-                    messages.append(_('Please enter a valid phone number.'))
-                    return {'valid': False, 'messages': messages}
-                
-                # Build complete international number: +[country_phone_code][clean_phone]
-                international_number = f"+{current_phone_code}{clean_phone}"
-                
-                _logger.info(f"Phone validation: '{phone}' -> '{clean_phone}' -> '{international_number}' for {country.name}")
-                
-                # Parse and validate the complete international number
+                # Try to parse the phone number as-is first
                 try:
-                    parsed = phonenumbers.parse(international_number, None)
-                except phonenumbers.NumberParseException as e:
-                    _logger.error(f"Phone parsing failed: {str(e)} for {international_number}")
-                    messages.append(_('Invalid phone number format. Please check the number.'))
-                    return {'valid': False, 'messages': messages}
+                    temp_parsed = phonenumbers.parse(phone, None)
+                    if phonenumbers.is_valid_number(temp_parsed):
+                        # Check if it matches the selected country
+                        number_region = phonenumbers.region_code_for_number(temp_parsed)
+                        if number_region == country_code:
+                            parsed = temp_parsed
+                            international_number = phone
+                            _logger.info(f"Phone already valid with country code: {phone}")
+                except:
+                    pass
                 
-                # Validate the parsed number
-                if not phonenumbers.is_valid_number(parsed):
+                # If parsing failed or wrong country, extract local number and rebuild
+                if not parsed:
+                    clean_phone = re.sub(r'[^\d]', '', phone)  # Remove all non-digits
+                    
+                    # If phone already starts with country code, remove it to get local number
+                    if clean_phone.startswith(current_phone_code):
+                        clean_phone = clean_phone[len(current_phone_code):]
+                    
+                    # Remove leading zero if present (0777771111 -> 777771111)
+                    if clean_phone.startswith('0'):
+                        clean_phone = clean_phone[1:]
+                    
+                    if not clean_phone:
+                        messages.append(_('Please enter a valid phone number.'))
+                        return {'valid': False, 'messages': messages}
+                    
+                    # Build complete international number: +[country_phone_code][clean_phone]
+                    international_number = f"+{current_phone_code}{clean_phone}"
+                    
+                    _logger.info(f"Phone validation: '{phone}' -> '{clean_phone}' -> '{international_number}' for {country.name}")
+                    
+                    # Parse and validate the complete international number
+                    try:
+                        parsed = phonenumbers.parse(international_number, None)
+                    except phonenumbers.NumberParseException as e:
+                        _logger.error(f"Phone parsing failed: {str(e)} for {international_number}")
+                        messages.append(_('Invalid phone number format. Please check the number.'))
+                        return {'valid': False, 'messages': messages}
+                
+                # Final validation of the parsed number
+                if not parsed or not phonenumbers.is_valid_number(parsed):
                     messages.append(_('Invalid phone number for the selected country.'))
                     return {'valid': False, 'messages': messages}
                 
