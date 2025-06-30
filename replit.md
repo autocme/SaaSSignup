@@ -174,14 +174,15 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - Phone validation now verifies number belongs to selected country for accuracy
   - Formatted phone numbers stored in international format (+966 501234567)
   - Improved user experience: no confusion about country codes, cleaner input process
-- June 30, 2025: DIRECT TEMPLATE OVERRIDE - Replaces original Odoo signup form completely
-  - Template now inherits from auth_signup.signup (inherit_id="auth_signup.signup" primary="True")
-  - Replaced original signup form content using XPath to override with our custom form
-  - Controller handles both /web/signup and /j_signup_validation/signup routes
-  - Custom form displays within existing website layout with navigation and footer
-  - Maintains all advanced validation features while using Odoo's auth_signup template structure
-  - Applied responsive design (col-md-8 col-lg-6) for proper form sizing within existing layout
-  - JavaScript and CSS assets properly integrated with auth_signup layout
+- June 30, 2025: TEMPLATE FIELD REPLACEMENT - Clean override of auth_signup fields and form
+  - Replaced auth_signup.fields template with custom fields (first_name, last_name, login, phone_country, phone, password with strength, confirm_password)
+  - Modified auth_signup.signup template to use custom controller (/j_signup_validation/submit) and add JavaScript
+  - Controller handles both /web/signup and /j_signup_validation/signup routes for backward compatibility
+  - Updated form data extraction to use 'login' field name instead of 'email' (auth_signup standard)
+  - Added password toggle buttons, phone country selector, and real-time validation
+  - Form displays within Odoo's standard auth_signup layout with website navigation and footer
+  - JavaScript validation integrated with password strength indicator and phone/email validation
+  - CSS updated to work with auth_signup form structure (.oe_signup_form)
 
 ## User Preferences
 
