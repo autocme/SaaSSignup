@@ -410,7 +410,7 @@
                 const wrapper = input.parentNode;
                 
                 // Add proper CSS classes
-                wrapper.classList.add('password-field-container');
+                wrapper.classList.add('password-field-container', 'position-relative');
                 input.classList.add('password-input-with-toggle');
                 
                 const toggle = document.createElement('button');
@@ -426,7 +426,18 @@
                     icon.className = type === 'password' ? 'fa fa-eye' : 'fa fa-eye-slash';
                 });
                 
-                wrapper.appendChild(toggle);
+                // For password field, insert before the password strength container
+                // For confirm password, just append to wrapper
+                if (input.id === 'password') {
+                    const passwordStrengthContainer = wrapper.querySelector('.password-strength-container');
+                    if (passwordStrengthContainer) {
+                        wrapper.insertBefore(toggle, passwordStrengthContainer);
+                    } else {
+                        wrapper.appendChild(toggle);
+                    }
+                } else {
+                    wrapper.appendChild(toggle);
+                }
             });
         }
 
