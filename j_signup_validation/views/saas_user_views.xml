@@ -9,6 +9,8 @@
                 <tree string="SaaS Users" default_order="create_date desc">
                     <field name="su_complete_name"/>
                     <field name="su_email"/>
+                    <field name="su_account_type"/>
+                    <field name="su_vat_cr_number"/>
                     <field name="su_phone_country_id"/>
                     <field name="su_phone"/>
                     <field name="su_registration_date"/>
@@ -50,6 +52,9 @@
                                 <field name="su_first_name" placeholder="First Name"/>
                                 <field name="su_last_name" placeholder="Last Name"/>
                                 <field name="su_email" placeholder="email@example.com"/>
+                                <field name="su_account_type" widget="radio"/>
+                                <field name="su_vat_cr_number" placeholder="VAT/CR Number" 
+                                       invisible="su_account_type == 'individual'"/>
                                 <field name="su_phone_country_id" placeholder="Select Country"/>
                                 <field name="su_phone" placeholder="+1 (555) 123-4567"/>
                             </group>
@@ -104,11 +109,16 @@
                     <field name="su_complete_name" string="Name"/>
                     <field name="su_email" string="Email"/>
                     <field name="su_phone" string="Phone"/>
+                    <field name="su_vat_cr_number" string="VAT/CR Number"/>
                     
                     <filter name="active_users" string="Active Users" 
                             domain="[('su_active', '=', True)]"/>
                     <filter name="inactive_users" string="Inactive Users" 
                             domain="[('su_active', '=', False)]"/>
+                    <filter name="individual_accounts" string="Individual Accounts" 
+                            domain="[('su_account_type', '=', 'individual')]"/>
+                    <filter name="company_accounts" string="Company Accounts" 
+                            domain="[('su_account_type', '=', 'company')]"/>
                     <filter name="email_validated" string="Email Validated" 
                             domain="[('su_email_validated', '=', True)]"/>
                     <filter name="email_not_validated" string="Email Not Validated" 
@@ -125,6 +135,8 @@
                             domain="[('su_registration_date', '&gt;=', (context_today().replace(day=1)).strftime('%Y-%m-%d'))]"/>
                     
                     <group expand="0" string="Group By">
+                        <filter name="group_by_account_type" string="Account Type" 
+                                context="{'group_by': 'su_account_type'}"/>
                         <filter name="group_by_registration_date" string="Registration Date" 
                                 context="{'group_by': 'su_registration_date:month'}"/>
                         <filter name="group_by_email_validated" string="Email Validation Status" 

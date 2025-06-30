@@ -92,19 +92,7 @@
                                             </div>
                                         </div>
 
-                                        <!-- VAT/CR Field (Hidden by default) -->
-                                        <div class="form-floating mb-3" id="vat_cr_field" style="display: none;">
-                                            <input type="text"
-                                                   class="form-control"
-                                                   id="vat_cr_number"
-                                                   name="vat_cr_number"
-                                                   placeholder="VAT/CR Number"
-                                                   autocomplete="organization"/>
-                                            <label for="vat_cr_number">
-                                                <i class="fa fa-file-text me-1"></i>VAT/CR Number *
-                                            </label>
-                                            <div class="invalid-feedback"></div>
-                                        </div>
+
 
                                         <!-- Name Fields Row -->
                                         <div class="row">
@@ -156,6 +144,20 @@
                                             <div class="form-text">
                                                 <span class="email-validation-status"></span>
                                             </div>
+                                        </div>
+
+                                        <!-- VAT/CR Field (Hidden by default) -->
+                                        <div class="form-floating mb-3" id="vat_cr_field" style="display: none;">
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id="vat_cr_number"
+                                                   name="vat_cr_number"
+                                                   placeholder="VAT/CR Number"
+                                                   autocomplete="organization"/>
+                                            <label for="vat_cr_number">
+                                                <i class="fa fa-file-text me-1"></i>VAT/CR Number *
+                                            </label>
+                                            <div class="invalid-feedback"></div>
                                         </div>
 
                                         <!-- Phone Fields in Same Row -->
