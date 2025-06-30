@@ -199,11 +199,7 @@ class SaasUser(models.Model):
             })
             
             # Create portal user using Odoo's signup mechanism
-            # Enable signup temporarily for user creation
-            portal_user = self.env['res.users'].sudo().with_context(
-                no_reset_password=True,
-                signup_valid=True
-            )._signup_create_user({
+            portal_user = self.env['res.users'].sudo().with_context(no_reset_password=True)._signup_create_user({
                 'name': saas_user.su_complete_name,
                 'login': saas_user.su_email,
                 'email': saas_user.su_email,
