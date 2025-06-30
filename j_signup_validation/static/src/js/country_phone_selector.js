@@ -37,14 +37,14 @@
         setDefaultCountry() {
             // Set Saudi Arabia as default
             const saudiOption = Array.from(this.countrySelect.options).find(option => 
-                option.textContent.includes('Saudi Arabia') || option.getAttribute('data-phone-code') === '966'
+                option.textContent.includes('Saudi Arabia') || option.getAttribute('data-code') === '966'
             );
             
             if (saudiOption) {
                 saudiOption.selected = true;
                 
                 // Auto-populate phone field with default country code
-                const countryCode = saudiOption.getAttribute('data-phone-code');
+                const countryCode = saudiOption.getAttribute('data-code');
                 if (countryCode && !this.phoneInput.value.trim()) {
                     this.phoneInput.value = `+${countryCode} `;
                 }
@@ -56,7 +56,7 @@
         handleCountryChange(event) {
             // Auto-populate phone field with country code
             const selectedOption = this.countrySelect.selectedOptions[0];
-            const countryCode = selectedOption ? selectedOption.getAttribute('data-phone-code') : '';
+            const countryCode = selectedOption ? selectedOption.getAttribute('data-code') : '';
             
             if (countryCode) {
                 // Check if phone field is empty or only contains a country code
@@ -103,7 +103,7 @@
 
         updatePhonePreview() {
             const selectedOption = this.countrySelect.selectedOptions[0];
-            const countryCode = selectedOption ? selectedOption.getAttribute('data-phone-code') : '';
+            const countryCode = selectedOption ? selectedOption.getAttribute('data-code') : '';
             const phoneNumber = this.phoneInput.value.trim();
             
             if (countryCode) {
@@ -184,7 +184,7 @@
                     const options = Array.from(this.countrySelect.options);
                     const matchingOption = options.find(option => 
                         option.textContent.toLowerCase().includes(searchQuery) ||
-                        option.getAttribute('data-phone-code')?.includes(searchQuery)
+                        option.getAttribute('data-code')?.includes(searchQuery)
                     );
                     
                     if (matchingOption) {
