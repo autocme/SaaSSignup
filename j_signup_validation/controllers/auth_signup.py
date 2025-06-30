@@ -389,7 +389,23 @@ class CustomAuthSignup(http.Controller):
                         country = None
                         country_code = None
                 
+                # If no country provided, try to validate phone as international number
                 if not country or not country_code:
+                    if not country_id:
+                        # No country provided, try parsing as international number
+                        try:
+                            parsed = phonenumbers.parse(phone, None)
+                            if phonenumbers.is_valid_number(parsed):
+                                formatted_phone = phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+                                _logger.info(f"Phone validated as international number: {formatted_phone}")
+                                return {
+                                    'valid': True,
+                                    'messages': [],
+                                    'formatted': formatted_phone
+                                }
+                        except:
+                            pass
+                    
                     _logger.error(f"Validation failed - country: {bool(country)}, country_code: {country_code}")
                     messages.append(_('Please select a valid country for phone number validation.'))
                     return {'valid': False, 'messages': messages}
