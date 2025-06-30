@@ -145,17 +145,17 @@ class CustomAuthSignup(http.Controller):
             }
 
     @http.route('/j_signup_validation/validate_phone', type='json', auth='public')
-    def validate_phone_ajax(self, phone, country_id=None, phone_code=None):
+    def validate_phone_ajax(self, phone):
         """
         AJAX endpoint for real-time phone validation.
         """
         try:
-            _logger.info(f"Validating phone via AJAX: {phone}, country_id: {country_id}, phone_code: {phone_code}")
+            _logger.info(f"Validating phone via AJAX: {phone}")
             
             config_settings = request.env['res.config.settings']
             phone_rules = config_settings.get_phone_validation_rules()
             
-            validation_result = self._validate_phone(phone, phone_rules, country_id, phone_code)
+            validation_result = self._validate_phone(phone, phone_rules)
             
             return {
                 'valid': validation_result['valid'],
@@ -246,17 +246,7 @@ class CustomAuthSignup(http.Controller):
         if form_data['phone']:
             config_settings = request.env['res.config.settings']
             phone_rules = config_settings.get_phone_validation_rules()
-            # Get phone code from selected country for validation
-            phone_code = None
-            if form_data.get('phone_country'):
-                try:
-                    country = request.env['res.country'].sudo().browse(int(form_data['phone_country']))
-                    if country.exists():
-                        phone_code = country.phone_code
-                except:
-                    pass
-            
-            phone_validation = self._validate_phone(form_data['phone'], phone_rules, form_data.get('phone_country'), phone_code)
+            phone_validation = self._validate_phone(form_data['phone'], phone_rules, form_data.get('phone_country'))
             if not phone_validation['valid']:
                 errors.extend(phone_validation['messages'])
         
@@ -367,7 +357,7 @@ class CustomAuthSignup(http.Controller):
             'messages': messages
         }
 
-    def _validate_phone(self, phone, rules, country_id=None, phone_code=None):
+    def _validate_phone(self, phone, rules, country_id=None):
         """
         Validate phone number based on configuration rules and selected country.
         """
