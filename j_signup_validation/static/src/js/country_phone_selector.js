@@ -10,7 +10,7 @@
         constructor() {
             this.countrySelect = document.getElementById('phone_country');
             this.phoneInput = document.getElementById('phone');
-            this.phonePreview = document.getElementById('phone-preview-text');
+            // Phone preview element removed from template
             
 
             
@@ -102,21 +102,8 @@
         }
 
         updatePhonePreview() {
-            const selectedOption = this.countrySelect.selectedOptions[0];
-            const countryCode = selectedOption ? selectedOption.getAttribute('data-phone-code') : '';
-            const phoneNumber = this.phoneInput.value.trim();
-            
-            if (countryCode) {
-                // If phone number already starts with +, use it as-is, otherwise add country code
-                if (phoneNumber.startsWith('+')) {
-                    this.phonePreview.textContent = phoneNumber;
-                } else {
-                    const fullNumber = phoneNumber ? `+${countryCode} ${phoneNumber}` : `+${countryCode} `;
-                    this.phonePreview.textContent = fullNumber;
-                }
-            } else {
-                this.phonePreview.textContent = phoneNumber;
-            }
+            // Phone preview display removed from template
+            // This method kept for compatibility but does nothing
         }
 
         async validatePhoneNumber() {
@@ -146,32 +133,19 @@
         }
 
         setPhoneValidationStatus(status, message) {
-            const statusElement = document.querySelector('.phone-validation-status');
-            if (!statusElement) return;
-
-            // Remove existing classes
+            // Phone validation status display removed from template
+            // Only update input visual states, no status text display
             this.phoneInput.classList.remove('is-valid', 'is-invalid', 'loading');
-            statusElement.className = 'phone-validation-status';
 
             switch (status) {
                 case 'valid':
                     this.phoneInput.classList.add('is-valid');
-                    statusElement.classList.add('text-success');
-                    statusElement.innerHTML = `<i class="fa fa-check"></i> ${message}`;
                     break;
                 case 'invalid':
                     this.phoneInput.classList.add('is-invalid');
-                    statusElement.classList.add('text-danger');
-                    statusElement.innerHTML = `<i class="fa fa-times"></i> ${message}`;
                     break;
                 case 'loading':
                     this.phoneInput.classList.add('loading');
-                    statusElement.classList.add('text-muted');
-                    statusElement.innerHTML = `<i class="fa fa-spinner fa-spin"></i> ${message}`;
-                    break;
-                case 'error':
-                    statusElement.classList.add('text-warning');
-                    statusElement.innerHTML = `<i class="fa fa-exclamation-triangle"></i> ${message}`;
                     break;
             }
         }

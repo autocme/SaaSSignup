@@ -216,15 +216,10 @@
         }
 
         setPhoneValidationStatus(status, message) {
-            const statusElement = document.querySelector('.phone-validation-status');
+            // Phone validation status display removed from template
+            // Only update input visual state
             const phoneInput = this.phoneInput;
 
-            if (statusElement) {
-                statusElement.textContent = message;
-                statusElement.className = `phone-validation-status ${status}`;
-            }
-
-            // Update input visual state
             phoneInput.classList.remove('is-valid', 'is-invalid');
             if (status === 'valid') {
                 phoneInput.classList.add('is-valid');
