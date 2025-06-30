@@ -10,7 +10,7 @@
     class SignupValidator {
         constructor() {
             this.form = document.getElementById('signupForm');
-            this.emailInput = document.getElementById('email');
+            this.emailInput = document.getElementById('login');
             this.phoneInput = document.getElementById('phone');
             this.passwordInput = document.getElementById('password');
             this.confirmPasswordInput = document.getElementById('confirm_password');
