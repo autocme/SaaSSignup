@@ -42,14 +42,50 @@
             
             if (saudiOption) {
                 saudiOption.selected = true;
+                
+                // Auto-populate phone field with default country code
+                const countryCode = saudiOption.getAttribute('data-code');
+                if (countryCode && !this.phoneInput.value.trim()) {
+                    this.phoneInput.value = `+${countryCode} `;
+                }
+                
                 this.updatePhonePreview();
             }
         }
 
         handleCountryChange(event) {
+            // Auto-populate phone field with country code
+            const selectedOption = this.countrySelect.selectedOptions[0];
+            const countryCode = selectedOption ? selectedOption.getAttribute('data-code') : '';
+            
+            if (countryCode) {
+                // Check if phone field is empty or only contains a country code
+                const currentPhone = this.phoneInput.value.trim();
+                const countryCodePrefix = `+${countryCode} `;
+                
+                // If phone field is empty, add country code
+                if (!currentPhone) {
+                    this.phoneInput.value = countryCodePrefix;
+                } else {
+                    // If phone field has content, check if it starts with a different country code
+                    if (currentPhone.startsWith('+')) {
+                        // Replace existing country code with new one
+                        const phoneWithoutCode = currentPhone.replace(/^\+\d{1,4}\s*/, '');
+                        this.phoneInput.value = countryCodePrefix + phoneWithoutCode;
+                    } else {
+                        // Add country code to existing number
+                        this.phoneInput.value = countryCodePrefix + currentPhone;
+                    }
+                }
+                
+                // Focus cursor at the end of the phone field
+                this.phoneInput.focus();
+                this.phoneInput.setSelectionRange(this.phoneInput.value.length, this.phoneInput.value.length);
+            }
+            
             this.updatePhonePreview();
             
-            // Clear and re-validate phone number when country changes
+            // Re-validate phone number when country changes
             if (this.phoneInput.value) {
                 this.validatePhoneNumber();
             }
