@@ -208,7 +208,7 @@
                                         </div>
 
                                         <!-- Password Field -->
-                                        <div class="form-floating mb-3">
+                                        <div class="form-floating mb-3 position-relative">
                                             <input type="password"
                                                    class="form-control"
                                                    id="password"
@@ -219,6 +219,9 @@
                                             <label for="password">
                                                 <i class="fa fa-lock me-1"></i>Password *
                                             </label>
+                                            <button type="button" class="btn btn-outline-secondary password-toggle-btn" data-target="password">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
                                             <div class="invalid-feedback"></div>
 
                                             <!-- Password Strength Indicator -->
