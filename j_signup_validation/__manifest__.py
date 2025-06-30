@@ -22,6 +22,7 @@
         'portal',
         'base_setup',
         'mail',
+        'website',
     ],
     'external_dependencies': {
         'python': [
