@@ -42,15 +42,36 @@
             
             if (saudiOption) {
                 saudiOption.selected = true;
+                // Auto-populate phone field with country code if empty
+                if (!this.phoneInput.value.trim()) {
+                    this.phoneInput.value = '+966 ';
+                }
                 this.updatePhonePreview();
             }
         }
 
         handleCountryChange(event) {
+            const selectedOption = event.target.selectedOptions[0];
+            const countryCode = selectedOption ? selectedOption.getAttribute('data-code') : '';
+            
+            if (countryCode) {
+                const currentPhone = this.phoneInput.value.trim();
+                let phoneWithoutCode = currentPhone;
+                
+                // Remove existing country code if present
+                if (currentPhone.startsWith('+')) {
+                    phoneWithoutCode = currentPhone.replace(/^\+\d{1,4}\s*/, '').trim();
+                }
+                
+                // Set new phone value with country code
+                const newPhoneValue = phoneWithoutCode ? `+${countryCode} ${phoneWithoutCode}` : `+${countryCode} `;
+                this.phoneInput.value = newPhoneValue;
+            }
+            
             this.updatePhonePreview();
             
-            // Clear and re-validate phone number when country changes
-            if (this.phoneInput.value) {
+            // Re-validate phone number when country changes
+            if (this.phoneInput.value.trim()) {
                 this.validatePhoneNumber();
             }
         }
@@ -66,16 +87,8 @@
         }
 
         updatePhonePreview() {
-            const selectedOption = this.countrySelect.selectedOptions[0];
-            const countryCode = selectedOption ? selectedOption.getAttribute('data-code') : '';
             const phoneNumber = this.phoneInput.value.trim();
-            
-            if (countryCode) {
-                const fullNumber = phoneNumber ? `+${countryCode} ${phoneNumber}` : `+${countryCode} `;
-                this.phonePreview.textContent = fullNumber;
-            } else {
-                this.phonePreview.textContent = phoneNumber;
-            }
+            this.phonePreview.textContent = phoneNumber || '+966 ';
         }
 
         async validatePhoneNumber() {
