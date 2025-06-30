@@ -118,7 +118,7 @@
                                         </div>
                                         
                                         <!-- Phone Fields in Same Row -->
-                                        <div class="row mb-3">
+                                        <div class="row ">
                                             <!-- Country Selector -->
                                             <div class="col-md-6">
                                                 <div class="form-floating">
@@ -159,7 +159,13 @@
                                             </div>
                                         </div>
                                         
-
+                                        <!-- Phone validation feedback -->
+                                        <div class="form-text mb-3">
+                                            <span class="phone-validation-status"></span>
+                                            <div class="phone-preview mt-2">
+                                                <small class="text-muted">Full number: <span id="phone-preview-text">+966 </span></small>
+                                            </div>
+                                        </div>
                                         
                                         <!-- Password Field -->
                                         <div class="form-floating mb-3">
