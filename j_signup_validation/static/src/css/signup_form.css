@@ -1,12 +1,12 @@
 /* J Signup Validation - Custom Signup Form Styles */
 
-/* Website layout integration */
-#wrap {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    min-height: calc(100vh - 150px);
+/* Simple layout without website module */
+body.bg-light {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-/* Card styling for website layout */
+/* Card styling */
 .card {
     border: none;
     border-radius: 15px;

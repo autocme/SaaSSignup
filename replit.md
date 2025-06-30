@@ -174,15 +174,14 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - Phone validation now verifies number belongs to selected country for accuracy
   - Formatted phone numbers stored in international format (+966 501234567)
   - Improved user experience: no confusion about country codes, cleaner input process
-- June 30, 2025: MAJOR LAYOUT CONVERSION - Integrated with Odoo website layout
-  - Converted signup form from standalone page to use website.layout template
-  - Added 'website' module dependency for proper layout inheritance
-  - Updated template structure to use t-call="website.layout" instead of custom HTML/body tags
-  - Modified CSS to work with website layout instead of standalone body styling
-  - Form now displays within Odoo's website navigation and footer like original signup
-  - Reduced form size to match Odoo's standard signup form appearance (col-md-6 col-lg-5)
-  - Removed unnecessary Bootstrap CDN dependencies as website layout provides them
-  - Fixed template closing structure to properly end with </t> instead of </html>
+- June 30, 2025: LAYOUT OPTIMIZATION - Clean form without website module dependency
+  - Removed website module dependency to keep module lightweight
+  - Updated template to use standalone HTML structure with Bootstrap styling
+  - Reduced form size to match Odoo's standard signup appearance (col-md-6 col-lg-5)
+  - Used centered card layout with Bootstrap's min-vh-100 for proper vertical centering
+  - Applied light background with gradient styling for professional appearance
+  - Maintained all advanced validation features without external module dependencies
+  - Fixed template structure to properly close with HTML/body tags
 
 ## User Preferences
 
