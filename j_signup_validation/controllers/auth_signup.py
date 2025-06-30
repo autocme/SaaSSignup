@@ -78,7 +78,7 @@ class CustomAuthSignup(http.Controller):
                 'success': kw.get('success', ''),
             }
             
-            return request.render('auth_signup.signup', values)
+            return request.render('j_signup_validation.custom_signup_form', values)
             
         except Exception as e:
             _logger.error(f"Error loading signup form: {str(e)}")
@@ -202,7 +202,7 @@ class CustomAuthSignup(http.Controller):
         return {
             'first_name': post.get('first_name', '').strip(),
             'last_name': post.get('last_name', '').strip(),
-            'email': post.get('login', '').strip().lower(),  # auth_signup uses 'login' for email
+            'email': post.get('email', '').strip().lower(),
             'phone': post.get('phone', '').strip(),
             'phone_country': post.get('phone_country', ''),
             'password': post.get('password', ''),
@@ -533,10 +533,10 @@ class CustomAuthSignup(http.Controller):
         Redirect back to signup form with error messages.
         """
         error_message = '; '.join(errors) if isinstance(errors, list) else str(errors)
-        return request.redirect(f'/web/signup?error={error_message}')
+        return request.redirect(f'/j_signup_validation/signup?error={error_message}')
 
     def _redirect_with_success(self, message):
         """
         Redirect to signup form with success message.
         """
-        return request.redirect(f'/web/signup?success={message}')
+        return request.redirect(f'/j_signup_validation/signup?success={message}')
