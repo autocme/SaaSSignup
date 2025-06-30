@@ -18,10 +18,10 @@
             </xpath>
         </template>
 
-        <!-- Custom Signup Form Template -->
-        <template id="custom_signup_form" name="Custom Signup Form" inherit_id="web.login" primary="True">
-            <xpath expr="//form[@class='oe_login_form']" position="replace">
-                <div class="oe_single_form_container">
+        <!-- Override Original Signup Template -->
+        <template id="signup_custom" name="Custom Signup Form" inherit_id="auth_signup.signup" primary="True">
+            <xpath expr="//form[@role='form']" position="replace">
+                <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-md-8 col-lg-6">
                             <!-- Signup Header -->
@@ -260,7 +260,20 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                
+                <!-- Pass validation rules to JavaScript -->
+                <script type="text/javascript">
+                    window.signupValidationRules = {
+                        password: <t t-raw="json.dumps(password_rules)"/>,
+                        email: <t t-raw="json.dumps(email_rules)"/>,
+                        phone: <t t-raw="json.dumps(phone_rules)"/>
+                    };
+                </script>
+                
+                <!-- Include JavaScript modules -->
+                <script src="/j_signup_validation/static/src/js/password_strength.js"></script>
+                <script src="/j_signup_validation/static/src/js/country_phone_selector.js"></script>
+                <script src="/j_signup_validation/static/src/js/signup_validation.js"></script>
             </xpath>
         </template>
         </template>

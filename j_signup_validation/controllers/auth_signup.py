@@ -49,7 +49,7 @@ class CustomAuthSignup(http.Controller):
         """Test route to verify controller is working."""
         return "Custom signup controller is working!"
 
-    @http.route('/j_signup_validation/signup', type='http', auth='public', csrf=False)
+    @http.route(['/web/signup', '/j_signup_validation/signup'], type='http', auth='public', csrf=False)
     def web_auth_signup(self, **kw):
         """
         Display custom signup form.
@@ -78,7 +78,7 @@ class CustomAuthSignup(http.Controller):
                 'success': kw.get('success', ''),
             }
             
-            return request.render('j_signup_validation.custom_signup_form', values)
+            return request.render('j_signup_validation.signup_custom', values)
             
         except Exception as e:
             _logger.error(f"Error loading signup form: {str(e)}")

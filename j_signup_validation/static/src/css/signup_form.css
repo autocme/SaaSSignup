@@ -1,15 +1,16 @@
 /* J Signup Validation - Custom Signup Form Styles */
 
-/* Inherit web.login layout styling */
-.oe_single_form_container {
-    max-width: none !important;
+/* Override auth_signup layout styling */
+.container {
+    max-width: 100% !important;
 }
 
-/* Custom form container */
+/* Custom form styling */
 .bg-white.p-4.shadow {
     background: #ffffff !important;
     padding: 2rem !important;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
+    border-radius: 0 0 15px 15px !important;
 }
 
 /* Form styling */
