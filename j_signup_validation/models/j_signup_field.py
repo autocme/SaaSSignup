@@ -85,15 +85,7 @@ class JSignupField(models.Model):
         help='The signup configuration this field belongs to'
     )
     
-    jsf_column_width = fields.Selection([
-        ('col-12', 'Full Width (12/12)'),
-        ('col-6', 'Half Width (6/12)'),
-        ('col-4', 'Third Width (4/12)'),
-        ('col-3', 'Quarter Width (3/12)'),
-    ], 'Column Width', 
-        default='col-12',
-        help='Bootstrap column width for the field'
-    )
+
 
     @api.onchange('jsf_field_id')
     def _onchange_jsf_field_id(self):

@@ -45,7 +45,6 @@
                                         <field name="jsf_field_type" readonly="1"/>
                                         <field name="jsf_required" widget="boolean_toggle"/>
                                         <field name="jsf_active" widget="boolean_toggle"/>
-                                        <field name="jsf_column_width"/>
                                     </tree>
                                     <form string="Dynamic Field">
                                         <sheet>
@@ -60,7 +59,6 @@
                                                     <field name="jsf_required"/>
                                                     <field name="jsf_active"/>
                                                     <field name="jsf_sequence"/>
-                                                    <field name="jsf_column_width"/>
                                                 </group>
                                             </group>
                                             <group>
