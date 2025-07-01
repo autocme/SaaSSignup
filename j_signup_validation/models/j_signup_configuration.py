@@ -1,42 +1,42 @@
 """
-J Signup Configuration Model
+Signup Configuration Model
 Allows dynamic configuration of additional signup fields
 """
 
 from odoo import fields, models
 
 
-class JSignupConfiguration(models.Model):
+class SignupConfiguration(models.Model):
     """
-    J Signup Configuration model for managing dynamic signup fields.
+    Signup Configuration model for managing dynamic signup fields.
     This model allows administrators to configure additional fields
     that should appear in the custom signup form.
     """
-    _name = 'j.signup.configuration'
-    _description = 'J Signup Configuration'
-    _rec_name = 'jsc_name'
+    _name = 'signup.configuration'
+    _description = 'Signup Configuration'
+    _rec_name = 'name'
 
-    jsc_name = fields.Char(
+    name = fields.Char(
         'Configuration Name',
         required=True,
         default='Default Signup Configuration',
         help='Name of this signup configuration'
     )
     
-    jsc_active = fields.Boolean(
+    active = fields.Boolean(
         'Active',
         default=True,
         help='Whether this configuration is active'
     )
     
-    jsc_signup_field_ids = fields.One2many(
-        'j.signup.field',
-        'jsf_configuration_id',
+    signup_field_ids = fields.One2many(
+        'signup.field',
+        'configuration_id',
         'Dynamic Signup Fields',
         help='Additional fields to display in the signup form'
     )
     
-    jsc_description = fields.Text(
+    description = fields.Text(
         'Description',
         help='Description of this signup configuration'
     )
