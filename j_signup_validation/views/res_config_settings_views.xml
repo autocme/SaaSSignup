@@ -124,22 +124,30 @@
                                 </div>
                             </div>
                             
-                            <div class="col-12 o_setting_box" attrs="{'invisible': [('email_disposable_check', '=', False)]}">
+                            <div class="col-12 o_setting_box" invisible="not email_disposable_check">
                                 <div class="o_setting_left_pane">
                                 </div>
                                 <div class="o_setting_right_pane">
-                                    <label for="temp_mail_detection_method" string="Detection Method"/>
-                                    <field name="temp_mail_detection_method" class="o_light_label" widget="radio"/>
-                                    <div class="text-muted mt8">
+                                    <label for="temp_mail_detection_method" string="Detection Method" class="fw-bold"/>
+                                    <div class="text-muted mb3">
                                         Choose how to detect disposable email addresses
                                     </div>
                                     
-                                    <div class="row mt16" attrs="{'invisible': [('temp_mail_detection_method', '!=', 'api')]}">
-                                        <div class="col-lg-8">
-                                            <field name="temp_mail_api_key" placeholder="Enter your TempMailDetector API key"/>
-                                            <div class="text-muted">
-                                                Required for TempMailDetector API. Get your key from 
-                                                <a href="https://tempmaildetector.com" target="_blank">tempmaildetector.com</a>
+                                    <div class="mt8">
+                                        <field name="temp_mail_detection_method" widget="radio" options="{'horizontal': true}"/>
+                                    </div>
+                                    
+                                    <div class="mt16" invisible="temp_mail_detection_method != 'api'">
+                                        <div class="row">
+                                            <div class="col-lg-8">
+                                                <label for="temp_mail_api_key" class="form-label">TempMailDetector API Key</label>
+                                                <field name="temp_mail_api_key" 
+                                                       placeholder="Enter your TempMailDetector API key"
+                                                       class="form-control"/>
+                                                <div class="form-text text-muted mt8">
+                                                    Required for TempMailDetector API. Get your key from 
+                                                    <a href="https://tempmaildetector.com" target="_blank" class="text-primary">tempmaildetector.com</a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
