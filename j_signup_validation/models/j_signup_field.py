@@ -49,7 +49,7 @@ class JSignupField(models.Model):
         help='Additional help text to display below the field'
     )
     
-    jsf_field_type = fields.Char(
+    jsf_field_type = fields.Selection(
         'Field Type',
         related='jsf_field_id.ttype',
         readonly=True,
