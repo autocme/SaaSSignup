@@ -216,14 +216,24 @@ class SaasUser(models.Model):
                 'su_user_agent': user_data.get('user_agent'),
             })
             
-            # Create portal user using Odoo's signup mechanism
-            portal_user = self.env['res.users'].sudo().with_context(no_reset_password=True)._signup_create_user({
+            # Prepare portal user data
+            portal_user_vals = {
                 'name': saas_user.su_complete_name,
                 'login': saas_user.su_email,
                 'email': saas_user.su_email,
                 'phone': saas_user.su_phone,
                 'password': user_data.get('password'),
-            })
+            }
+            
+            # Add dynamic fields to portal user creation
+            dynamic_fields = user_data.get('dynamic_fields', {})
+            for field_name, field_value in dynamic_fields.items():
+                # Only add if the field exists in res.users model
+                if hasattr(self.env['res.users'], field_name):
+                    portal_user_vals[field_name] = field_value
+            
+            # Create portal user using Odoo's signup mechanism
+            portal_user = self.env['res.users'].sudo().with_context(no_reset_password=True)._signup_create_user(portal_user_vals)
             
             # Add portal group to the user
             portal_group = self.env.ref('base.group_portal')

@@ -549,6 +549,7 @@ class CustomAuthSignup(http.Controller):
             'password_strength': validation_result['password_score'],
             'registration_ip': form_data['registration_ip'],
             'user_agent': form_data['user_agent'],
+            'dynamic_fields': form_data.get('dynamic_fields', {}),
         }
         
         # Create accounts

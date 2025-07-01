@@ -285,6 +285,127 @@
                                             <div class="invalid-feedback"></div>
                                         </div>
 
+                                        <!-- Dynamic Fields Section -->
+                                        <t t-if="dynamic_fields">
+                                            <div class="mb-4">
+                                                <h6 class="text-muted mb-3">Additional Information</h6>
+                                                <t t-foreach="dynamic_fields" t-as="field">
+                                                    <div t-att-class="'mb-3 ' + (field.get('column_width', 'col-12') if field.get('column_width') != 'col-12' else '')">
+                                                        <!-- Text Field -->
+                                                        <t t-if="field['field_type'] in ['char', 'text']">
+                                                            <div class="form-floating">
+                                                                <t t-if="field['field_type'] == 'char'">
+                                                                    <input type="text"
+                                                                           class="form-control"
+                                                                           t-att-id="'dynamic_' + field['field_name']"
+                                                                           t-att-name="field['field_name']"
+                                                                           t-att-placeholder="field['placeholder'] or field['field_label']"
+                                                                           t-att-required="'required' if field['required'] else None"/>
+                                                                </t>
+                                                                <t t-if="field['field_type'] == 'text'">
+                                                                    <textarea class="form-control"
+                                                                              t-att-id="'dynamic_' + field['field_name']"
+                                                                              t-att-name="field['field_name']"
+                                                                              t-att-placeholder="field['placeholder'] or field['field_label']"
+                                                                              t-att-required="'required' if field['required'] else None"
+                                                                              style="height: 100px;"></textarea>
+                                                                </t>
+                                                                <label t-att-for="'dynamic_' + field['field_name']">
+                                                                    <i class="fa fa-edit me-1"></i>
+                                                                    <t t-esc="field['field_label']"/>
+                                                                    <span t-if="field['required']"> *</span>
+                                                                </label>
+                                                            </div>
+                                                        </t>
+                                                        
+                                                        <!-- Number Fields -->
+                                                        <t t-if="field['field_type'] in ['integer', 'float']">
+                                                            <div class="form-floating">
+                                                                <input t-att-type="'number'"
+                                                                       class="form-control"
+                                                                       t-att-id="'dynamic_' + field['field_name']"
+                                                                       t-att-name="field['field_name']"
+                                                                       t-att-placeholder="field['placeholder'] or field['field_label']"
+                                                                       t-att-step="'any' if field['field_type'] == 'float' else '1'"
+                                                                       t-att-required="'required' if field['required'] else None"/>
+                                                                <label t-att-for="'dynamic_' + field['field_name']">
+                                                                    <i class="fa fa-hashtag me-1"></i>
+                                                                    <t t-esc="field['field_label']"/>
+                                                                    <span t-if="field['required']"> *</span>
+                                                                </label>
+                                                            </div>
+                                                        </t>
+                                                        
+                                                        <!-- Date Fields -->
+                                                        <t t-if="field['field_type'] in ['date', 'datetime']">
+                                                            <div class="form-floating">
+                                                                <input t-att-type="'datetime-local' if field['field_type'] == 'datetime' else 'date'"
+                                                                       class="form-control"
+                                                                       t-att-id="'dynamic_' + field['field_name']"
+                                                                       t-att-name="field['field_name']"
+                                                                       t-att-required="'required' if field['required'] else None"/>
+                                                                <label t-att-for="'dynamic_' + field['field_name']">
+                                                                    <i class="fa fa-calendar me-1"></i>
+                                                                    <t t-esc="field['field_label']"/>
+                                                                    <span t-if="field['required']"> *</span>
+                                                                </label>
+                                                            </div>
+                                                        </t>
+                                                        
+                                                        <!-- File Upload Field (like avatar_1920) -->
+                                                        <t t-if="field['field_type'] == 'binary'">
+                                                            <div class="mb-2">
+                                                                <label t-att-for="'dynamic_' + field['field_name']" class="form-label">
+                                                                    <i class="fa fa-upload me-1"></i>
+                                                                    <t t-esc="field['field_label']"/>
+                                                                    <span t-if="field['required']"> *</span>
+                                                                </label>
+                                                                <input type="file"
+                                                                       class="form-control"
+                                                                       t-att-id="'dynamic_' + field['field_name']"
+                                                                       t-att-name="field['field_name']"
+                                                                       t-att-accept="'image/*' if 'avatar' in field['field_name'] or 'image' in field['field_name'] else None"
+                                                                       t-att-required="'required' if field['required'] else None"/>
+                                                                <t t-if="field['help_text']">
+                                                                    <div class="form-text">
+                                                                        <t t-esc="field['help_text']"/>
+                                                                    </div>
+                                                                </t>
+                                                            </div>
+                                                        </t>
+                                                        
+                                                        <!-- Boolean Field -->
+                                                        <t t-if="field['field_type'] == 'boolean'">
+                                                            <div class="form-check mb-2">
+                                                                <input type="checkbox"
+                                                                       class="form-check-input"
+                                                                       t-att-id="'dynamic_' + field['field_name']"
+                                                                       t-att-name="field['field_name']"
+                                                                       value="1"
+                                                                       t-att-required="'required' if field['required'] else None"/>
+                                                                <label class="form-check-label" t-att-for="'dynamic_' + field['field_name']">
+                                                                    <t t-esc="field['field_label']"/>
+                                                                    <span t-if="field['required']"> *</span>
+                                                                </label>
+                                                                <t t-if="field['help_text']">
+                                                                    <div class="form-text">
+                                                                        <t t-esc="field['help_text']"/>
+                                                                    </div>
+                                                                </t>
+                                                            </div>
+                                                        </t>
+                                                        
+                                                        <!-- Help Text for non-boolean fields -->
+                                                        <t t-if="field['help_text'] and field['field_type'] != 'boolean' and field['field_type'] != 'binary'">
+                                                            <div class="form-text">
+                                                                <t t-esc="field['help_text']"/>
+                                                            </div>
+                                                        </t>
+                                                    </div>
+                                                </t>
+                                            </div>
+                                        </t>
+
                                         <!-- Submit Button -->
                                         <div class="d-grid gap-2">
                                             <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">

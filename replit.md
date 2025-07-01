@@ -198,6 +198,20 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - Enhanced country_phone_selector.js with phoneExamples mapping and updatePhonePlaceholder method
   - Placeholders show realistic phone number formats specific to each country's numbering system
   - Improved user guidance by showing expected phone number format before typing
+- June 30, 2025: DYNAMIC FIELD CONFIGURATION SYSTEM - Complete implementation of advance_signup_page logic
+  - Created j.signup.configuration model (jsc_ prefix) for managing dynamic field configurations
+  - Created j.signup.field model (jsf_ prefix) for defining individual dynamic fields
+  - Added comprehensive views and menus for dynamic field management in admin interface
+  - Enhanced controller to fetch dynamic fields and pass them to signup template
+  - Updated form data extraction to handle dynamic fields with proper type conversion
+  - Modified portal user creation to include dynamic field values (e.g., avatar_1920)
+  - Added dynamic field template section supporting: text, number, date, file upload, and boolean fields
+  - Administrators can now add any res.users field to the signup form through configuration
+  - Complete field type support: char, text, integer, float, date, datetime, binary, boolean
+  - Dynamic fields appear in "Additional Information" section of signup form
+  - File upload fields automatically set accept="image/*" for avatar/image fields
+  - Form validation and field requirements configurable per field
+  - Integration maintains all existing module functionality while adding extensibility
 
 ## User Preferences
 
