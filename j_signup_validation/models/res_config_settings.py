@@ -286,3 +286,66 @@ class ResConfigSettings(models.TransientModel):
             'score': score,
             'messages': messages
         }
+
+    def set_values(self):
+        """
+        Override set_values to properly handle Boolean fields.
+        Ensures False values are correctly saved to config parameters.
+        """
+        super(ResConfigSettings, self).set_values()
+        
+        # Explicitly set Boolean values to handle False properly
+        config = self.env['ir.config_parameter'].sudo()
+        
+        # Password settings
+        config.set_param('j_signup_validation.restrict_user_password', str(self.restrict_user_password))
+        config.set_param('j_signup_validation.password_require_number', str(self.password_require_number))
+        config.set_param('j_signup_validation.password_require_uppercase', str(self.password_require_uppercase))
+        config.set_param('j_signup_validation.password_require_lowercase', str(self.password_require_lowercase))
+        config.set_param('j_signup_validation.password_require_special', str(self.password_require_special))
+        
+        # Email settings
+        config.set_param('j_signup_validation.email_syntax_check', str(self.email_syntax_check))
+        config.set_param('j_signup_validation.email_mx_verification', str(self.email_mx_verification))
+        config.set_param('j_signup_validation.email_disposable_check', str(self.email_disposable_check))
+        
+        # Phone settings
+        config.set_param('j_signup_validation.phone_validation_enabled', str(self.phone_validation_enabled))
+        config.set_param('j_signup_validation.phone_require_mobile', str(self.phone_require_mobile))
+        
+        # Registration settings
+        config.set_param('j_signup_validation.registration_require_email_verification', str(self.registration_require_email_verification))
+        config.set_param('j_signup_validation.registration_auto_login', str(self.registration_auto_login))
+
+    @api.model
+    def get_values(self):
+        """
+        Override get_values to properly handle Boolean fields.
+        Ensures False values are correctly retrieved from config parameters.
+        """
+        res = super(ResConfigSettings, self).get_values()
+        config = self.env['ir.config_parameter'].sudo()
+        
+        # Password settings
+        res.update({
+            'restrict_user_password': config.get_param('j_signup_validation.restrict_user_password', 'True') == 'True',
+            'password_require_number': config.get_param('j_signup_validation.password_require_number', 'True') == 'True',
+            'password_require_uppercase': config.get_param('j_signup_validation.password_require_uppercase', 'False') == 'True',
+            'password_require_lowercase': config.get_param('j_signup_validation.password_require_lowercase', 'False') == 'True',
+            'password_require_special': config.get_param('j_signup_validation.password_require_special', 'False') == 'True',
+            
+            # Email settings
+            'email_syntax_check': config.get_param('j_signup_validation.email_syntax_check', 'True') == 'True',
+            'email_mx_verification': config.get_param('j_signup_validation.email_mx_verification', 'True') == 'True',
+            'email_disposable_check': config.get_param('j_signup_validation.email_disposable_check', 'True') == 'True',
+            
+            # Phone settings
+            'phone_validation_enabled': config.get_param('j_signup_validation.phone_validation_enabled', 'True') == 'True',
+            'phone_require_mobile': config.get_param('j_signup_validation.phone_require_mobile', 'False') == 'True',
+            
+            # Registration settings
+            'registration_require_email_verification': config.get_param('j_signup_validation.registration_require_email_verification', 'False') == 'True',
+            'registration_auto_login': config.get_param('j_signup_validation.registration_auto_login', 'True') == 'True',
+        })
+        
+        return res

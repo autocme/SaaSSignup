@@ -7,7 +7,7 @@
             <field name="model">res.config.settings</field>
             <field name="inherit_id" ref="base.res_config_settings_view_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//form" position="inside">
+                <xpath expr="//block[@id='user_default_rights']" position="after">
                     <div class="app_settings_block" data-string="User Registration" data-key="j_signup_validation">
                         <h2>User Registration &amp; Validation</h2>
                         
