@@ -68,12 +68,16 @@ class CustomAuthSignup(http.Controller):
                 ('phone_code', '!=', False)
             ], order='name')
             
+            # Get dynamic fields configuration
+            dynamic_fields = request.env['j.signup.configuration'].sudo().get_dynamic_fields()
+            
             # Prepare context for template
             values = {
                 'password_rules': password_rules,
                 'email_rules': email_rules,
                 'phone_rules': phone_rules,
                 'countries': countries,
+                'dynamic_fields': dynamic_fields,
                 'error': kw.get('error', ''),
                 'success': kw.get('success', ''),
             }
@@ -199,7 +203,7 @@ class CustomAuthSignup(http.Controller):
         """
         Extract and sanitize form data from POST request.
         """
-        return {
+        form_data = {
             'first_name': post.get('first_name', '').strip(),
             'last_name': post.get('last_name', '').strip(),
             'email': post.get('email', '').strip().lower(),
@@ -212,6 +216,38 @@ class CustomAuthSignup(http.Controller):
             'registration_ip': request.httprequest.environ.get('REMOTE_ADDR'),
             'user_agent': request.httprequest.environ.get('HTTP_USER_AGENT'),
         }
+        
+        # Extract dynamic fields
+        dynamic_fields = request.env['j.signup.configuration'].sudo().get_dynamic_fields()
+        form_data['dynamic_fields'] = {}
+        
+        for field_config in dynamic_fields:
+            field_name = field_config['field_name']
+            field_value = post.get(field_name, '')
+            
+            # Handle different field types
+            if field_config['field_type'] == 'boolean':
+                field_value = bool(field_value)
+            elif field_config['field_type'] in ['integer']:
+                try:
+                    field_value = int(field_value) if field_value else 0
+                except ValueError:
+                    field_value = 0
+            elif field_config['field_type'] == 'float':
+                try:
+                    field_value = float(field_value) if field_value else 0.0
+                except ValueError:
+                    field_value = 0.0
+            elif field_config['field_type'] == 'binary':
+                # Handle file uploads
+                field_value = post.get(field_name, None)
+            else:
+                # Default to string processing
+                field_value = str(field_value).strip() if field_value else ''
+            
+            form_data['dynamic_fields'][field_name] = field_value
+        
+        return form_data
 
     def _validate_signup_data(self, form_data):
         """

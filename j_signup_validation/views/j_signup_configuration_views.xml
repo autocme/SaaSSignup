@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- J Signup Configuration Tree View -->
+        <record id="j_signup_configuration_tree_view" model="ir.ui.view">
+            <field name="name">j.signup.configuration.tree</field>
+            <field name="model">j.signup.configuration</field>
+            <field name="arch" type="xml">
+                <tree string="J Signup Configurations" default_order="jsc_name">
+                    <field name="jsc_name"/>
+                    <field name="jsc_active" widget="boolean_toggle"/>
+                    <field name="jsc_signup_field_ids" widget="many2many_tags"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- J Signup Configuration Form View -->
+        <record id="j_signup_configuration_form_view" model="ir.ui.view">
+            <field name="name">j.signup.configuration.form</field>
+            <field name="model">j.signup.configuration</field>
+            <field name="arch" type="xml">
+                <form string="J Signup Configuration">
+                    <header>
+                        <field name="jsc_active" widget="boolean_toggle"/>
+                    </header>
+                    
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="jsc_name" placeholder="Configuration Name"/>
+                            </h1>
+                        </div>
+                        
+                        <group>
+                            <field name="jsc_description" placeholder="Description of this configuration"/>
+                        </group>
+                        
+                        <notebook>
+                            <page string="Dynamic Fields" name="dynamic_fields">
+                                <field name="jsc_signup_field_ids">
+                                    <tree editable="bottom">
+                                        <field name="jsf_sequence" widget="handle"/>
+                                        <field name="jsf_field_id"/>
+                                        <field name="jsf_label"/>
+                                        <field name="jsf_field_type" readonly="1"/>
+                                        <field name="jsf_required" widget="boolean_toggle"/>
+                                        <field name="jsf_active" widget="boolean_toggle"/>
+                                        <field name="jsf_column_width"/>
+                                    </tree>
+                                    <form string="Dynamic Field">
+                                        <sheet>
+                                            <group>
+                                                <group>
+                                                    <field name="jsf_field_id"/>
+                                                    <field name="jsf_label"/>
+                                                    <field name="jsf_field_type" readonly="1"/>
+                                                    <field name="jsf_field_name" readonly="1"/>
+                                                </group>
+                                                <group>
+                                                    <field name="jsf_required"/>
+                                                    <field name="jsf_active"/>
+                                                    <field name="jsf_sequence"/>
+                                                    <field name="jsf_column_width"/>
+                                                </group>
+                                            </group>
+                                            <group>
+                                                <field name="jsf_placeholder"/>
+                                                <field name="jsf_help_text"/>
+                                            </group>
+                                        </sheet>
+                                    </form>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- J Signup Configuration Search View -->
+        <record id="j_signup_configuration_search_view" model="ir.ui.view">
+            <field name="name">j.signup.configuration.search</field>
+            <field name="model">j.signup.configuration</field>
+            <field name="arch" type="xml">
+                <search string="J Signup Configurations">
+                    <field name="jsc_name"/>
+                    <field name="jsc_description"/>
+                    
+                    <filter name="active_configs" string="Active Configurations" 
+                            domain="[('jsc_active', '=', True)]"/>
+                    <filter name="inactive_configs" string="Inactive Configurations" 
+                            domain="[('jsc_active', '=', False)]"/>
+                    
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_active" string="Active Status" 
+                                context="{'group_by': 'jsc_active'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- J Signup Configuration Action -->
+        <record id="action_j_signup_configuration" model="ir.actions.act_window">
+            <field name="name">J Signup Configurations</field>
+            <field name="res_model">j.signup.configuration</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="j_signup_configuration_search_view"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No signup configurations found!
+                </p>
+                <p>
+                    Create signup configurations to define additional fields that should appear 
+                    in your custom signup form. You can add any res.users field to collect 
+                    additional user information during registration.
+                </p>
+            </field>
+        </record>
+
+        <!-- Menu Items for J Signup Configuration -->
+        <menuitem id="menu_j_signup_configuration" 
+                  name="Dynamic Fields Configuration" 
+                  parent="menu_saas_user_root" 
+                  action="action_j_signup_configuration" 
+                  sequence="20"/>
+
+    </data>
+</odoo>
