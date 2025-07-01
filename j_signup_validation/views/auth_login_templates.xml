@@ -336,6 +336,28 @@
                                                             </div>
                                                         </t>
                                                         
+                                                        <!-- Selection Fields -->
+<!--                                                        <t t-if="field['field_type'] in ['selection']">-->
+<!--                                                            <select class="form-control"-->
+<!--                                                                    t-att-id="'dynamic_' + field['field_name']"-->
+<!--                                                                    t-att-name="field['field_name']"-->
+<!--                                                                    t-att-placeholder="field['placeholder'] or field['field_label']"-->
+<!--                                                                    t-att-required="'required' if field['required'] else None">-->
+<!--                                                                <option value="" disabled="">Select</option>-->
+<!--                                                                <t t-foreach="field['field_name']" t-as="selection">-->
+<!--                                                                    <option t-att-value="selection">-->
+<!--                                                                        <t t-esc="selection"/>-->
+<!--&lt;!&ndash;                                                                        <t t-esc="selection.display_name"/>&ndash;&gt;-->
+<!--                                                                    </option>-->
+<!--                                                                </t>-->
+<!--                                                            </select>-->
+<!--                                                            <label t-att-for="'dynamic_' + field['field_name']">-->
+<!--                                                                <i class="fa fa-hashtag me-1"></i>-->
+<!--                                                                <t t-esc="field['field_label']"/>-->
+<!--                                                                <span t-if="field['required']">*</span>-->
+<!--                                                            </label>-->
+<!--                                                        </t>-->
+
                                                         <!-- Date Fields -->
                                                         <t t-if="field['field_type'] in ['date', 'datetime']">
                                                             <div class="form-floating">
@@ -351,7 +373,7 @@
                                                                 </label>
                                                             </div>
                                                         </t>
-                                                        
+
                                                         <!-- File Upload Field (like avatar_1920) -->
                                                         <t t-if="field['field_type'] == 'binary'">
                                                             <div class="mb-2">

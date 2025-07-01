@@ -221,10 +221,13 @@ class SaasUser(models.Model):
                 'name': saas_user.su_complete_name,
                 'login': saas_user.su_email,
                 'email': saas_user.su_email,
-                'phone': saas_user.su_phone,
+                'mobile': saas_user.su_phone,
                 'password': user_data.get('password'),
+                'country_id': user_data.get('phone_country'),
+                'is_company': True if saas_user.su_account_type == 'company' else False,
+                'vat': saas_user.su_vat_cr_number if saas_user.su_account_type == 'company' and saas_user.su_vat_cr_number else False,
             }
-            
+
             # Add dynamic fields to portal user creation
             dynamic_fields = user_data.get('dynamic_fields', {})
             for field_name, field_value in dynamic_fields.items():
@@ -286,6 +289,29 @@ class SaasUser(models.Model):
             'name': _('Portal User'),
             'res_model': 'res.users',
             'res_id': self.su_portal_user_id.id,
+            'view_mode': 'form',
+            'view_type': 'form',
+            'target': 'current',
+            'context': self.env.context,
+        }
+
+    def action_view_related_partner(self):
+        """
+        Open the related portal user record.
+
+        Returns:
+            dict: Action to open portal user form view
+        """
+        self.ensure_one()
+
+        if not self.su_portal_user_id.partner_id:
+            raise UserError(_('No partner is linked to this SaaS user record.'))
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Related Partner'),
+            'res_model': 'res.partner',
+            'res_id': self.su_portal_user_id.partner_id.id,
             'view_mode': 'form',
             'view_type': 'form',
             'target': 'current',
