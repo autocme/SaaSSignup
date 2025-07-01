@@ -311,6 +311,98 @@ class CustomAuthSignup(http.Controller):
             'phone_validated': phone_validation.get('valid', False),
         }
 
+    def _check_disposable_email(self, email):
+        """
+        Check if email is disposable using configured method (library or API).
+        """
+        messages = []
+        
+        # Get temp mail detection configuration
+        config = request.env['ir.config_parameter'].sudo()
+        detection_method = config.get_param('j_signup_validation.temp_mail_detection_method', 'library')
+        
+        try:
+            if detection_method == 'api':
+                # Use TempMailDetector API
+                api_key = config.get_param('j_signup_validation.temp_mail_api_key', '')
+                if not api_key:
+                    _logger.warning("TempMailDetector API key not configured, falling back to library method")
+                    return self._check_disposable_email_library(email)
+                
+                return self._check_disposable_email_api(email, api_key)
+            else:
+                # Use library method (default)
+                return self._check_disposable_email_library(email)
+                
+        except Exception as e:
+            _logger.warning(f"Disposable email check failed for {email}: {str(e)}")
+            # If both methods fail, allow the email (don't block legitimate users)
+            return {'valid': True, 'messages': []}
+
+    def _check_disposable_email_library(self, email):
+        """
+        Check disposable email using disposable_email_validator library.
+        """
+        messages = []
+        
+        try:
+            if is_disposable_email(email):
+                messages.append(_('Temporary or disposable email addresses are not allowed'))
+                return {'valid': False, 'messages': messages}
+        except Exception as e:
+            _logger.warning(f"Library disposable email check failed for {email}: {str(e)}")
+        
+        return {'valid': True, 'messages': messages}
+
+    def _check_disposable_email_api(self, email, api_key):
+        """
+        Check disposable email using TempMailDetector API.
+        """
+        import json
+        import requests
+        
+        messages = []
+        domain = email.split('@')[1].lower()
+        
+        try:
+            API_URL = "https://api.tempmaildetector.com/check"
+            CONTENT_TYPE = "application/json"
+            request_body = json.dumps({"domain": domain})
+            headers = {
+                "Content-Type": CONTENT_TYPE,
+                "Authorization": api_key,
+            }
+
+            response = requests.post(API_URL, data=request_body, headers=headers, timeout=10)
+
+            if response.status_code != 200:
+                _logger.warning(f"TempMailDetector API returned {response.status_code}: {response.text}")
+                # Fall back to library method on API failure
+                return self._check_disposable_email_library(email)
+
+            response_data = response.json()
+            _logger.info(f'TempMailDetector response for {domain}: {response_data}')
+            
+            # Check if domain is in block list or has suspicious characteristics
+            meta = response_data.get('meta', {})
+            score = response_data.get('score', 0)
+            
+            # Block if domain is in block list or has high suspicion score
+            if meta.get('block_list', False) or score >= 90:
+                messages.append(_('Temporary or disposable email addresses are not allowed'))
+                return {'valid': False, 'messages': messages}
+                
+        except requests.exceptions.Timeout:
+            _logger.warning(f"TempMailDetector API timeout for {domain}")
+            # Fall back to library method on timeout
+            return self._check_disposable_email_library(email)
+        except Exception as e:
+            _logger.warning(f"TempMailDetector API check failed for {domain}: {str(e)}")
+            # Fall back to library method on API error
+            return self._check_disposable_email_library(email)
+        
+        return {'valid': True, 'messages': messages}
+
     def _validate_email(self, email, rules):
         """
         Validate email address based on configuration rules.
@@ -385,13 +477,11 @@ class CustomAuthSignup(http.Controller):
                         return {'valid': False, 'messages': messages}
         
         # Disposable email check
-        if rules.get('disposable_check', True) and is_disposable_email:
-            try:
-                if is_disposable_email(email):
-                    messages.append(_('Temporary or disposable email addresses are not allowed'))
-                    return {'valid': False, 'messages': messages}
-            except Exception as e:
-                _logger.warning(f"Disposable email check failed for {email}: {str(e)}")
+        if rules.get('disposable_check', True):
+            temp_mail_result = self._check_disposable_email(email)
+            if not temp_mail_result['valid']:
+                messages.extend(temp_mail_result['messages'])
+                return {'valid': False, 'messages': messages}
         
         # Check for existing registration
         existing_user = request.env['saas.user'].sudo().search([('su_email', '=', email)], limit=1)

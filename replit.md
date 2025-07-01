@@ -212,6 +212,17 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - File upload fields automatically set accept="image/*" for avatar/image fields
   - Form validation and field requirements configurable per field
   - Integration maintains all existing module functionality while adding extensibility
+- July 1, 2025: TEMP MAIL DETECTION API INTEGRATION - Enhanced disposable email detection with dual method support
+  - Added temp_mail_detection_method selection field (library/API) in General Settings
+  - Added temp_mail_api_key field for TempMailDetector API configuration
+  - Enhanced settings view with conditional API key field that appears when API method is selected
+  - Implemented _check_disposable_email method with intelligent fallback system
+  - Created _check_disposable_email_library method using existing disposable_email_validator
+  - Created _check_disposable_email_api method using TempMailDetector API with JSON requests
+  - API method checks domain score and block_list status (blocks score >= 90 or block_list = true)
+  - Automatic fallback to library method when API fails, times out, or API key is missing
+  - Robust error handling ensures legitimate users aren't blocked by API failures
+  - Default remains library method for backward compatibility and reliability
 
 ## User Preferences
 

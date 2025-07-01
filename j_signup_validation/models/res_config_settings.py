@@ -81,6 +81,22 @@ class ResConfigSettings(models.TransientModel):
         help='Block registration with temporary/disposable email addresses'
     )
     
+    # Temp Mail Detection Method Settings
+    temp_mail_detection_method = fields.Selection([
+        ('library', 'Use Library (disposable_email_validator)'),
+        ('api', 'Use TempMailDetector API')
+    ], 'Temp Mail Detection Method',
+        default='library',
+        config_parameter='j_signup_validation.temp_mail_detection_method',
+        help='Choose the method to detect temporary/disposable email addresses'
+    )
+    
+    temp_mail_api_key = fields.Char(
+        'TempMailDetector API Key',
+        config_parameter='j_signup_validation.temp_mail_api_key',
+        help='API key for TempMailDetector service (required when using API method)'
+    )
+    
     # Phone Validation Settings
     phone_validation_enabled = fields.Boolean(
         'Enable Phone Validation',

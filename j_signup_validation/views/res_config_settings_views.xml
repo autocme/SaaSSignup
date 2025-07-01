@@ -123,6 +123,28 @@
                                     </div>
                                 </div>
                             </div>
+                            
+                            <div class="col-12 o_setting_box" attrs="{'invisible': [('email_disposable_check', '=', False)]}">
+                                <div class="o_setting_left_pane">
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="temp_mail_detection_method" string="Detection Method"/>
+                                    <field name="temp_mail_detection_method" class="o_light_label" widget="radio"/>
+                                    <div class="text-muted mt8">
+                                        Choose how to detect disposable email addresses
+                                    </div>
+                                    
+                                    <div class="row mt16" attrs="{'invisible': [('temp_mail_detection_method', '!=', 'api')]}">
+                                        <div class="col-lg-8">
+                                            <field name="temp_mail_api_key" placeholder="Enter your TempMailDetector API key"/>
+                                            <div class="text-muted">
+                                                Required for TempMailDetector API. Get your key from 
+                                                <a href="https://tempmaildetector.com" target="_blank">tempmaildetector.com</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         
                         <!-- Phone Validation Section -->
