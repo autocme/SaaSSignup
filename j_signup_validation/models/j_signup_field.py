@@ -29,7 +29,7 @@ class JSignupField(models.Model):
         ondelete='cascade',
         domain=[
             ('model_id.model', '=', 'res.users'),
-            ('ttype', 'in', ['char', 'integer', 'float', 'text', 'date', 'datetime', 'binary', 'boolean', 'selection'])
+            ('ttype', 'in', ['char', 'integer', 'float', 'text', 'date', 'datetime', 'binary', 'boolean',])
         ],
         help='The res.users field that this signup field represents'
     )
@@ -50,7 +50,7 @@ class JSignupField(models.Model):
     )
     
     jsf_field_type = fields.Selection(
-        'Field Type',
+        string='Field Type',
         related='jsf_field_id.ttype',
         readonly=True,
         store=True,

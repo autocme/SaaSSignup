@@ -39,6 +39,10 @@
                                     invisible="su_portal_user_id == False">
                                 <field name="su_portal_user_id" widget="statinfo" string="Portal User"/>
                             </button>
+                            <button class="oe_stat_button" type="object" name="action_view_related_partner"
+                                    invisible="su_portal_user_id == False">
+                                <span class="o_stat_text">Related Partner</span>
+                            </button>
                         </div>
                         
                         <div class="oe_title">
