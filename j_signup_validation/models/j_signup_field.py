@@ -26,7 +26,7 @@ class JSignupField(models.Model):
         'ir.model.fields',
         'Source Field',
         required=True,
-        ondelete='set null',
+        ondelete='cascade',
         domain=[
             ('model_id.model', '=', 'res.users'),
             ('ttype', 'in', ['char', 'integer', 'float', 'text', 'date', 'datetime', 'binary', 'boolean', 'selection'])
