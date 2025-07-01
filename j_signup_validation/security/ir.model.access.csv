@@ -3,7 +3,7 @@ access_saas_user_admin,saas.user.admin,model_saas_user,base.group_system,1,1,1,1
 access_saas_user_user,saas.user.user,model_saas_user,base.group_user,1,0,0,0
 access_saas_user_portal,saas.user.portal,model_saas_user,base.group_portal,1,0,0,0
 access_saas_user_public,saas.user.public,model_saas_user,base.group_public,0,0,1,0
-access_j_signup_configuration_admin,j.signup.configuration.admin,model_j_signup_configuration,base.group_system,1,1,1,1
-access_j_signup_configuration_user,j.signup.configuration.user,model_j_signup_configuration,base.group_user,1,0,0,0
-access_j_signup_field_admin,j.signup.field.admin,model_j_signup_field,base.group_system,1,1,1,1
-access_j_signup_field_user,j.signup.field.user,model_j_signup_field,base.group_user,1,0,0,0
+access_signup_configuration_admin,signup.configuration.admin,model_signup_configuration,base.group_system,1,1,1,1
+access_signup_configuration_user,signup.configuration.user,model_signup_configuration,base.group_user,1,0,0,0
+access_signup_field_admin,signup.field.admin,model_signup_field,base.group_system,1,1,1,1
+access_signup_field_user,signup.field.user,model_signup_field,base.group_user,1,0,0,0

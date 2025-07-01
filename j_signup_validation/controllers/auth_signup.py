@@ -69,7 +69,7 @@ class CustomAuthSignup(http.Controller):
             ], order='name')
             
             # Get dynamic fields configuration
-            dynamic_fields = request.env['j.signup.configuration'].sudo().get_dynamic_fields()
+            dynamic_fields = request.env['signup.configuration'].sudo().get_dynamic_fields()
             
             # Prepare context for template
             values = {

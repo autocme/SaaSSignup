@@ -1,69 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <!-- J Signup Configuration Tree View -->
-        <record id="j_signup_configuration_tree_view" model="ir.ui.view">
-            <field name="name">j.signup.configuration.tree</field>
-            <field name="model">j.signup.configuration</field>
+        <!-- Signup Configuration Tree View -->
+        <record id="signup_configuration_tree_view" model="ir.ui.view">
+            <field name="name">signup.configuration.tree</field>
+            <field name="model">signup.configuration</field>
             <field name="arch" type="xml">
-                <tree string="J Signup Configurations" default_order="jsc_name">
-                    <field name="jsc_name"/>
-                    <field name="jsc_active" widget="boolean_toggle"/>
-                    <field name="jsc_signup_field_ids" widget="many2many_tags"/>
+                <tree string="Signup Configurations" default_order="name">
+                    <field name="name"/>
+                    <field name="active" widget="boolean_toggle"/>
+                    <field name="signup_field_ids" widget="many2many_tags"/>
                 </tree>
             </field>
         </record>
 
-        <!-- J Signup Configuration Form View -->
-        <record id="j_signup_configuration_form_view" model="ir.ui.view">
-            <field name="name">j.signup.configuration.form</field>
-            <field name="model">j.signup.configuration</field>
+        <!-- Signup Configuration Form View -->
+        <record id="signup_configuration_form_view" model="ir.ui.view">
+            <field name="name">signup.configuration.form</field>
+            <field name="model">signup.configuration</field>
             <field name="arch" type="xml">
-                <form string="J Signup Configuration">
+                <form string="Signup Configuration">
                     <header>
-                        <field name="jsc_active" widget="boolean_toggle"/>
+                        <field name="active" widget="boolean_toggle"/>
                     </header>
                     
                     <sheet>
                         <div class="oe_title">
                             <h1>
-                                <field name="jsc_name" placeholder="Configuration Name"/>
+                                <field name="name" placeholder="Configuration Name"/>
                             </h1>
                         </div>
                         
                         <group>
-                            <field name="jsc_description" placeholder="Description of this configuration"/>
+                            <field name="description" placeholder="Description of this configuration"/>
                         </group>
                         
                         <notebook>
                             <page string="Dynamic Fields" name="dynamic_fields">
-                                <field name="jsc_signup_field_ids">
+                                <field name="signup_field_ids">
                                     <tree editable="bottom">
-                                        <field name="jsf_sequence" widget="handle"/>
-                                        <field name="jsf_field_id"/>
-                                        <field name="jsf_label"/>
-                                        <field name="jsf_field_type" readonly="1"/>
-                                        <field name="jsf_required" widget="boolean_toggle"/>
-                                        <field name="jsf_active" widget="boolean_toggle"/>
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="field_id"/>
+                                        <field name="label"/>
+                                        <field name="field_type" readonly="1"/>
+                                        <field name="required" widget="boolean_toggle"/>
+                                        <field name="active" widget="boolean_toggle"/>
                                     </tree>
                                     <form string="Dynamic Field">
                                         <sheet>
                                             <group>
                                                 <group>
-                                                    <field name="jsf_field_id"/>
-                                                    <field name="jsf_label"/>
-                                                    <field name="jsf_field_type" readonly="1"/>
-                                                    <field name="jsf_field_name" readonly="1"/>
+                                                    <field name="field_id"/>
+                                                    <field name="label"/>
+                                                    <field name="field_type" readonly="1"/>
+                                                    <field name="field_name" readonly="1"/>
                                                 </group>
                                                 <group>
-                                                    <field name="jsf_required"/>
-                                                    <field name="jsf_active"/>
-                                                    <field name="jsf_sequence"/>
+                                                    <field name="required"/>
+                                                    <field name="active"/>
+                                                    <field name="sequence"/>
                                                 </group>
                                             </group>
                                             <group>
-                                                <field name="jsf_placeholder"/>
-                                                <field name="jsf_help_text"/>
+                                                <field name="placeholder"/>
+                                                <field name="help_text"/>
                                             </group>
                                         </sheet>
                                     </form>
@@ -75,34 +75,34 @@
             </field>
         </record>
 
-        <!-- J Signup Configuration Search View -->
-        <record id="j_signup_configuration_search_view" model="ir.ui.view">
-            <field name="name">j.signup.configuration.search</field>
-            <field name="model">j.signup.configuration</field>
+        <!-- Signup Configuration Search View -->
+        <record id="signup_configuration_search_view" model="ir.ui.view">
+            <field name="name">signup.configuration.search</field>
+            <field name="model">signup.configuration</field>
             <field name="arch" type="xml">
-                <search string="J Signup Configurations">
-                    <field name="jsc_name"/>
-                    <field name="jsc_description"/>
+                <search string="Signup Configurations">
+                    <field name="name"/>
+                    <field name="description"/>
                     
                     <filter name="active_configs" string="Active Configurations" 
-                            domain="[('jsc_active', '=', True)]"/>
+                            domain="[('active', '=', True)]"/>
                     <filter name="inactive_configs" string="Inactive Configurations" 
-                            domain="[('jsc_active', '=', False)]"/>
+                            domain="[('active', '=', False)]"/>
                     
                     <group expand="0" string="Group By">
                         <filter name="group_by_active" string="Active Status" 
-                                context="{'group_by': 'jsc_active'}"/>
+                                context="{'group_by': 'active'}"/>
                     </group>
                 </search>
             </field>
         </record>
 
-        <!-- J Signup Configuration Action -->
-        <record id="action_j_signup_configuration" model="ir.actions.act_window">
-            <field name="name">J Signup Configurations</field>
-            <field name="res_model">j.signup.configuration</field>
+        <!-- Signup Configuration Action -->
+        <record id="action_signup_configuration" model="ir.actions.act_window">
+            <field name="name">Signup Configurations</field>
+            <field name="res_model">signup.configuration</field>
             <field name="view_mode">tree,form</field>
-            <field name="search_view_id" ref="j_signup_configuration_search_view"/>
+            <field name="search_view_id" ref="signup_configuration_search_view"/>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
                     No signup configurations found!
@@ -115,11 +115,11 @@
             </field>
         </record>
 
-        <!-- Menu Items for J Signup Configuration -->
-        <menuitem id="menu_j_signup_configuration" 
+        <!-- Menu Items for Signup Configuration -->
+        <menuitem id="menu_signup_configuration" 
                   name="Dynamic Fields Configuration" 
                   parent="menu_saas_user_root" 
-                  action="action_j_signup_configuration" 
+                  action="action_signup_configuration" 
                   sequence="20"/>
 
     </data>

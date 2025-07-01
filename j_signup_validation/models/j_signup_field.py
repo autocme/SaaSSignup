@@ -1,28 +1,28 @@
 """
-J Signup Field Model
+Signup Field Model
 Defines individual dynamic fields for the signup form
 """
 
 from odoo import api, fields, models
 
 
-class JSignupField(models.Model):
+class SignupField(models.Model):
     """
-    J Signup Field model for defining dynamic signup form fields.
+    Signup Field model for defining dynamic signup form fields.
     This model represents individual fields that can be added to the signup form.
     """
-    _name = 'j.signup.field'
-    _description = 'J Signup Dynamic Field'
-    _rec_name = 'jsf_label'
-    _order = 'jsf_sequence, id'
+    _name = 'signup.field'
+    _description = 'Signup Dynamic Field'
+    _rec_name = 'label'
+    _order = 'sequence, id'
 
-    jsf_sequence = fields.Integer(
+    sequence = fields.Integer(
         'Sequence',
         default=10,
         help='Order of the field in the signup form'
     )
     
-    jsf_field_id = fields.Many2one(
+    field_id = fields.Many2one(
         'ir.model.fields',
         'Source Field',
         required=True,
@@ -34,51 +34,51 @@ class JSignupField(models.Model):
         help='The res.users field that this signup field represents'
     )
     
-    jsf_label = fields.Char(
+    label = fields.Char(
         'Field Label',
         help='Custom label for the field (if empty, uses field description)'
     )
     
-    jsf_placeholder = fields.Char(
+    placeholder = fields.Char(
         'Placeholder Text',
         help='Placeholder text to show in the input field'
     )
     
-    jsf_help_text = fields.Text(
+    help_text = fields.Text(
         'Help Text',
         help='Additional help text to display below the field'
     )
     
-    jsf_field_type = fields.Selection(
+    field_type = fields.Selection(
         string='Field Type',
-        related='jsf_field_id.ttype',
+        related='field_id.ttype',
         readonly=True,
         store=True,
         help='Technical type of the field'
     )
     
-    jsf_field_name = fields.Char(
+    field_name = fields.Char(
         'Field Name',
-        related='jsf_field_id.name',
+        related='field_id.name',
         readonly=True,
         store=True,
         help='Technical name of the field'
     )
     
-    jsf_required = fields.Boolean(
+    required = fields.Boolean(
         'Required',
         default=False,
         help='Whether this field is required in the signup form'
     )
     
-    jsf_active = fields.Boolean(
+    active = fields.Boolean(
         'Active',
         default=True,
         help='Whether this field is active and should appear in the form'
     )
     
-    jsf_configuration_id = fields.Many2one(
-        'j.signup.configuration',
+    configuration_id = fields.Many2one(
+        'signup.configuration',
         'Configuration',
         required=True,
         ondelete='cascade',
@@ -87,13 +87,13 @@ class JSignupField(models.Model):
     
 
 
-    @api.onchange('jsf_field_id')
-    def _onchange_jsf_field_id(self):
+    @api.onchange('field_id')
+    def _onchange_field_id(self):
         """
         Set default label when field is selected.
         """
-        if self.jsf_field_id and not self.jsf_label:
-            self.jsf_label = self.jsf_field_id.field_description
+        if self.field_id and not self.label:
+            self.label = self.field_id.field_description
 
     def get_field_html_attributes(self):
         """
@@ -103,32 +103,32 @@ class JSignupField(models.Model):
             dict: Dictionary of HTML attributes
         """
         attrs = {
-            'name': self.jsf_field_name,
-            'id': f'dynamic_{self.jsf_field_name}',
-            'placeholder': self.jsf_placeholder or self.jsf_label or '',
+            'name': self.field_name,
+            'id': f'dynamic_{self.field_name}',
+            'placeholder': self.placeholder or self.label or '',
         }
         
-        if self.jsf_required:
+        if self.required:
             attrs['required'] = 'required'
         
         # Set input type based on field type
-        if self.jsf_field_type == 'char':
+        if self.field_type == 'char':
             attrs['type'] = 'text'
-        elif self.jsf_field_type == 'integer':
+        elif self.field_type == 'integer':
             attrs['type'] = 'number'
             attrs['step'] = '1'
-        elif self.jsf_field_type == 'float':
+        elif self.field_type == 'float':
             attrs['type'] = 'number'
             attrs['step'] = 'any'
-        elif self.jsf_field_type == 'text':
+        elif self.field_type == 'text':
             attrs['type'] = 'textarea'
-        elif self.jsf_field_type == 'date':
+        elif self.field_type == 'date':
             attrs['type'] = 'date'
-        elif self.jsf_field_type == 'datetime':
+        elif self.field_type == 'datetime':
             attrs['type'] = 'datetime-local'
-        elif self.jsf_field_type == 'binary':
+        elif self.field_type == 'binary':
             attrs['type'] = 'file'
-        elif self.jsf_field_type == 'boolean':
+        elif self.field_type == 'boolean':
             attrs['type'] = 'checkbox'
         
         return attrs
@@ -142,13 +142,13 @@ class JSignupField(models.Model):
         """
         attrs = self.get_field_html_attributes()
         
-        if self.jsf_field_type == 'text':
-            return f'<textarea class="form-control" name="{attrs["name"]}" id="{attrs["id"]}" placeholder="{attrs["placeholder"]}" {"required" if self.jsf_required else ""}></textarea>'
-        elif self.jsf_field_type == 'boolean':
-            return f'<input type="checkbox" class="form-check-input" name="{attrs["name"]}" id="{attrs["id"]}" value="1" {"required" if self.jsf_required else ""}>'
-        elif self.jsf_field_type == 'selection':
+        if self.field_type == 'text':
+            return f'<textarea class="form-control" name="{attrs["name"]}" id="{attrs["id"]}" placeholder="{attrs["placeholder"]}" {"required" if self.required else ""}></textarea>'
+        elif self.field_type == 'boolean':
+            return f'<input type="checkbox" class="form-check-input" name="{attrs["name"]}" id="{attrs["id"]}" value="1" {"required" if self.required else ""}>'
+        elif self.field_type == 'selection':
             # For selection fields, we need to get the selection options
-            return f'<select class="form-control" name="{attrs["name"]}" id="{attrs["id"]}" {"required" if self.jsf_required else ""}><option value="">Select...</option></select>'
+            return f'<select class="form-control" name="{attrs["name"]}" id="{attrs["id"]}" {"required" if self.required else ""}><option value="">Select...</option></select>'
         else:
             attr_str = ' '.join([f'{k}="{v}"' for k, v in attrs.items()])
             return f'<input class="form-control" {attr_str}>'
