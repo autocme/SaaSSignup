@@ -30,9 +30,8 @@
                                             <div class="col-8">
                                                 <div class="d-flex align-items-center">
                                                     <field name="password_min_length" 
-                                                           class="form-control me-3" 
                                                            style="width: 100px; font-size: 16px;"/>
-                                                    <label for="password_min_length" class="mb-0 fw-bold h6">
+                                                    <label for="password_min_length" class="mb-0 fw-bold">
                                                         Minimum Password Length
                                                     </label>
                                                 </div>
@@ -44,30 +43,30 @@
                                         <div class="row">
                                             <div class="col-6">
                                                 <div class="form-check mb-3">
-                                                    <field name="password_require_number" class="form-check-input"/>
-                                                    <label for="password_require_number" class="form-check-label">
+                                                    <field name="password_require_number"/>
+                                                    <label for="password_require_number">
                                                         Require At Least One Number
                                                     </label>
                                                 </div>
                                                 
                                                 <div class="form-check mb-3">
-                                                    <field name="password_require_lowercase" class="form-check-input"/>
-                                                    <label for="password_require_lowercase" class="form-check-label">
+                                                    <field name="password_require_lowercase"/>
+                                                    <label for="password_require_lowercase">
                                                         Require At Least One Lowercase
                                                     </label>
                                                 </div>
                                             </div>
                                             <div class="col-6">
                                                 <div class="form-check mb-3">
-                                                    <field name="password_require_uppercase" class="form-check-input"/>
-                                                    <label for="password_require_uppercase" class="form-check-label">
+                                                    <field name="password_require_uppercase"/>
+                                                    <label for="password_require_uppercase">
                                                         Require At Least One Uppercase
                                                     </label>
                                                 </div>
                                                 
                                                 <div class="form-check mb-3">
-                                                    <field name="password_require_special" class="form-check-input"/>
-                                                    <label for="password_require_special" class="form-check-label">
+                                                    <field name="password_require_special"/>
+                                                    <label for="password_require_special">
                                                         Require At Least One Special Symbol
                                                     </label>
                                                 </div>
@@ -139,7 +138,6 @@
                                                     <label for="temp_mail_api_key" class="form-label fw-bold">TempMailDetector API Key</label>
                                                     <field name="temp_mail_api_key" 
                                                            placeholder="Enter your TempMailDetector API key"
-                                                           class="form-control"
                                                            style="font-size: 14px;"/>
                                                     <div class="form-text text-muted mt8">
                                                         Required for TempMailDetector API. Get your key from 
