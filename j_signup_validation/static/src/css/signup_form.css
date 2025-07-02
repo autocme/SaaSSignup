@@ -29,40 +29,40 @@
 
 .custom-signup-card {
     border: none;
-    border-radius: 20px;
+    border-radius: 16px;
     overflow: hidden;
     width: 100%;
-    max-width: 600px;
-    margin: 2rem auto;
+    max-width: 480px;
+    margin: 1.5rem auto;
     min-width: 320px;
     display: block;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
 }
 
 .custom-signup-card .card-header {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 2.5rem 2rem;
+    padding: 2rem 1.5rem;
     border: none;
 }
 
 .custom-signup-card .card-body {
-    padding: 2.5rem 2rem;
+    padding: 2rem 1.5rem;
     background: #ffffff;
 }
 
 /* Form styling */
 .form-floating {
     position: relative;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
 }
 
 .form-floating > .form-control {
-    height: calc(3.5rem + 2px);
-    padding: 1rem 0.875rem;
+    height: calc(2.75rem + 2px);
+    padding: 0.75rem 0.75rem;
     border: 2px solid #e9ecef;
-    border-radius: 10px;
+    border-radius: 8px;
     transition: all 0.3s ease;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
 }
 
 .form-floating > .form-control:focus {
@@ -71,10 +71,10 @@
 }
 
 .form-floating > label {
-    padding: 1rem 0.875rem;
+    padding: 0.75rem 0.75rem;
     color: #6c757d;
     font-weight: 500;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
 }
 
 /* Validation feedback */
@@ -258,11 +258,11 @@
 
 .password-field-container .password-toggle-btn {
     position: absolute !important;
-    right: 15px !important;
-    top: 15px !important;
-    height: calc(3.5rem - 30px) !important;
+    right: 12px !important;
+    top: 12px !important;
+    height: calc(2.75rem - 24px) !important;
     z-index: 999 !important;
-    width: 30px !important;
+    width: 28px !important;
     border: none !important;
     background: transparent !important;
     color: #6c757d !important;
@@ -270,7 +270,7 @@
     align-items: center !important;
     justify-content: center !important;
     cursor: pointer !important;
-    font-size: 14px !important;
+    font-size: 13px !important;
 }
 
 /* Specific positioning for form-floating layout */
@@ -319,15 +319,15 @@
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border: none;
     color: white;
-    padding: 1rem 2rem;
-    border-radius: 12px;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: 1rem;
     transition: all 0.3s ease;
     width: 100%;
-    margin-top: 2rem;
+    margin-top: 1.5rem;
     height: auto;
-    min-height: 56px;
+    min-height: 48px;
 }
 
 .btn-signup:hover, .btn-primary.btn-lg:hover {
@@ -381,11 +381,11 @@
     }
     
     .custom-signup-card .card-header {
-        padding: 2rem 1.5rem;
+        padding: 1.5rem 1.25rem;
     }
     
     .custom-signup-card .card-body {
-        padding: 2rem 1.5rem;
+        padding: 1.5rem 1.25rem;
     }
     
     .col-md-6 {
@@ -395,18 +395,18 @@
     }
     
     .form-floating {
-        margin-bottom: 1.25rem;
+        margin-bottom: 1rem;
     }
     
     .form-floating > .form-control {
-        height: calc(3.75rem + 2px);
-        padding: 1rem 0.875rem;
+        height: calc(2.75rem + 2px);
+        padding: 0.75rem 0.75rem;
         font-size: 16px; /* Prevent zoom on iOS */
     }
     
     .country-selector {
-        height: calc(3.75rem + 2px);
-        padding: 1rem 0.875rem;
+        height: calc(2.75rem + 2px);
+        padding: 0.75rem 0.75rem;
         font-size: 16px; /* Prevent zoom on iOS */
     }
 }
@@ -502,12 +502,12 @@
 
 /* Country selector styling */
 .country-selector {
-    height: calc(3.5rem + 2px);
+    height: calc(2.75rem + 2px);
     border: 2px solid #e9ecef;
-    border-radius: 10px;
+    border-radius: 8px;
     transition: all 0.3s ease;
-    font-size: 0.95rem;
-    padding: 1rem 0.875rem;
+    font-size: 0.9rem;
+    padding: 0.75rem 0.75rem;
     background-color: #fff;
 }
 
