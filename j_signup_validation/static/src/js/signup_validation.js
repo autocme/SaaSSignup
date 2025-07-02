@@ -71,6 +71,9 @@
             // VAT/CR validation
             this.vatCrInput?.addEventListener('input', this.handleVatCrInput.bind(this));
 
+            // Dynamic fields validation
+            this.bindDynamicFieldEvents();
+
             // Show/hide password toggle
             this.addPasswordToggle();
         }
@@ -406,7 +409,81 @@
 
         // Utility methods
         isFormValid() {
-            return Object.values(this.validationStates).every(state => state === true);
+            // Check basic validation states
+            const basicValidation = Object.values(this.validationStates).every(state => state === true);
+            
+            // Check dynamic required fields
+            const dynamicValidation = this.validateDynamicFields();
+            
+            return basicValidation && dynamicValidation;
+        }
+
+        validateDynamicFields() {
+            // Get all dynamic fields that are marked as required
+            const requiredDynamicFields = this.form.querySelectorAll('[id^="dynamic_"][required]');
+            
+            for (let field of requiredDynamicFields) {
+                const value = field.value.trim();
+                
+                // Check if field has value
+                if (!value) {
+                    // Mark field as invalid
+                    field.classList.remove('is-valid');
+                    field.classList.add('is-invalid');
+                    this.setInputFeedback(field, 'This field is required', 'invalid');
+                    return false;
+                } else {
+                    // Mark field as valid
+                    field.classList.remove('is-invalid');
+                    field.classList.add('is-valid');
+                    this.setInputFeedback(field, '', 'valid');
+                }
+            }
+            
+            return true;
+        }
+
+        bindDynamicFieldEvents() {
+            // Get all dynamic fields and add event listeners
+            const dynamicFields = this.form.querySelectorAll('[id^="dynamic_"]');
+            
+            dynamicFields.forEach(field => {
+                // Add input event listener for real-time validation
+                field.addEventListener('input', (event) => {
+                    this.handleDynamicFieldInput(event);
+                });
+                
+                // Add blur event listener for validation on focus loss
+                field.addEventListener('blur', (event) => {
+                    this.handleDynamicFieldBlur(event);
+                });
+            });
+        }
+
+        handleDynamicFieldInput(event) {
+            const field = event.target;
+            const value = field.value.trim();
+            
+            // If field is required, validate it
+            if (field.hasAttribute('required')) {
+                if (!value) {
+                    field.classList.remove('is-valid');
+                    field.classList.add('is-invalid');
+                    this.setInputFeedback(field, 'This field is required', 'invalid');
+                } else {
+                    field.classList.remove('is-invalid');
+                    field.classList.add('is-valid');
+                    this.setInputFeedback(field, '', 'valid');
+                }
+            }
+            
+            // Update submit button state
+            this.updateSubmitButton();
+        }
+
+        handleDynamicFieldBlur(event) {
+            // Same validation as input, ensures validation on focus loss
+            this.handleDynamicFieldInput(event);
         }
 
         updateSubmitButton() {
@@ -454,6 +531,16 @@
             if (!this.validationStates.phone) errors.push('Valid phone number is required');
             if (!this.validationStates.password) errors.push('Password is required');
             if (!this.validationStates.confirmPassword) errors.push('Password confirmation is required');
+
+            // Check dynamic required fields
+            const requiredDynamicFields = this.form.querySelectorAll('[id^="dynamic_"][required]');
+            requiredDynamicFields.forEach(field => {
+                if (!field.value.trim()) {
+                    const label = field.parentNode.querySelector('label');
+                    const fieldName = label ? label.textContent.replace('*', '').trim() : 'Additional field';
+                    errors.push(`${fieldName} is required`);
+                }
+            });
 
             this.showError(errors.join(', '));
         }

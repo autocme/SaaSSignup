@@ -218,7 +218,7 @@ class CustomAuthSignup(http.Controller):
         }
         
         # Extract dynamic fields
-        dynamic_fields = request.env['j.signup.configuration'].sudo().get_dynamic_fields()
+        dynamic_fields = request.env['signup.configuration'].sudo().get_dynamic_fields()
         form_data['dynamic_fields'] = {}
         
         for field_config in dynamic_fields:
@@ -302,6 +302,9 @@ class CustomAuthSignup(http.Controller):
                 errors.append(_('VAT/CR number is required for company accounts'))
             elif len(vat_cr) < 10 or not re.match(r'^[A-Za-z0-9]+$', vat_cr):
                 errors.append(_('VAT/CR number must be at least 10 alphanumeric characters'))
+        
+        # Dynamic fields validation
+        self._validate_dynamic_fields(form_data, errors)
         
         return {
             'valid': len(errors) == 0,
@@ -619,6 +622,48 @@ class CustomAuthSignup(http.Controller):
             'messages': messages,
             'formatted': formatted_phone
         }
+
+    def _validate_dynamic_fields(self, form_data, errors):
+        """
+        Validate required dynamic fields.
+        """
+        try:
+            # Get dynamic fields configuration
+            dynamic_fields = request.env['signup.configuration'].sudo().get_dynamic_fields()
+            
+            for field_config in dynamic_fields:
+                field_name = field_config['field_name']
+                field_label = field_config['field_label']
+                is_required = field_config['required']
+                field_type = field_config['field_type']
+                
+                # Check if field is required
+                if is_required:
+                    field_value = form_data.get('dynamic_fields', {}).get(field_name)
+                    
+                    # Validate based on field type
+                    if field_type == 'boolean':
+                        # Boolean fields are always valid (True or False)
+                        continue
+                    elif field_type == 'binary':
+                        # Check if file was uploaded
+                        if not field_value:
+                            errors.append(_('%s is required') % field_label)
+                    else:
+                        # String, text, integer, float, date, datetime fields
+                        if not field_value or (isinstance(field_value, str) and not field_value.strip()):
+                            errors.append(_('%s is required') % field_label)
+                        
+                        # Additional validation for numeric fields
+                        if field_type in ['integer', 'float'] and field_value == 0:
+                            # Check if 0 is a valid value or if it means empty
+                            raw_value = request.httprequest.form.get(field_name, '').strip()
+                            if not raw_value:
+                                errors.append(_('%s is required') % field_label)
+                                
+        except Exception as e:
+            _logger.error(f"Dynamic fields validation error: {str(e)}")
+            # Don't add error here as it might be configuration issue
 
     def _create_user_accounts(self, form_data, validation_result):
         """
