@@ -1,129 +1,119 @@
-/* J Signup Validation - Enhanced Registration Form Styles */
-/* Using completely unique class names to avoid any conflicts with base Odoo */
-/* Works with and without website app installed */
+/* J Signup Validation - Custom Signup Form Styles */
 
-/* Enhanced registration container - larger and centered */
-.j-enhanced-registration-container {
-    max-width: 650px !important;
-    margin: 0 auto !important;
-    padding: 0 !important;
-    display: block !important;
-    box-sizing: border-box !important;
+/* Standalone page styling */
+.standalone-signup-body {
+    margin: 0;
+    padding: 2rem 0;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    display: flex;
+    align-items: center;
 }
 
-.j-enhanced-registration-form {
-    background: #ffffff !important;
-    border-radius: 12px !important;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1) !important;
-    padding: 2.5rem !important;
-    margin: 1rem 0 !important;
-    border: 1px solid #e9ecef !important;
-    display: block !important;
-    box-sizing: border-box !important;
-    width: 100% !important;
+/* Container and layout fixes */
+.container-fluid {
+    width: 100%;
+    padding: 2rem 15px;
+    margin-right: auto;
+    margin-left: auto;
+    min-height: calc(100vh - 4rem);
+    display: flex;
+    align-items: center;
 }
 
-/* Header styling within enhanced form */
-.j-enhanced-registration-form .signup-form-header h3 {
-    color: #343a40 !important;
-    font-weight: 600 !important;
-    font-size: 1.5rem !important;
-    margin-bottom: 0.5rem !important;
+.justify-content-center {
+    justify-content: center !important;
 }
 
-.j-enhanced-registration-form .signup-form-header p {
-    font-size: 0.9rem !important;
-    color: #6c757d !important;
-    margin-bottom: 0 !important;
+.custom-signup-card {
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 600px;
+    margin: 2rem auto;
+    min-width: 320px;
+    display: block;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
 }
 
-/* Form field styling within enhanced form */
-.j-enhanced-registration-form .form-floating {
-    margin-bottom: 1rem !important;
-    position: relative !important;
+.custom-signup-card .card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 2.5rem 2rem;
+    border: none;
 }
 
-.j-enhanced-registration-form .form-floating > .form-control,
-.j-enhanced-registration-form .form-floating > input,
-.j-enhanced-registration-form input[type="text"],
-.j-enhanced-registration-form input[type="email"],
-.j-enhanced-registration-form input[type="password"],
-.j-enhanced-registration-form input[type="tel"] {
-    height: 4rem !important;
-    padding: 1.25rem 0.75rem !important;
-    font-size: 1rem !important;
-    border: 2px solid #e9ecef !important;
-    border-radius: 8px !important;
-    transition: all 0.3s ease !important;
-    box-sizing: border-box !important;
-    width: 100% !important;
-    background-color: white !important;
+.custom-signup-card .card-body {
+    padding: 2.5rem 2rem;
+    background: #ffffff;
 }
 
-.j-enhanced-registration-form .form-floating > .form-control:focus,
-.j-enhanced-registration-form .form-floating > input:focus,
-.j-enhanced-registration-form input[type="text"]:focus,
-.j-enhanced-registration-form input[type="email"]:focus,
-.j-enhanced-registration-form input[type="password"]:focus,
-.j-enhanced-registration-form input[type="tel"]:focus {
-    border-color: #667eea !important;
-    box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.15) !important;
-    outline: none !important;
+/* Form styling */
+.form-floating {
+    position: relative;
+    margin-bottom: 1.5rem;
 }
 
-.j-enhanced-registration-form .form-floating > label,
-.j-enhanced-registration-form label {
-    padding: 1.25rem 0.75rem !important;
-    font-size: 0.9rem !important;
-    color: #6c757d !important;
-    font-weight: 500 !important;
+.form-floating > .form-control {
+    height: calc(3.5rem + 2px);
+    padding: 1rem 0.875rem;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
 }
 
-/* Account type radio buttons within enhanced form */
-.j-enhanced-registration-form .form-check {
-    margin-bottom: 0.5rem;
-}
-
-.j-enhanced-registration-form .form-check-input:checked {
-    background-color: #667eea;
+.form-floating > .form-control:focus {
     border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
 }
 
-.j-enhanced-registration-form .form-check-label {
+.form-floating > label {
+    padding: 1rem 0.875rem;
+    color: #6c757d;
     font-weight: 500;
-    color: #495057;
-    cursor: pointer;
+    font-size: 0.9rem;
 }
 
-/* Country selector styling within enhanced form */
-.j-enhanced-registration-form .country-select,
-.j-enhanced-registration-form select[name="phone_country_id"],
-.j-enhanced-registration-form select {
-    border: 2px solid #e9ecef !important;
-    border-radius: 8px !important;
-    padding: 1rem !important;
-    font-size: 1rem !important;
-    transition: all 0.3s ease !important;
-    height: 4rem !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    background-color: white !important;
+/* Validation feedback */
+.form-control.is-valid {
+    border-color: #28a745;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='m2.3 6.73.94-.94-.94-.94L1.36 5.8l-.94-.94-.94.94L1.36 7.68z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
 }
 
-.j-enhanced-registration-form .country-select:focus,
-.j-enhanced-registration-form select[name="phone_country_id"]:focus,
-.j-enhanced-registration-form select:focus {
-    border-color: #667eea !important;
-    box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.15) !important;
-    outline: none !important;
+.form-control.is-invalid {
+    border-color: #dc3545;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath d='m5.8 4.6 1.4 1.4m0-1.4L5.8 6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
 }
 
-/* Password strength indicator within enhanced form */
-.j-enhanced-registration-form .password-strength-container {
-    margin-top: 0.75rem;
+.valid-feedback {
+    display: block;
+    color: #28a745;
+    font-size: 0.875em;
+    margin-top: 0.25rem;
 }
 
-.j-enhanced-registration-form .password-strength-bar {
+.invalid-feedback {
+    display: block;
+    color: #dc3545;
+    font-size: 0.875em;
+    margin-top: 0.25rem;
+}
+
+/* Password strength indicator */
+.password-strength-container {
+    margin-top: 0.5rem;
+}
+
+.password-strength-bar {
     height: 4px;
     background-color: #e9ecef;
     border-radius: 2px;
@@ -131,89 +121,305 @@
     margin-bottom: 0.5rem;
 }
 
-.j-enhanced-registration-form .password-strength-progress {
+.password-strength-progress {
     height: 100%;
     transition: all 0.3s ease;
     border-radius: 2px;
+    width: 0%;
 }
 
-.j-enhanced-registration-form .strength-very-weak { background-color: #dc3545; }
-.j-enhanced-registration-form .strength-weak { background-color: #fd7e14; }
-.j-enhanced-registration-form .strength-medium { background-color: #ffc107; }
-.j-enhanced-registration-form .strength-strong { background-color: #28a745; }
-.j-enhanced-registration-form .strength-very-strong { background-color: #20c997; }
-
-/* Password requirements grid within enhanced form */
-.j-enhanced-registration-form .requirements-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.5rem;
-    font-size: 0.8rem;
+.password-strength-progress.weak {
+    background-color: #dc3545;
 }
 
-.j-enhanced-registration-form .requirement {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    color: #6c757d;
+.password-strength-progress.fair {
+    background-color: #fd7e14;
 }
 
-.j-enhanced-registration-form .requirement.valid {
-    color: #28a745;
+.password-strength-progress.good {
+    background-color: #ffc107;
 }
 
-.j-enhanced-registration-form .requirement i.fa-check {
-    color: #28a745;
+.password-strength-progress.strong {
+    background-color: #28a745;
 }
 
-.j-enhanced-registration-form .requirement i.fa-times {
+.strength-label.weak {
     color: #dc3545;
 }
 
-/* Password toggle buttons within enhanced form */
-.j-enhanced-registration-form .password-toggle {
-    position: absolute;
-    right: 0.75rem;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
+.strength-label.fair {
+    color: #fd7e14;
+}
+
+.strength-label.good {
+    color: #ffc107;
+}
+
+.strength-label.strong {
+    color: #28a745;
+}
+
+.password-requirements {
+    font-size: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.requirements-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
+    gap: 0.25rem 0.5rem !important;
+    margin-top: 0.5rem;
+    width: 100%;
+}
+
+.password-requirements-list {
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+    display: block !important;
+    font-size: 0; /* Remove whitespace between inline-block elements */
+}
+
+.requirement {
+    display: inline-block !important;
+    width: 32% !important;
+    vertical-align: top !important;
     color: #6c757d;
-    cursor: pointer;
-    padding: 0.25rem;
-    z-index: 5;
+    font-size: 0.65rem;
+    margin: 0 0 0.25rem 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
 }
 
-.j-enhanced-registration-form .password-toggle:hover {
-    color: #495057;
+.requirement:not(:nth-child(3n)) {
+    margin-right: 2% !important;
 }
 
-.j-enhanced-registration-form .form-floating {
-    position: relative;
+.requirement i {
+    margin-right: 0.375rem;
+    width: 10px;
+    font-size: 0.6rem;
 }
 
-/* VAT/CR field animation within enhanced form */
-.j-enhanced-registration-form #vat_cr_field {
-    overflow: hidden;
-    transition: max-height 0.3s ease, padding 0.3s ease, margin 0.3s ease;
-    max-height: 0;
-    padding: 0;
-    margin: 0;
-    display: none;
+.requirement.met {
+    color: #28a745;
 }
 
-.j-enhanced-registration-form #vat_cr_field.show {
-    display: block;
-    max-height: 100px;
-    padding: 0;
-    margin-bottom: 1rem;
-    animation: slideDown 0.3s ease forwards;
+.requirement i {
+    margin-right: 0.375rem;
+    width: 10px;
+    font-size: 0.6rem;
 }
 
-@keyframes slideDown {
+@media (max-width: 480px) {
+    .requirements-grid {
+        grid-template-columns: 1fr;
+        gap: 0.25rem;
+    }
+}
+
+/* Password Toggle Button Styling */
+.password-toggle-btn {
+    position: absolute !important;
+    right: 12px !important;
+    top: 12px !important;
+    height: calc(100% - 24px) !important;
+    z-index: 1000 !important;
+    border: none !important;
+    background: transparent !important;
+    color: #6c757d !important;
+    padding: 4px 8px !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    transition: color 0.2s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.password-toggle-btn:hover {
+    color: #495057 !important;
+    background: transparent !important;
+    border: none !important;
+}
+
+.password-toggle-btn:focus {
+    box-shadow: none !important;
+    outline: none !important;
+    background: transparent !important;
+    border: none !important;
+}
+
+/* Password field container specific styling */
+.password-field-container {
+    position: relative !important;
+}
+
+.password-field-container .password-toggle-btn {
+    position: absolute !important;
+    right: 15px !important;
+    top: 15px !important;
+    height: calc(3.5rem - 30px) !important;
+    z-index: 999 !important;
+    width: 30px !important;
+    border: none !important;
+    background: transparent !important;
+    color: #6c757d !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    font-size: 14px !important;
+}
+
+/* Specific positioning for form-floating layout */
+.form-floating .password-toggle-btn {
+    position: absolute !important;
+    right: 12px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    z-index: 10 !important;
+    background: transparent !important;
+    border: none !important;
+    color: #6c757d !important;
+    padding: 0 !important;
+    width: 24px !important;
+    height: 24px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    font-size: 14px !important;
+}
+
+/* Override for form-floating password field specifically */
+.form-floating.password-field-container .password-toggle-btn {
+    position: absolute !important;
+    right: 12px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    z-index: 1000 !important;
+    background: transparent !important;
+    border: none !important;
+    color: #6c757d !important;
+    padding: 0 !important;
+    width: 24px !important;
+    height: 24px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    font-size: 14px !important;
+    margin-top: -3px !important;
+}
+
+/* Submit button */
+.btn-signup, .btn-primary.btn-lg {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: 2rem;
+    height: auto;
+    min-height: 56px;
+}
+
+.btn-signup:hover, .btn-primary.btn-lg:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    color: white;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.btn-signup:disabled, .btn-primary.btn-lg:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Loading spinner */
+.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+}
+
+/* Row and column layout fixes */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.col-md-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .standalone-signup-body {
+        padding: 1rem 0;
+    }
+    
+    .container-fluid {
+        padding: 1rem 15px;
+    }
+    
+    .custom-signup-card {
+        margin: 1rem auto;
+        border-radius: 15px;
+    }
+    
+    .custom-signup-card .card-header {
+        padding: 2rem 1.5rem;
+    }
+    
+    .custom-signup-card .card-body {
+        padding: 2rem 1.5rem;
+    }
+    
+    .col-md-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-bottom: 0;
+    }
+    
+    .form-floating {
+        margin-bottom: 1.25rem;
+    }
+    
+    .form-floating > .form-control {
+        height: calc(3.75rem + 2px);
+        padding: 1rem 0.875rem;
+        font-size: 16px; /* Prevent zoom on iOS */
+    }
+    
+    .country-selector {
+        height: calc(3.75rem + 2px);
+        padding: 1rem 0.875rem;
+        font-size: 16px; /* Prevent zoom on iOS */
+    }
+}
+
+/* Animation for form appearance */
+.custom-signup-card {
+    animation: slideInUp 0.6s ease-out;
+}
+
+@keyframes slideInUp {
     from {
         opacity: 0;
-        transform: translateY(-10px);
+        transform: translateY(30px);
     }
     to {
         opacity: 1;
@@ -221,200 +427,153 @@
     }
 }
 
-/* Submit button within enhanced form */
-.j-enhanced-registration-form .btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-    border: none !important;
-    border-radius: 8px !important;
-    padding: 0.875rem 1.5rem !important;
-    font-weight: 600 !important;
-    font-size: 1rem !important;
-    transition: all 0.3s ease !important;
-    position: relative !important;
-    overflow: hidden !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    color: white !important;
+/* Password toggle button styling */
+.password-field-container {
+    position: relative;
 }
 
-.j-enhanced-registration-form .btn-primary:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3) !important;
+.password-input-with-toggle {
+    padding-right: 3rem !important;
 }
 
-.j-enhanced-registration-form .btn-primary:disabled {
-    background: #6c757d !important;
-    cursor: not-allowed !important;
-    transform: none !important;
-    box-shadow: none !important;
-}
-
-.j-enhanced-registration-form .btn-secondary {
-    background: #6c757d;
+.password-toggle-btn {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
     border: none;
-    border-radius: 8px;
-    padding: 0.875rem 1.5rem;
-    font-weight: 600;
-    color: white;
-}
-
-/* Loading state within enhanced form */
-.j-enhanced-registration-form .btn.loading {
-    pointer-events: none;
-}
-
-/* Phone field specific styling */
-.j-enhanced-registration-form input[name="phone"],
-.j-enhanced-registration-form input[id="phone"] {
-    height: 4rem !important;
-    padding: 1.25rem 0.75rem !important;
-    font-size: 1rem !important;
-    border: 2px solid #e9ecef !important;
-    border-radius: 8px !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    background-color: white !important;
-}
-
-.j-enhanced-registration-form input[name="phone"]:focus,
-.j-enhanced-registration-form input[id="phone"]:focus {
-    border-color: #667eea !important;
-    box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.15) !important;
-    outline: none !important;
-}
-
-/* Phone preview within enhanced form */
-.j-enhanced-registration-form .phone-preview {
-    font-size: 0.85rem;
+    background: transparent;
     color: #6c757d;
-    margin-top: 0.5rem;
+    font-size: 1rem;
+    padding: 0.25rem;
+    cursor: pointer;
+    transition: color 0.2s ease;
 }
 
-/* Validation status within enhanced form */
-.j-enhanced-registration-form .email-validation-status,
-.j-enhanced-registration-form .phone-validation-status {
-    font-size: 0.85rem;
-    margin-top: 0.5rem;
-    font-weight: 500;
+.password-toggle-btn:hover {
+    color: #495057;
 }
 
-.j-enhanced-registration-form .email-validation-status.valid,
-.j-enhanced-registration-form .phone-validation-status.valid {
-    color: #28a745;
+.password-toggle-btn:focus {
+    outline: none;
+    color: #667eea;
 }
 
-.j-enhanced-registration-form .email-validation-status.invalid,
-.j-enhanced-registration-form .phone-validation-status.invalid {
-    color: #dc3545;
-}
-
-.j-enhanced-registration-form .email-validation-status.checking,
-.j-enhanced-registration-form .phone-validation-status.checking {
-    color: #ffc107;
-}
-
-/* Form input loading state within enhanced form */
-.j-enhanced-registration-form .form-control.loading {
-    background-image: url("data:image/svg+xml,%3csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M10 2a8 8 0 018 8 1 1 0 01-2 0 6 6 0 10-6 6v1a1 1 0 01-2 0V10a8 8 0 018-8z' fill='%23667eea'/%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 0.75rem center;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-/* Alert styling within enhanced form */
-.j-enhanced-registration-form .alert {
-    border-radius: 8px;
+/* Alert styling */
+.alert {
+    border-radius: 10px;
     border: none;
+    font-weight: 500;
     margin-bottom: 1.5rem;
-    font-size: 0.9rem;
 }
 
-.j-enhanced-registration-form .alert-danger {
+.alert-danger {
     background-color: #f8d7da;
     color: #721c24;
 }
 
-.j-enhanced-registration-form .alert-success {
+.alert-success {
     background-color: #d1edff;
     color: #0c5460;
 }
 
-/* Additional Information section styling within enhanced form */
-.j-enhanced-registration-form .additional-info-section {
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid #e9ecef;
-}
-
-.j-enhanced-registration-form .additional-info-section h6 {
-    color: #495057;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    font-size: 1rem;
-}
-
-/* Dynamic field styling within enhanced form */
-.j-enhanced-registration-form .dynamic-field {
-    margin-bottom: 1rem;
-}
-
-/* File upload styling within enhanced form */
-.j-enhanced-registration-form .form-control[type="file"] {
-    padding: 0.75rem;
-    height: auto;
-}
-
-/* Checkbox styling for dynamic boolean fields within enhanced form */
-.j-enhanced-registration-form .form-check-input[type="checkbox"] {
-    margin-top: 0.375rem;
-}
-
-/* Login link styling within enhanced form */
-.j-enhanced-registration-form .text-center a {
+/* Input focus effects */
+.form-floating > .form-control:focus ~ label {
     color: #667eea;
-    text-decoration: none;
+}
+
+/* Password toggle button */
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #6c757d;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.password-toggle:hover {
+    color: #495057;
+}
+
+/* Country selector styling */
+.country-selector {
+    height: calc(3.5rem + 2px);
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+    padding: 1rem 0.875rem;
+    background-color: #fff;
+}
+
+.country-selector:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+/* Phone preview styling */
+.phone-preview {
+    font-size: 0.875rem;
     font-weight: 500;
 }
 
-.j-enhanced-registration-form .text-center a:hover {
-    color: #5a67d8;
-    text-decoration: underline;
+.phone-preview span {
+    color: #667eea;
+    font-family: 'Courier New', monospace;
 }
 
-/* Responsive design for enhanced form */
-@media (max-width: 576px) {
-    .j-enhanced-registration-container {
-        max-width: 95%;
-        margin: 0 auto;
-    }
-    
-    .j-enhanced-registration-form {
-        padding: 1.5rem;
-        margin: 0.5rem;
-        border-radius: 8px;
-    }
-    
-    .j-enhanced-registration-form .requirements-grid {
-        grid-template-columns: 1fr;
-        gap: 0.25rem;
-    }
-    
-    .j-enhanced-registration-form .form-floating > .form-control {
-        height: 3.5rem;
-        font-size: 0.95rem;
-    }
-    
-    .j-enhanced-registration-form .country-select {
-        height: 3.5rem;
-        font-size: 0.95rem;
-    }
-    
-    .j-enhanced-registration-form .signup-form-header h3 {
-        font-size: 1.25rem;
-    }
+/* Loading state for phone validation */
+.form-control.loading {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236c757d' viewBox='0 0 16 16'%3e%3cpath d='M8 15c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm0-12.5a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11z'/%3e%3cpath d='M8 4.5a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+/* Account Type Radio Button Styling */
+.form-check {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+}
+
+.form-check-input[type="radio"] {
+    width: 20px !important;
+    height: 20px !important;
+    margin: 0 !important;
+    cursor: pointer !important;
+}
+
+.form-check-label {
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    color: #495057 !important;
+    cursor: pointer !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+.form-check-input[type="radio"]:checked + .form-check-label {
+    color: #007bff !important;
+    font-weight: 600 !important;
+}
+
+/* VAT/CR Field Animation */
+#vat_cr_field {
+    transition: all 0.3s ease !important;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    margin-bottom: 0 !important;
+}
+
+#vat_cr_field.show {
+    opacity: 1;
+    max-height: 100px;
+    margin-bottom: 1rem !important;
 }
