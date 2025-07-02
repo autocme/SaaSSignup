@@ -24,30 +24,28 @@
                 <link rel="stylesheet" href="/j_signup_validation/static/src/css/signup_form.css"/>
             </t>
 
-            <div class="oe_signup j-enhanced-registration-container">
-                <div class="oe_signup_form j-enhanced-registration-form">
-                    <div class="signup-form-header text-center mb-4">
-                        <h3 class="mb-2">
+            <div class="oe_signup j-signup-container">
+                <div class="oe_signup_form j-signup-form">
+                    <div class="j-signup-header">
+                        <h3>
                             <i class="fa fa-user-plus me-2"></i>
                             Create Your Account
                         </h3>
-                        <p class="text-muted mb-0">Join us today and get started!</p>
+                        <p>Join us today and get started!</p>
                     </div>
                                     <!-- Error Messages -->
                                     <t t-if="error">
-                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <div class="j-alert j-error">
                                             <i class="fa fa-exclamation-triangle me-2"></i>
                                             <t t-esc="error"/>
-                                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                                         </div>
                                     </t>
 
                                     <!-- Success Messages -->
                                     <t t-if="success">
-                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                        <div class="j-alert j-success">
                                             <i class="fa fa-check-circle me-2"></i>
                                             <t t-esc="success"/>
-                                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                                         </div>
                                     </t>
 
@@ -57,26 +55,20 @@
                                         <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
 
                                         <!-- Account Type Selection -->
-                                        <div class="mb-4">
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <label class="form-label fw-bold mb-3">Account Type</label>
-                                                    <div class="d-flex justify-content-center gap-4">
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="radio" name="account_type" 
-                                                                   id="individual" value="individual" checked="checked"/>
-                                                            <label class="form-check-label" for="individual">
-                                                                <i class="fa fa-user me-2"></i>Individual
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="radio" name="account_type" 
-                                                                   id="company" value="company"/>
-                                                            <label class="form-check-label" for="company">
-                                                                <i class="fa fa-building me-2"></i>Company
-                                                            </label>
-                                                        </div>
-                                                    </div>
+                                        <div class="j-account-type-section">
+                                            <h6>Account Type</h6>
+                                            <div class="j-account-type-options">
+                                                <div class="j-radio-option">
+                                                    <input type="radio" name="account_type" id="individual" value="individual" checked="checked"/>
+                                                    <label for="individual">
+                                                        <i class="fa fa-user me-2"></i>Individual
+                                                    </label>
+                                                </div>
+                                                <div class="j-radio-option">
+                                                    <input type="radio" name="account_type" id="company" value="company"/>
+                                                    <label for="company">
+                                                        <i class="fa fa-building me-2"></i>Company
+                                                    </label>
                                                 </div>
                                             </div>
                                         </div>
@@ -84,148 +76,96 @@
 
 
                                         <!-- Name Fields Row -->
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-floating mb-3">
-                                                    <input type="text"
-                                                           class="form-control"
-                                                           id="first_name"
-                                                           name="first_name"
-                                                           placeholder="First Name"
-                                                           required="required"
-                                                           autocomplete="given-name"/>
-                                                    <label for="first_name">
-                                                        <i class="fa fa-user me-1"></i>First Name *
-                                                    </label>
-                                                    <div class="invalid-feedback"></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-floating mb-3">
-                                                    <input type="text"
-                                                           class="form-control"
-                                                           id="last_name"
-                                                           name="last_name"
-                                                           placeholder="Last Name"
-                                                           required="required"
-                                                           autocomplete="family-name"/>
-                                                    <label for="last_name">
-                                                        <i class="fa fa-user me-1"></i>Last Name *
-                                                    </label>
-                                                    <div class="invalid-feedback"></div>
-                                                </div>
-                                            </div>
+                                        <div class="j-form-group j-half-width">
+                                            <input type="text"
+                                                   class="j-form-input"
+                                                   id="first_name"
+                                                   name="first_name"
+                                                   placeholder="First Name *"
+                                                   required="required"
+                                                   autocomplete="given-name"/>
+                                        </div>
+                                        <div class="j-form-group j-half-width">
+                                            <input type="text"
+                                                   class="j-form-input"
+                                                   id="last_name"
+                                                   name="last_name"
+                                                   placeholder="Last Name *"
+                                                   required="required"
+                                                   autocomplete="family-name"/>
                                         </div>
 
                                         <!-- Email Field -->
-                                        <div class="form-floating mb-3">
+                                        <div class="j-form-group">
                                             <input type="email"
-                                                   class="form-control"
+                                                   class="j-form-input"
                                                    id="email"
                                                    name="email"
-                                                   placeholder="Email Address"
+                                                   placeholder="Email Address *"
                                                    required="required"
                                                    autocomplete="email"/>
-                                            <label for="email">
-                                                <i class="fa fa-envelope me-1"></i>Email Address *
-                                            </label>
-                                            <div class="invalid-feedback"></div>
-                                            <div class="form-text">
-                                                <span class="email-validation-status"></span>
-                                            </div>
+                                            <div class="j-validation-status email-validation-status"></div>
                                         </div>
 
                                         <!-- VAT/CR Field (Hidden by default) -->
-                                        <div class="form-floating mb-3" id="vat_cr_field" style="display: none;">
+                                        <div class="j-form-group j-vat-field" id="vat_cr_field">
                                             <input type="text"
-                                                   class="form-control"
+                                                   class="j-form-input"
                                                    id="vat_cr_number"
                                                    name="vat_cr_number"
-                                                   placeholder="VAT/CR Number"
+                                                   placeholder="VAT/CR Number *"
                                                    autocomplete="organization"/>
-                                            <label for="vat_cr_number">
-                                                <i class="fa fa-file-text me-1"></i>VAT/CR Number *
-                                            </label>
-                                            <div class="invalid-feedback"></div>
                                         </div>
 
-                                        <!-- Phone Fields in Same Row -->
-                                        <div class="row ">
-                                            <!-- Country Selector -->
-                                            <div class="col-md-6">
-                                                <div class="form-floating">
-                                                    <select class="form-control country-selector"
-                                                            id="phone_country"
-                                                            name="phone_country"
-                                                            required="required">
-                                                        <option value="" disabled="">Select Country</option>
-                                                        <t t-foreach="countries" t-as="country">
-                                                            <option t-att-value="country.id"
-                                                                    t-att-data-code="country.phone_code"
-                                                                    t-att-selected="'selected' if country.code == 'SA' else None">
-                                                                <t t-esc="country.name"/>
-                                                                +
-                                                                <t t-esc="country.phone_code"/>
-                                                            </option>
-                                                        </t>
-                                                    </select>
-                                                    <label for="phone_country">
-                                                        <i class="fa fa-globe me-1"></i>Country *
-                                                    </label>
-                                                </div>
-                                            </div>
-
-                                            <!-- Phone Number Field -->
-                                            <div class="col-md-6">
-                                                <div class="form-floating">
-                                                    <input type="tel"
-                                                           class="form-control"
-                                                           id="phone"
-                                                           name="phone"
-                                                           placeholder="Phone Number"
-                                                           required="required"
-                                                           autocomplete="tel"/>
-                                                    <label for="phone">
-                                                        <i class="fa fa-phone me-1"></i>Phone Number *
-                                                    </label>
-                                                    <div class="invalid-feedback"></div>
-                                                </div>
-                                            </div>
+                                        <!-- Phone Fields -->
+                                        <div class="j-form-group">
+                                            <select class="j-form-input j-country-select"
+                                                    id="phone_country"
+                                                    name="phone_country"
+                                                    required="required">
+                                                <option value="" disabled="">Select Country</option>
+                                                <t t-foreach="countries" t-as="country">
+                                                    <option t-att-value="country.id"
+                                                            t-att-data-code="country.phone_code"
+                                                            t-att-selected="'selected' if country.code == 'SA' else None">
+                                                        <t t-esc="country.name"/> +<t t-esc="country.phone_code"/>
+                                                    </option>
+                                                </t>
+                                            </select>
                                         </div>
 
-                                        <!-- Phone validation feedback -->
-                                        <div class="form-text mb-3">
-                                            <span class="phone-validation-status"></span>
-                                            <div class="phone-preview mt-2">
-                                                <small class="text-muted">Full number:
-                                                    <span id="phone-preview-text">+966</span>
-                                                </small>
-                                            </div>
+                                        <div class="j-form-group">
+                                            <input type="tel"
+                                                   class="j-form-input"
+                                                   id="phone"
+                                                   name="phone"
+                                                   placeholder="Phone Number *"
+                                                   required="required"
+                                                   autocomplete="tel"/>
+                                            <div class="j-phone-preview" id="phone_preview"></div>
+                                            <div class="j-validation-status phone-validation-status"></div>
                                         </div>
 
                                         <!-- Password Field -->
-                                        <div class="form-floating mb-3">
+                                        <div class="j-form-group j-password-group">
                                             <input type="password"
-                                                   class="form-control"
+                                                   class="j-form-input"
                                                    id="password"
                                                    name="password"
-                                                   placeholder="Password"
+                                                   placeholder="Password *"
                                                    required="required"
                                                    autocomplete="new-password"/>
-                                            <label for="password">
-                                                <i class="fa fa-lock me-1"></i>Password *
-                                            </label>
-                                            <div class="invalid-feedback"></div>
-
+                                            <button type="button" class="j-password-toggle" data-target="password">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
+                                            
                                             <!-- Password Strength Indicator -->
-                                            <div class="password-strength-container mt-2">
-                                                <div class="password-strength-bar">
-                                                    <div class="password-strength-progress" style="width: 0%"></div>
+                                            <div class="j-password-strength">
+                                                <div class="j-strength-bar">
+                                                    <div class="j-strength-progress" style="width: 0%"></div>
                                                 </div>
-                                                <div class="password-strength-text">
-                                                    <small class="text-muted">Password Strength:
-                                                        <span class="strength-label">Very Weak</span>
-                                                    </small>
+                                                <div class="j-strength-text">
+                                                    Password Strength: <span class="strength-label">Very Weak</span>
                                                 </div>
                                                 <div class="password-requirements mt-2">
                                                     <small class="text-muted">Requirements:</small>
