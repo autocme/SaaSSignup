@@ -24,28 +24,30 @@
                 <link rel="stylesheet" href="/j_signup_validation/static/src/css/signup_form.css"/>
             </t>
 
-            <div class="oe_signup j-signup-container">
-                <div class="oe_signup_form j-signup-form">
-                    <div class="j-signup-header">
-                        <h3>
+            <div class="oe_signup j-enhanced-registration-container">
+                <div class="oe_signup_form j-enhanced-registration-form">
+                    <div class="signup-form-header text-center mb-4">
+                        <h3 class="mb-2">
                             <i class="fa fa-user-plus me-2"></i>
                             Create Your Account
                         </h3>
-                        <p>Join us today and get started!</p>
+                        <p class="text-muted mb-0">Join us today and get started!</p>
                     </div>
                                     <!-- Error Messages -->
                                     <t t-if="error">
-                                        <div class="j-alert j-error">
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                             <i class="fa fa-exclamation-triangle me-2"></i>
                                             <t t-esc="error"/>
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                                         </div>
                                     </t>
 
                                     <!-- Success Messages -->
                                     <t t-if="success">
-                                        <div class="j-alert j-success">
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
                                             <i class="fa fa-check-circle me-2"></i>
                                             <t t-esc="success"/>
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                                         </div>
                                     </t>
 
@@ -55,20 +57,26 @@
                                         <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
 
                                         <!-- Account Type Selection -->
-                                        <div class="j-account-type-section">
-                                            <h6>Account Type</h6>
-                                            <div class="j-account-type-options">
-                                                <div class="j-radio-option">
-                                                    <input type="radio" name="account_type" id="individual" value="individual" checked="checked"/>
-                                                    <label for="individual">
-                                                        <i class="fa fa-user me-2"></i>Individual
-                                                    </label>
-                                                </div>
-                                                <div class="j-radio-option">
-                                                    <input type="radio" name="account_type" id="company" value="company"/>
-                                                    <label for="company">
-                                                        <i class="fa fa-building me-2"></i>Company
-                                                    </label>
+                                        <div class="mb-4">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <label class="form-label fw-bold mb-3">Account Type</label>
+                                                    <div class="d-flex justify-content-center gap-4">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="account_type" 
+                                                                   id="individual" value="individual" checked="checked"/>
+                                                            <label class="form-check-label" for="individual">
+                                                                <i class="fa fa-user me-2"></i>Individual
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="account_type" 
+                                                                   id="company" value="company"/>
+                                                            <label class="form-check-label" for="company">
+                                                                <i class="fa fa-building me-2"></i>Company
+                                                            </label>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -76,175 +84,245 @@
 
 
                                         <!-- Name Fields Row -->
-                                        <div class="j-form-group j-half-width">
-                                            <input type="text"
-                                                   class="j-form-input"
-                                                   id="first_name"
-                                                   name="first_name"
-                                                   placeholder="First Name *"
-                                                   required="required"
-                                                   autocomplete="given-name"/>
-                                        </div>
-                                        <div class="j-form-group j-half-width">
-                                            <input type="text"
-                                                   class="j-form-input"
-                                                   id="last_name"
-                                                   name="last_name"
-                                                   placeholder="Last Name *"
-                                                   required="required"
-                                                   autocomplete="family-name"/>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3">
+                                                    <input type="text"
+                                                           class="form-control"
+                                                           id="first_name"
+                                                           name="first_name"
+                                                           placeholder="First Name"
+                                                           required="required"
+                                                           autocomplete="given-name"/>
+                                                    <label for="first_name">
+                                                        <i class="fa fa-user me-1"></i>First Name *
+                                                    </label>
+                                                    <div class="invalid-feedback"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3">
+                                                    <input type="text"
+                                                           class="form-control"
+                                                           id="last_name"
+                                                           name="last_name"
+                                                           placeholder="Last Name"
+                                                           required="required"
+                                                           autocomplete="family-name"/>
+                                                    <label for="last_name">
+                                                        <i class="fa fa-user me-1"></i>Last Name *
+                                                    </label>
+                                                    <div class="invalid-feedback"></div>
+                                                </div>
+                                            </div>
                                         </div>
 
                                         <!-- Email Field -->
-                                        <div class="j-form-group">
+                                        <div class="form-floating mb-3">
                                             <input type="email"
-                                                   class="j-form-input"
+                                                   class="form-control"
                                                    id="email"
                                                    name="email"
-                                                   placeholder="Email Address *"
+                                                   placeholder="Email Address"
                                                    required="required"
                                                    autocomplete="email"/>
-                                            <div class="j-validation-status email-validation-status"></div>
+                                            <label for="email">
+                                                <i class="fa fa-envelope me-1"></i>Email Address *
+                                            </label>
+                                            <div class="invalid-feedback"></div>
+                                            <div class="form-text">
+                                                <span class="email-validation-status"></span>
+                                            </div>
                                         </div>
 
                                         <!-- VAT/CR Field (Hidden by default) -->
-                                        <div class="j-form-group j-vat-field" id="vat_cr_field">
+                                        <div class="form-floating mb-3" id="vat_cr_field" style="display: none;">
                                             <input type="text"
-                                                   class="j-form-input"
+                                                   class="form-control"
                                                    id="vat_cr_number"
                                                    name="vat_cr_number"
-                                                   placeholder="VAT/CR Number *"
+                                                   placeholder="VAT/CR Number"
                                                    autocomplete="organization"/>
+                                            <label for="vat_cr_number">
+                                                <i class="fa fa-file-text me-1"></i>VAT/CR Number *
+                                            </label>
+                                            <div class="invalid-feedback"></div>
                                         </div>
 
-                                        <!-- Phone Fields -->
-                                        <div class="j-form-group">
-                                            <select class="j-form-input j-country-select"
-                                                    id="phone_country"
-                                                    name="phone_country"
-                                                    required="required">
-                                                <option value="" disabled="">Select Country</option>
-                                                <t t-foreach="countries" t-as="country">
-                                                    <option t-att-value="country.id"
-                                                            t-att-data-code="country.phone_code"
-                                                            t-att-selected="'selected' if country.code == 'SA' else None">
-                                                        <t t-esc="country.name"/> +<t t-esc="country.phone_code"/>
-                                                    </option>
-                                                </t>
-                                            </select>
+                                        <!-- Phone Fields in Same Row -->
+                                        <div class="row ">
+                                            <!-- Country Selector -->
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+                                                    <select class="form-control country-selector"
+                                                            id="phone_country"
+                                                            name="phone_country"
+                                                            required="required">
+                                                        <option value="" disabled="">Select Country</option>
+                                                        <t t-foreach="countries" t-as="country">
+                                                            <option t-att-value="country.id"
+                                                                    t-att-data-code="country.phone_code"
+                                                                    t-att-selected="'selected' if country.code == 'SA' else None">
+                                                                <t t-esc="country.name"/>
+                                                                +
+                                                                <t t-esc="country.phone_code"/>
+                                                            </option>
+                                                        </t>
+                                                    </select>
+                                                    <label for="phone_country">
+                                                        <i class="fa fa-globe me-1"></i>Country *
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <!-- Phone Number Field -->
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+                                                    <input type="tel"
+                                                           class="form-control"
+                                                           id="phone"
+                                                           name="phone"
+                                                           placeholder="Phone Number"
+                                                           required="required"
+                                                           autocomplete="tel"/>
+                                                    <label for="phone">
+                                                        <i class="fa fa-phone me-1"></i>Phone Number *
+                                                    </label>
+                                                    <div class="invalid-feedback"></div>
+                                                </div>
+                                            </div>
                                         </div>
 
-                                        <div class="j-form-group">
-                                            <input type="tel"
-                                                   class="j-form-input"
-                                                   id="phone"
-                                                   name="phone"
-                                                   placeholder="Phone Number *"
-                                                   required="required"
-                                                   autocomplete="tel"/>
-                                            <div class="j-phone-preview" id="phone_preview"></div>
-                                            <div class="j-validation-status phone-validation-status"></div>
+                                        <!-- Phone validation feedback -->
+                                        <div class="form-text mb-3">
+                                            <span class="phone-validation-status"></span>
+                                            <div class="phone-preview mt-2">
+                                                <small class="text-muted">Full number:
+                                                    <span id="phone-preview-text">+966</span>
+                                                </small>
+                                            </div>
                                         </div>
 
                                         <!-- Password Field -->
-                                        <div class="j-form-group j-password-group">
+                                        <div class="form-floating mb-3">
                                             <input type="password"
-                                                   class="j-form-input"
+                                                   class="form-control"
                                                    id="password"
                                                    name="password"
-                                                   placeholder="Password *"
+                                                   placeholder="Password"
                                                    required="required"
                                                    autocomplete="new-password"/>
-                                            <button type="button" class="j-password-toggle" data-target="password">
-                                                <i class="fa fa-eye"></i>
-                                            </button>
-                                            
+                                            <label for="password">
+                                                <i class="fa fa-lock me-1"></i>Password *
+                                            </label>
+                                            <div class="invalid-feedback"></div>
+
                                             <!-- Password Strength Indicator -->
-                                            <div class="j-password-strength">
-                                                <div class="j-strength-bar">
-                                                    <div class="j-strength-progress" style="width: 0%"></div>
+                                            <div class="password-strength-container mt-2">
+                                                <div class="password-strength-bar">
+                                                    <div class="password-strength-progress" style="width: 0%"></div>
                                                 </div>
-                                                <div class="j-strength-text">
-                                                    Password Strength: <span class="strength-label">Very Weak</span>
+                                                <div class="password-strength-text">
+                                                    <small class="text-muted">Password Strength:
+                                                        <span class="strength-label">Very Weak</span>
+                                                    </small>
                                                 </div>
-                                                <div class="j-requirements password-requirements-list">
-                                                    <div class="j-requirement" data-requirement="length">
-                                                        <i class="fa fa-times"></i>
-                                                        <span t-esc="password_rules.get('min_length', 8)"/>+ chars
-                                                    </div>
-                                                    <div class="j-requirement" data-requirement="number"
-                                                        t-if="password_rules.get('require_number')">
-                                                        <i class="fa fa-times"></i>
-                                                        One number
-                                                    </div>
-                                                    <div class="j-requirement" data-requirement="uppercase"
-                                                        t-if="password_rules.get('require_uppercase')">
-                                                        <i class="fa fa-times"></i>
-                                                        Uppercase letter
-                                                    </div>
-                                                    <div class="j-requirement" data-requirement="lowercase"
-                                                        t-if="password_rules.get('require_lowercase')">
-                                                        <i class="fa fa-times"></i>
-                                                        Lowercase letter
-                                                    </div>
-                                                    <div class="j-requirement" data-requirement="special"
-                                                        t-if="password_rules.get('require_special')">
-                                                        <i class="fa fa-times"></i>
-                                                        Special character
+                                                <div class="password-requirements mt-2">
+                                                    <small class="text-muted">Requirements:</small>
+                                                    <div class="requirements-grid password-requirements-list">
+                                                        <div class="requirement" data-requirement="length">
+                                                            <i class="fa fa-times text-danger"></i>
+                                                            <span t-esc="password_rules.get('min_length', 8)"/>+ chars
+                                                        </div>
+                                                        <div class="requirement" data-requirement="number"
+                                                            t-if="password_rules.get('require_number')">
+                                                            <i class="fa fa-times text-danger"></i>
+                                                            One number
+                                                        </div>
+                                                        <div class="requirement" data-requirement="uppercase"
+                                                            t-if="password_rules.get('require_uppercase')">
+                                                            <i class="fa fa-times text-danger"></i>
+                                                            Uppercase letter
+                                                        </div>
+                                                        <div class="requirement" data-requirement="lowercase"
+                                                            t-if="password_rules.get('require_lowercase')">
+                                                            <i class="fa fa-times text-danger"></i>
+                                                            Lowercase letter
+                                                        </div>
+                                                        <div class="requirement" data-requirement="special"
+                                                            t-if="password_rules.get('require_special')">
+                                                            <i class="fa fa-times text-danger"></i>
+                                                            Special character
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <!-- Confirm Password Field -->
-                                        <div class="j-form-group j-password-group">
+                                        <div class="form-floating mb-4">
                                             <input type="password"
-                                                   class="j-form-input"
+                                                   class="form-control"
                                                    id="confirm_password"
                                                    name="confirm_password"
-                                                   placeholder="Confirm Password *"
+                                                   placeholder="Confirm Password"
                                                    required="required"
                                                    autocomplete="new-password"/>
-                                            <button type="button" class="j-password-toggle" data-target="confirm_password">
-                                                <i class="fa fa-eye"></i>
-                                            </button>
+                                            <label for="confirm_password">
+                                                <i class="fa fa-lock me-1"></i>Confirm Password *
+                                            </label>
+                                            <div class="invalid-feedback"></div>
                                         </div>
 
                                         <!-- Dynamic Fields Section -->
                                         <t t-if="dynamic_fields">
-                                            <div class="j-additional-section">
-                                                <h6>Additional Information</h6>
+                                            <div class="mb-4">
+                                                <h6 class="text-muted mb-3">Additional Information</h6>
                                                 <t t-foreach="dynamic_fields" t-as="field">
-                                                    <div class="j-dynamic-field">
+                                                    <div t-att-class="'mb-3 ' + (field.get('column_width', 'col-12') if field.get('column_width') != 'col-12' else '')">
                                                         <!-- Text Field -->
                                                         <t t-if="field['field_type'] in ['char', 'text']">
-                                                            <t t-if="field['field_type'] == 'char'">
-                                                                <input type="text"
-                                                                       class="j-form-input"
-                                                                       t-att-id="'dynamic_' + field['field_name']"
-                                                                       t-att-name="field['field_name']"
-                                                                       t-att-placeholder="field['placeholder'] or field['field_label'] + (' *' if field['required'] else '')"
-                                                                       t-att-required="'required' if field['required'] else None"/>
-                                                            </t>
-                                                            <t t-if="field['field_type'] == 'text'">
-                                                                <textarea class="j-form-input"
-                                                                          t-att-id="'dynamic_' + field['field_name']"
-                                                                          t-att-name="field['field_name']"
-                                                                          t-att-placeholder="field['placeholder'] or field['field_label'] + (' *' if field['required'] else '')"
-                                                                          t-att-required="'required' if field['required'] else None"
-                                                                          style="height: 80px; resize: vertical;"></textarea>
-                                                            </t>
+                                                            <div class="form-floating">
+                                                                <t t-if="field['field_type'] == 'char'">
+                                                                    <input type="text"
+                                                                           class="form-control"
+                                                                           t-att-id="'dynamic_' + field['field_name']"
+                                                                           t-att-name="field['field_name']"
+                                                                           t-att-placeholder="field['placeholder'] or field['field_label']"
+                                                                           t-att-required="'required' if field['required'] else None"/>
+                                                                </t>
+                                                                <t t-if="field['field_type'] == 'text'">
+                                                                    <textarea class="form-control"
+                                                                              t-att-id="'dynamic_' + field['field_name']"
+                                                                              t-att-name="field['field_name']"
+                                                                              t-att-placeholder="field['placeholder'] or field['field_label']"
+                                                                              t-att-required="'required' if field['required'] else None"
+                                                                              style="height: 100px;"></textarea>
+                                                                </t>
+                                                                <label t-att-for="'dynamic_' + field['field_name']">
+                                                                    <i class="fa fa-edit me-1"></i>
+                                                                    <t t-esc="field['field_label']"/>
+                                                                    <span t-if="field['required']"> *</span>
+                                                                </label>
+                                                            </div>
                                                         </t>
                                                         
                                                         <!-- Number Fields -->
                                                         <t t-if="field['field_type'] in ['integer', 'float']">
-                                                            <input t-att-type="'number'"
-                                                                   class="j-form-input"
-                                                                   t-att-id="'dynamic_' + field['field_name']"
-                                                                   t-att-name="field['field_name']"
-                                                                   t-att-placeholder="field['placeholder'] or field['field_label'] + (' *' if field['required'] else '')"
-                                                                   t-att-step="'any' if field['field_type'] == 'float' else '1'"
-                                                                   t-att-required="'required' if field['required'] else None"/>
+                                                            <div class="form-floating">
+                                                                <input t-att-type="'number'"
+                                                                       class="form-control"
+                                                                       t-att-id="'dynamic_' + field['field_name']"
+                                                                       t-att-name="field['field_name']"
+                                                                       t-att-placeholder="field['placeholder'] or field['field_label']"
+                                                                       t-att-step="'any' if field['field_type'] == 'float' else '1'"
+                                                                       t-att-required="'required' if field['required'] else None"/>
+                                                                <label t-att-for="'dynamic_' + field['field_name']">
+                                                                    <i class="fa fa-hashtag me-1"></i>
+                                                                    <t t-esc="field['field_label']"/>
+                                                                    <span t-if="field['required']"> *</span>
+                                                                </label>
+                                                            </div>
                                                         </t>
                                                         
                                                         <!-- Selection Fields -->
@@ -271,35 +349,67 @@
 
                                                         <!-- Date Fields -->
                                                         <t t-if="field['field_type'] in ['date', 'datetime']">
-                                                            <input t-att-type="'datetime-local' if field['field_type'] == 'datetime' else 'date'"
-                                                                   class="j-form-input"
-                                                                   t-att-id="'dynamic_' + field['field_name']"
-                                                                   t-att-name="field['field_name']"
-                                                                   t-att-required="'required' if field['required'] else None"/>
+                                                            <div class="form-floating">
+                                                                <input t-att-type="'datetime-local' if field['field_type'] == 'datetime' else 'date'"
+                                                                       class="form-control"
+                                                                       t-att-id="'dynamic_' + field['field_name']"
+                                                                       t-att-name="field['field_name']"
+                                                                       t-att-required="'required' if field['required'] else None"/>
+                                                                <label t-att-for="'dynamic_' + field['field_name']">
+                                                                    <i class="fa fa-calendar me-1"></i>
+                                                                    <t t-esc="field['field_label']"/>
+                                                                    <span t-if="field['required']"> *</span>
+                                                                </label>
+                                                            </div>
                                                         </t>
 
-                                                        <!-- File Upload Field -->
+                                                        <!-- File Upload Field (like avatar_1920) -->
                                                         <t t-if="field['field_type'] == 'binary'">
-                                                            <input type="file"
-                                                                   class="j-form-input"
-                                                                   t-att-id="'dynamic_' + field['field_name']"
-                                                                   t-att-name="field['field_name']"
-                                                                   t-att-accept="'image/*' if 'avatar' in field['field_name'] or 'image' in field['field_name'] else None"
-                                                                   t-att-required="'required' if field['required'] else None"/>
+                                                            <div class="mb-2">
+                                                                <label t-att-for="'dynamic_' + field['field_name']" class="form-label">
+                                                                    <i class="fa fa-upload me-1"></i>
+                                                                    <t t-esc="field['field_label']"/>
+                                                                    <span t-if="field['required']"> *</span>
+                                                                </label>
+                                                                <input type="file"
+                                                                       class="form-control"
+                                                                       t-att-id="'dynamic_' + field['field_name']"
+                                                                       t-att-name="field['field_name']"
+                                                                       t-att-accept="'image/*' if 'avatar' in field['field_name'] or 'image' in field['field_name'] else None"
+                                                                       t-att-required="'required' if field['required'] else None"/>
+                                                                <t t-if="field['help_text']">
+                                                                    <div class="form-text">
+                                                                        <t t-esc="field['help_text']"/>
+                                                                    </div>
+                                                                </t>
+                                                            </div>
                                                         </t>
                                                         
                                                         <!-- Boolean Field -->
                                                         <t t-if="field['field_type'] == 'boolean'">
-                                                            <div style="margin-top: 0.5rem;">
+                                                            <div class="form-check mb-2">
                                                                 <input type="checkbox"
+                                                                       class="form-check-input"
                                                                        t-att-id="'dynamic_' + field['field_name']"
                                                                        t-att-name="field['field_name']"
                                                                        value="1"
                                                                        t-att-required="'required' if field['required'] else None"/>
-                                                                <label t-att-for="'dynamic_' + field['field_name']" style="margin-left: 0.5rem; font-size: 0.875rem;">
+                                                                <label class="form-check-label" t-att-for="'dynamic_' + field['field_name']">
                                                                     <t t-esc="field['field_label']"/>
                                                                     <span t-if="field['required']"> *</span>
                                                                 </label>
+                                                                <t t-if="field['help_text']">
+                                                                    <div class="form-text">
+                                                                        <t t-esc="field['help_text']"/>
+                                                                    </div>
+                                                                </t>
+                                                            </div>
+                                                        </t>
+                                                        
+                                                        <!-- Help Text for non-boolean fields -->
+                                                        <t t-if="field['help_text'] and field['field_type'] != 'boolean' and field['field_type'] != 'binary'">
+                                                            <div class="form-text">
+                                                                <t t-esc="field['help_text']"/>
                                                             </div>
                                                         </t>
                                                     </div>
@@ -308,16 +418,20 @@
                                         </t>
 
                                         <!-- Submit Button -->
-                                        <button type="submit" class="j-submit-btn" id="submitBtn">
-                                            <i class="fa fa-user-plus me-2"></i>
-                                            Create Account
-                                        </button>
+                                        <div class="d-grid gap-2">
+                                            <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
+                                                <i class="fa fa-user-plus me-2"></i>
+                                                Create Account
+                                            </button>
+                                        </div>
 
                                         <!-- Login Link -->
-                                        <div class="j-login-link">
-                                            <p>
+                                        <div class="text-center mt-3">
+                                            <p class="mb-0">
                                                 Already have an account?
-                                                <a href="/web/login">Sign In</a>
+                                                <a href="/web/login" class="text-primary text-decoration-none">
+                                                    <strong>Sign In</strong>
+                                                </a>
                                             </p>
                                         </div>
                                     </form>
