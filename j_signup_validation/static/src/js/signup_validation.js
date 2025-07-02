@@ -9,8 +9,8 @@
     // Main validation controller
     class SignupValidator {
         constructor() {
-            this.form = document.querySelector('.j-signup-form');
-            this.emailInput = document.getElementById('login');
+            this.form = document.getElementById('signupForm');
+            this.emailInput = document.getElementById('email');
             this.phoneInput = document.getElementById('phone');
             this.passwordInput = document.getElementById('password');
             this.confirmPasswordInput = document.getElementById('confirm_password');
@@ -151,15 +151,21 @@
         }
 
         setEmailValidationStatus(status, message) {
-            // In the new compact design, we don't show visual validation status
-            // But we keep track of validation states for form submission
+            const statusElement = document.querySelector('.email-validation-status');
             const emailInput = this.emailInput;
-            
-            // Remove loading state
-            emailInput.classList.remove('loading');
-            
-            // The new design doesn't show visual feedback, but the validation still works
-            console.log(`Email validation: ${status} - ${message}`);
+
+            if (statusElement) {
+                statusElement.textContent = message;
+                statusElement.className = `email-validation-status ${status}`;
+            }
+
+            // Update input visual state
+            emailInput.classList.remove('is-valid', 'is-invalid');
+            if (status === 'valid') {
+                emailInput.classList.add('is-valid');
+            } else if (status === 'invalid') {
+                emailInput.classList.add('is-invalid');
+            }
         }
 
         // Phone validation
@@ -225,15 +231,21 @@
         }
 
         setPhoneValidationStatus(status, message) {
-            // In the new compact design, we don't show visual validation status
-            // But we keep track of validation states for form submission
+            const statusElement = document.querySelector('.phone-validation-status');
             const phoneInput = this.phoneInput;
-            
-            // Remove loading state
-            phoneInput.classList.remove('loading');
-            
-            // The new design doesn't show visual feedback, but the validation still works
-            console.log(`Phone validation: ${status} - ${message}`);
+
+            if (statusElement) {
+                statusElement.textContent = message;
+                statusElement.className = `phone-validation-status ${status}`;
+            }
+
+            // Update input visual state
+            phoneInput.classList.remove('is-valid', 'is-invalid');
+            if (status === 'valid') {
+                phoneInput.classList.add('is-valid');
+            } else if (status === 'invalid') {
+                phoneInput.classList.add('is-invalid');
+            }
         }
 
         // Password confirmation validation
@@ -526,12 +538,13 @@
                 
                 const wrapper = input.parentNode;
                 
-                // Add proper CSS classes for new design
-                wrapper.classList.add('j-password-group');
+                // Add proper CSS classes
+                wrapper.classList.add('password-field-container', 'position-relative');
+                input.classList.add('password-input-with-toggle');
                 
                 const toggle = document.createElement('button');
                 toggle.type = 'button';
-                toggle.className = 'j-password-toggle';
+                toggle.className = 'password-toggle-btn';
                 toggle.innerHTML = '<i class="fa fa-eye"></i>';
                 
                 toggle.addEventListener('click', () => {
@@ -545,9 +558,13 @@
                 // For password field, insert before the password strength container
                 // For confirm password, just append to wrapper
                 if (input.id === 'password') {
-                    const passwordStrengthContainer = wrapper.querySelector('.j-password-strength');
+                    const passwordStrengthContainer = wrapper.querySelector('.password-strength-container');
+                    const invalidFeedback = wrapper.querySelector('.invalid-feedback');
                     
-                    if (passwordStrengthContainer) {
+                    // Insert after input and label, but before other elements
+                    if (invalidFeedback) {
+                        wrapper.insertBefore(toggle, invalidFeedback);
+                    } else if (passwordStrengthContainer) {
                         wrapper.insertBefore(toggle, passwordStrengthContainer);
                     } else {
                         wrapper.appendChild(toggle);

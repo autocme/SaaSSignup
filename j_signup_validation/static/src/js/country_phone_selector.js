@@ -243,14 +243,34 @@
         }
 
         setPhoneValidationStatus(status, message) {
-            // In the new compact design, we don't show visual validation status
-            // But we keep track of validation states for form submission
-            
-            // Remove loading state
+            const statusElement = document.querySelector('.phone-validation-status');
+            if (!statusElement) return;
+
+            // Remove existing classes
             this.phoneInput.classList.remove('is-valid', 'is-invalid', 'loading');
-            
-            // The new design doesn't show visual feedback, but the validation still works
-            console.log(`Phone validation: ${status} - ${message}`);
+            statusElement.className = 'phone-validation-status';
+
+            switch (status) {
+                case 'valid':
+                    this.phoneInput.classList.add('is-valid');
+                    statusElement.classList.add('text-success');
+                    statusElement.innerHTML = `<i class="fa fa-check"></i> ${message}`;
+                    break;
+                case 'invalid':
+                    this.phoneInput.classList.add('is-invalid');
+                    statusElement.classList.add('text-danger');
+                    statusElement.innerHTML = `<i class="fa fa-times"></i> ${message}`;
+                    break;
+                case 'loading':
+                    this.phoneInput.classList.add('loading');
+                    statusElement.classList.add('text-muted');
+                    statusElement.innerHTML = `<i class="fa fa-spinner fa-spin"></i> ${message}`;
+                    break;
+                case 'error':
+                    statusElement.classList.add('text-warning');
+                    statusElement.innerHTML = `<i class="fa fa-exclamation-triangle"></i> ${message}`;
+                    break;
+            }
         }
 
         makeSelectSearchable() {

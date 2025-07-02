@@ -196,12 +196,12 @@
         constructor(passwordInput, validator) {
             this.passwordInput = passwordInput;
             this.validator = validator;
-            this.container = this.passwordInput.parentNode.querySelector('.j-password-strength');
+            this.container = this.passwordInput.closest('.form-floating').querySelector('.password-strength-container');
             
             if (this.container) {
-                this.progressBar = this.container.querySelector('.j-strength-progress');
-                this.strengthLabel = this.container.querySelector('.j-strength-label');
-                this.requirementsList = this.container.querySelector('.j-password-requirements');
+                this.progressBar = this.container.querySelector('.password-strength-progress');
+                this.strengthLabel = this.container.querySelector('.strength-label');
+                this.requirementsList = this.container.querySelector('.password-requirements-list');
                 this.init();
             } else {
                 console.warn('Password strength container not found');
@@ -240,15 +240,13 @@
         }
 
         updateUI(result) {
-            // Update progress bar with new CSS classes
+            // Update progress bar
             this.progressBar.style.width = `${result.score}%`;
-            this.progressBar.className = `j-strength-progress j-strength-${result.level}`;
+            this.progressBar.className = `password-strength-progress ${result.level}`;
 
-            // Update strength label (if exists)
-            if (this.strengthLabel) {
-                this.strengthLabel.textContent = result.label;
-                this.strengthLabel.className = `j-strength-label j-strength-${result.level}`;
-            }
+            // Update strength label
+            this.strengthLabel.textContent = result.label;
+            this.strengthLabel.className = `strength-label ${result.level}`;
 
             // Update requirements list
             this.updateRequirementsList(result.requirements);
@@ -260,27 +258,35 @@
         updateRequirementsList(requirements) {
             if (!this.requirementsList) return;
             
-            // Update each requirement by matching data attributes with new CSS classes
+            // Update each requirement by matching data attributes
             requirements.forEach(requirement => {
                 const item = this.requirementsList.querySelector(`[data-requirement="${requirement.id}"]`);
                 if (item) {
                     const icon = item.querySelector('i');
                     
                     if (requirement.met) {
-                        item.classList.add('j-requirement-met');
-                        if (icon) icon.className = 'fa fa-check';
+                        item.classList.add('met');
+                        if (icon) icon.className = 'fa fa-check text-success';
                     } else {
-                        item.classList.remove('j-requirement-met');
-                        if (icon) icon.className = 'fa fa-times';
+                        item.classList.remove('met');
+                        if (icon) icon.className = 'fa fa-times text-danger';
                     }
                 }
             });
         }
 
         updateFormValidation(result) {
-            // In the new compact design, we don't show visual validation feedback
-            // The validation logic still works for form submission control
-            console.log(`Password validation: ${result.valid ? 'valid' : 'invalid'} - Score: ${result.score}`);
+            const input = this.passwordInput;
+            
+            if (result.valid && input.value.length > 0) {
+                input.classList.remove('is-invalid');
+                input.classList.add('is-valid');
+            } else if (input.value.length > 0) {
+                input.classList.remove('is-valid');
+                input.classList.add('is-invalid');
+            } else {
+                input.classList.remove('is-valid', 'is-invalid');
+            }
         }
 
         addVisualFeedback(result) {
