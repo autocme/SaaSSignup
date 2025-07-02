@@ -196,12 +196,12 @@
         constructor(passwordInput, validator) {
             this.passwordInput = passwordInput;
             this.validator = validator;
-            this.container = this.passwordInput.closest('.form-floating').querySelector('.password-strength-container');
+            this.container = this.passwordInput.parentNode.querySelector('.j-password-strength');
             
             if (this.container) {
-                this.progressBar = this.container.querySelector('.password-strength-progress');
-                this.strengthLabel = this.container.querySelector('.strength-label');
-                this.requirementsList = this.container.querySelector('.password-requirements-list');
+                this.progressBar = this.container.querySelector('.j-strength-progress');
+                this.strengthLabel = this.container.querySelector('.j-strength-label');
+                this.requirementsList = this.container.querySelector('.j-password-requirements');
                 this.init();
             } else {
                 console.warn('Password strength container not found');
@@ -240,13 +240,15 @@
         }
 
         updateUI(result) {
-            // Update progress bar
+            // Update progress bar with new CSS classes
             this.progressBar.style.width = `${result.score}%`;
-            this.progressBar.className = `password-strength-progress ${result.level}`;
+            this.progressBar.className = `j-strength-progress j-strength-${result.level}`;
 
-            // Update strength label
-            this.strengthLabel.textContent = result.label;
-            this.strengthLabel.className = `strength-label ${result.level}`;
+            // Update strength label (if exists)
+            if (this.strengthLabel) {
+                this.strengthLabel.textContent = result.label;
+                this.strengthLabel.className = `j-strength-label j-strength-${result.level}`;
+            }
 
             // Update requirements list
             this.updateRequirementsList(result.requirements);
