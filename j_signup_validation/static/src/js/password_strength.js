@@ -260,35 +260,27 @@
         updateRequirementsList(requirements) {
             if (!this.requirementsList) return;
             
-            // Update each requirement by matching data attributes
+            // Update each requirement by matching data attributes with new CSS classes
             requirements.forEach(requirement => {
                 const item = this.requirementsList.querySelector(`[data-requirement="${requirement.id}"]`);
                 if (item) {
                     const icon = item.querySelector('i');
                     
                     if (requirement.met) {
-                        item.classList.add('met');
-                        if (icon) icon.className = 'fa fa-check text-success';
+                        item.classList.add('j-requirement-met');
+                        if (icon) icon.className = 'fa fa-check';
                     } else {
-                        item.classList.remove('met');
-                        if (icon) icon.className = 'fa fa-times text-danger';
+                        item.classList.remove('j-requirement-met');
+                        if (icon) icon.className = 'fa fa-times';
                     }
                 }
             });
         }
 
         updateFormValidation(result) {
-            const input = this.passwordInput;
-            
-            if (result.valid && input.value.length > 0) {
-                input.classList.remove('is-invalid');
-                input.classList.add('is-valid');
-            } else if (input.value.length > 0) {
-                input.classList.remove('is-valid');
-                input.classList.add('is-invalid');
-            } else {
-                input.classList.remove('is-valid', 'is-invalid');
-            }
+            // In the new compact design, we don't show visual validation feedback
+            // The validation logic still works for form submission control
+            console.log(`Password validation: ${result.valid ? 'valid' : 'invalid'} - Score: ${result.score}`);
         }
 
         addVisualFeedback(result) {
