@@ -1,181 +1,207 @@
-/* J Signup Validation - Login Layout Styles */
+/* J Signup Validation - Custom Signup Form Styles - Scoped to j-custom-signup only */
 
-/* Signup form container within web.login_layout */
-.oe_signup {
-    max-width: 650px;
-    margin: 0 auto;
-    padding: 0;
+/* IMPORTANT: All styles are scoped to .j-custom-signup to prevent affecting base templates */
+
+/* RESET: Ensure base Odoo signup form stays centered and unaffected */
+.oe_signup:not(.j-custom-signup) {
+    max-width: 400px !important;
+    margin: 0 auto !important;
+    text-align: left !important;
 }
 
-.oe_signup_form {
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-    padding: 2.5rem;
-    margin: 1rem 0;
-    border: 1px solid #e9ecef;
+.oe_signup_form:not(.j-custom-signup-form) {
+    background: transparent !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    width: 100% !important;
 }
 
-/* Header styling */
-.signup-form-header h3 {
-    color: #343a40;
-    font-weight: 600;
-    font-size: 1.5rem;
+/* Signup form container - ONLY for our custom signup */
+.j-custom-signup {
+    max-width: 700px !important;
+    margin: 2rem auto !important;
+    padding: 0 !important;
+    width: 100% !important;
+    display: block !important;
 }
 
-.signup-form-header p {
-    font-size: 0.9rem;
-    color: #6c757d;
+.j-custom-signup-form {
+    background: #ffffff !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1) !important;
+    padding: 3rem !important;
+    margin: 1rem auto !important;
+    border: 1px solid #e9ecef !important;
+    width: 100% !important;
+    max-width: none !important;
 }
 
-/* Form field styling */
-.form-floating {
-    margin-bottom: 1rem;
+/* Header styling - ONLY in our custom form */
+.j-custom-signup-form .signup-form-header h3 {
+    color: #343a40 !important;
+    font-weight: 600 !important;
+    font-size: 1.75rem !important;
 }
 
-.form-floating > .form-control {
-    height: 4rem;
-    padding: 1.25rem 0.75rem;
-    font-size: 1rem;
-    border: 2px solid #e9ecef;
-    border-radius: 8px;
-    transition: all 0.3s ease;
+.j-custom-signup-form .signup-form-header p {
+    font-size: 1rem !important;
+    color: #6c757d !important;
 }
 
-.form-floating > .form-control:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.15);
+/* Form field styling - ONLY in our custom form */
+.j-custom-signup-form .form-floating {
+    margin-bottom: 1.5rem !important;
 }
 
-.form-floating > label {
-    padding: 1.25rem 0.75rem;
-    font-size: 0.9rem;
-    color: #6c757d;
-    font-weight: 500;
+.j-custom-signup-form .form-floating > .form-control {
+    height: 4.5rem !important;
+    padding: 1.5rem 1rem !important;
+    font-size: 1.1rem !important;
+    border: 2px solid #e9ecef !important;
+    border-radius: 8px !important;
+    transition: all 0.3s ease !important;
 }
 
-/* Account type radio buttons */
-.form-check {
-    margin-bottom: 0.5rem;
+.j-custom-signup-form .form-floating > .form-control:focus {
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.15) !important;
 }
 
-.form-check-input:checked {
-    background-color: #667eea;
-    border-color: #667eea;
+.j-custom-signup-form .form-floating > label {
+    padding: 1.5rem 1rem !important;
+    font-size: 1rem !important;
+    color: #6c757d !important;
+    font-weight: 500 !important;
 }
 
-.form-check-label {
-    font-weight: 500;
-    color: #495057;
-    cursor: pointer;
+/* Account type radio buttons - ONLY in our custom form */
+.j-custom-signup-form .form-check {
+    margin-bottom: 0.75rem !important;
 }
 
-/* Country selector styling - only within our signup form */
-.oe_signup_form .country-select {
-    border: 2px solid #e9ecef;
-    border-radius: 8px;
-    padding: 1rem;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    height: 4rem;
+.j-custom-signup-form .form-check-input:checked {
+    background-color: #667eea !important;
+    border-color: #667eea !important;
 }
 
-.oe_signup_form .country-select:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.15);
-    outline: none;
+.j-custom-signup-form .form-check-label {
+    font-weight: 500 !important;
+    color: #495057 !important;
+    cursor: pointer !important;
+    font-size: 1rem !important;
 }
 
-/* Password strength indicator */
-.password-strength-container {
-    margin-top: 0.75rem;
+/* Country selector styling - ONLY in our custom form */
+.j-custom-signup-form .country-select {
+    border: 2px solid #e9ecef !important;
+    border-radius: 8px !important;
+    padding: 1.25rem !important;
+    font-size: 1.1rem !important;
+    transition: all 0.3s ease !important;
+    height: 4.5rem !important;
+    width: 100% !important;
 }
 
-.password-strength-bar {
-    height: 4px;
-    background-color: #e9ecef;
-    border-radius: 2px;
-    overflow: hidden;
-    margin-bottom: 0.5rem;
+.j-custom-signup-form .country-select:focus {
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.15) !important;
+    outline: none !important;
 }
 
-.password-strength-progress {
-    height: 100%;
-    transition: all 0.3s ease;
-    border-radius: 2px;
+/* Password strength indicator - ONLY in our custom form */
+.j-custom-signup-form .password-strength-container {
+    margin-top: 1rem !important;
 }
 
-.strength-very-weak { background-color: #dc3545; }
-.strength-weak { background-color: #fd7e14; }
-.strength-medium { background-color: #ffc107; }
-.strength-strong { background-color: #28a745; }
-.strength-very-strong { background-color: #20c997; }
-
-/* Password requirements grid */
-.requirements-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.5rem;
-    font-size: 0.8rem;
+.j-custom-signup-form .password-strength-bar {
+    height: 4px !important;
+    background-color: #e9ecef !important;
+    border-radius: 2px !important;
+    overflow: hidden !important;
+    margin-bottom: 0.75rem !important;
 }
 
-.requirement {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    color: #6c757d;
+.j-custom-signup-form .password-strength-progress {
+    height: 100% !important;
+    transition: all 0.3s ease !important;
+    border-radius: 2px !important;
 }
 
-.requirement.valid {
-    color: #28a745;
+.j-custom-signup-form .strength-very-weak { background-color: #dc3545 !important; }
+.j-custom-signup-form .strength-weak { background-color: #fd7e14 !important; }
+.j-custom-signup-form .strength-medium { background-color: #ffc107 !important; }
+.j-custom-signup-form .strength-strong { background-color: #28a745 !important; }
+.j-custom-signup-form .strength-very-strong { background-color: #20c997 !important; }
+
+/* Password requirements grid - ONLY in our custom form */
+.j-custom-signup-form .requirements-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 0.75rem !important;
+    font-size: 0.9rem !important;
 }
 
-.requirement i.fa-check {
-    color: #28a745;
+.j-custom-signup-form .requirement {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    color: #6c757d !important;
 }
 
-.requirement i.fa-times {
-    color: #dc3545;
+.j-custom-signup-form .requirement.valid {
+    color: #28a745 !important;
 }
 
-/* Password toggle buttons */
-.password-toggle {
-    position: absolute;
-    right: 0.75rem;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: #6c757d;
-    cursor: pointer;
-    padding: 0.25rem;
-    z-index: 5;
+.j-custom-signup-form .requirement i.fa-check {
+    color: #28a745 !important;
 }
 
-.password-toggle:hover {
-    color: #495057;
+.j-custom-signup-form .requirement i.fa-times {
+    color: #dc3545 !important;
 }
 
-.form-floating {
-    position: relative;
+/* Password toggle buttons - ONLY in our custom form */
+.j-custom-signup-form .password-toggle {
+    position: absolute !important;
+    right: 1rem !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    background: none !important;
+    border: none !important;
+    color: #6c757d !important;
+    cursor: pointer !important;
+    padding: 0.5rem !important;
+    z-index: 5 !important;
+    font-size: 1.1rem !important;
 }
 
-/* VAT/CR field animation */
-#vat_cr_field {
-    overflow: hidden;
-    transition: max-height 0.3s ease, padding 0.3s ease, margin 0.3s ease;
-    max-height: 0;
-    padding: 0;
-    margin: 0;
-    display: none;
+.j-custom-signup-form .password-toggle:hover {
+    color: #495057 !important;
 }
 
-#vat_cr_field.show {
-    display: block;
-    max-height: 100px;
-    padding: 0;
-    margin-bottom: 1rem;
-    animation: slideDown 0.3s ease forwards;
+.j-custom-signup-form .form-floating {
+    position: relative !important;
+}
+
+/* VAT/CR field animation - ONLY in our custom form */
+.j-custom-signup-form #vat_cr_field {
+    overflow: hidden !important;
+    transition: max-height 0.3s ease, padding 0.3s ease, margin 0.3s ease !important;
+    max-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: none !important;
+}
+
+.j-custom-signup-form #vat_cr_field.show {
+    display: block !important;
+    max-height: 120px !important;
+    padding: 0 !important;
+    margin-bottom: 1.5rem !important;
+    animation: slideDown 0.3s ease forwards !important;
 }
 
 @keyframes slideDown {
@@ -189,81 +215,82 @@
     }
 }
 
-/* Submit button - only target buttons within our signup form */
-.oe_signup_form .btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border: none;
-    border-radius: 8px;
-    padding: 0.875rem 1.5rem;
-    font-weight: 600;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
+/* Submit button - ONLY in our custom form */
+.j-custom-signup-form .btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 1.25rem 2rem !important;
+    font-weight: 600 !important;
+    font-size: 1.1rem !important;
+    transition: all 0.3s ease !important;
+    position: relative !important;
+    overflow: hidden !important;
+    width: 100% !important;
 }
 
-.oe_signup_form .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+.j-custom-signup-form .btn-primary:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3) !important;
 }
 
-.oe_signup_form .btn-primary:disabled {
-    background: #6c757d;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
+.j-custom-signup-form .btn-primary:disabled {
+    background: #6c757d !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+    box-shadow: none !important;
 }
 
-.oe_signup_form .btn-secondary {
-    background: #6c757d;
-    border: none;
-    border-radius: 8px;
-    padding: 0.875rem 1.5rem;
-    font-weight: 600;
-    color: white;
+.j-custom-signup-form .btn-secondary {
+    background: #6c757d !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 1.25rem 2rem !important;
+    font-weight: 600 !important;
+    color: white !important;
 }
 
-/* Loading state - only for our signup form */
-.oe_signup_form .btn.loading {
-    pointer-events: none;
+/* Loading state - ONLY in our custom form */
+.j-custom-signup-form .btn.loading {
+    pointer-events: none !important;
 }
 
-/* Phone preview */
-.phone-preview {
-    font-size: 0.85rem;
-    color: #6c757d;
-    margin-top: 0.5rem;
+/* Phone preview - ONLY in our custom form */
+.j-custom-signup-form .phone-preview {
+    font-size: 0.95rem !important;
+    color: #6c757d !important;
+    margin-top: 0.75rem !important;
 }
 
-/* Validation status */
-.email-validation-status,
-.phone-validation-status {
-    font-size: 0.85rem;
-    margin-top: 0.5rem;
-    font-weight: 500;
+/* Validation status - ONLY in our custom form */
+.j-custom-signup-form .email-validation-status,
+.j-custom-signup-form .phone-validation-status {
+    font-size: 0.95rem !important;
+    margin-top: 0.75rem !important;
+    font-weight: 500 !important;
 }
 
-.email-validation-status.valid,
-.phone-validation-status.valid {
-    color: #28a745;
+.j-custom-signup-form .email-validation-status.valid,
+.j-custom-signup-form .phone-validation-status.valid {
+    color: #28a745 !important;
 }
 
-.email-validation-status.invalid,
-.phone-validation-status.invalid {
-    color: #dc3545;
+.j-custom-signup-form .email-validation-status.invalid,
+.j-custom-signup-form .phone-validation-status.invalid {
+    color: #dc3545 !important;
 }
 
-.email-validation-status.checking,
-.phone-validation-status.checking {
-    color: #ffc107;
+.j-custom-signup-form .email-validation-status.checking,
+.j-custom-signup-form .phone-validation-status.checking {
+    color: #ffc107 !important;
 }
 
-/* Form input loading state */
-.form-control.loading {
-    background-image: url("data:image/svg+xml,%3csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M10 2a8 8 0 018 8 1 1 0 01-2 0 6 6 0 10-6 6v1a1 1 0 01-2 0V10a8 8 0 018-8z' fill='%23667eea'/%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 0.75rem center;
-    animation: spin 1s linear infinite;
+/* Form input loading state - ONLY in our custom form */
+.j-custom-signup-form .form-control.loading {
+    background-image: url("data:image/svg+xml,%3csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M10 2a8 8 0 018 8 1 1 0 01-2 0 6 6 0 10-6 6v1a1 1 0 01-2 0V10a8 8 0 018-8z' fill='%23667eea'/%3e%3c/svg%3e") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 1rem center !important;
+    animation: spin 1s linear infinite !important;
 }
 
 @keyframes spin {
@@ -271,95 +298,99 @@
     to { transform: rotate(360deg); }
 }
 
-/* Alert styling - only within our signup form */
-.oe_signup_form .alert {
-    border-radius: 8px;
-    border: none;
-    margin-bottom: 1.5rem;
-    font-size: 0.9rem;
+/* Alert styling - ONLY in our custom form */
+.j-custom-signup-form .alert {
+    border-radius: 8px !important;
+    border: none !important;
+    margin-bottom: 2rem !important;
+    font-size: 1rem !important;
+    padding: 1rem 1.5rem !important;
 }
 
-.oe_signup_form .alert-danger {
-    background-color: #f8d7da;
-    color: #721c24;
+.j-custom-signup-form .alert-danger {
+    background-color: #f8d7da !important;
+    color: #721c24 !important;
 }
 
-.oe_signup_form .alert-success {
-    background-color: #d1edff;
-    color: #0c5460;
+.j-custom-signup-form .alert-success {
+    background-color: #d1edff !important;
+    color: #0c5460 !important;
 }
 
-/* Responsive design */
-@media (max-width: 576px) {
-    .oe_signup {
-        max-width: 95%;
-        margin: 0 auto;
+/* Additional Information section styling - ONLY in our custom form */
+.j-custom-signup-form .additional-info-section {
+    margin-top: 2rem !important;
+    padding-top: 2rem !important;
+    border-top: 1px solid #e9ecef !important;
+}
+
+.j-custom-signup-form .additional-info-section h6 {
+    color: #495057 !important;
+    font-weight: 600 !important;
+    margin-bottom: 1.5rem !important;
+    font-size: 1.1rem !important;
+}
+
+/* Dynamic field styling - ONLY in our custom form */
+.j-custom-signup-form .dynamic-field {
+    margin-bottom: 1.5rem !important;
+}
+
+/* File upload styling - ONLY in our custom form */
+.j-custom-signup-form .form-control[type="file"] {
+    padding: 1rem !important;
+    height: auto !important;
+    min-height: 4.5rem !important;
+}
+
+/* Checkbox styling for dynamic boolean fields - ONLY in our custom form */
+.j-custom-signup-form .form-check-input[type="checkbox"] {
+    margin-top: 0.5rem !important;
+    transform: scale(1.2) !important;
+}
+
+/* Login link styling - ONLY in our custom form */
+.j-custom-signup-form .text-center a {
+    color: #667eea !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+    font-size: 1rem !important;
+}
+
+.j-custom-signup-form .text-center a:hover {
+    color: #5a67d8 !important;
+    text-decoration: underline !important;
+}
+
+/* Responsive design - ONLY for our custom form */
+@media (max-width: 768px) {
+    .j-custom-signup {
+        max-width: 95% !important;
+        margin: 1rem auto !important;
     }
     
-    .oe_signup_form {
-        padding: 2rem;
-        margin: 0.5rem;
-        border-radius: 8px;
+    .j-custom-signup-form {
+        padding: 2rem !important;
+        margin: 0.5rem auto !important;
+        border-radius: 8px !important;
     }
     
-    .requirements-grid {
-        grid-template-columns: 1fr;
-        gap: 0.25rem;
+    .j-custom-signup-form .requirements-grid {
+        grid-template-columns: 1fr !important;
+        gap: 0.5rem !important;
     }
     
-    .form-floating > .form-control {
-        height: 3.5rem;
-        font-size: 0.95rem;
+    .j-custom-signup-form .form-floating > .form-control {
+        height: 4rem !important;
+        font-size: 1rem !important;
     }
     
-    .oe_signup_form .country-select {
-        height: 3.5rem;
-        font-size: 0.95rem;
+    .j-custom-signup-form .country-select {
+        height: 4rem !important;
+        font-size: 1rem !important;
     }
     
-    .signup-form-header h3 {
-        font-size: 1.25rem;
+    .j-custom-signup-form .signup-form-header h3 {
+        font-size: 1.5rem !important;
     }
-}
-
-/* Additional Information section styling */
-.additional-info-section {
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid #e9ecef;
-}
-
-.additional-info-section h6 {
-    color: #495057;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    font-size: 1rem;
-}
-
-/* Dynamic field styling */
-.dynamic-field {
-    margin-bottom: 1rem;
-}
-
-/* File upload styling */
-.form-control[type="file"] {
-    padding: 0.75rem;
-    height: auto;
-}
-
-/* Checkbox styling for dynamic boolean fields */
-.form-check-input[type="checkbox"] {
-    margin-top: 0.375rem;
-}
-
-/* Login link styling - only within our signup form */
-.oe_signup_form .text-center a {
-    color: #667eea;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.oe_signup_form .text-center a:hover {
-    color: #5a67d8;
-    text-decoration: underline;
 }
