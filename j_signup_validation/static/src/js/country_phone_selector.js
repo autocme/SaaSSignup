@@ -243,12 +243,34 @@
         }
 
         setPhoneValidationStatus(status, message) {
-            // Remove any loading state that could cause flipping
+            const statusElement = document.querySelector('.phone-validation-status');
+            if (!statusElement) return;
+
+            // Remove existing classes
             this.phoneInput.classList.remove('is-valid', 'is-invalid', 'loading');
-            
-            // Validation works silently - no visual feedback that causes layout shifts
-            // This prevents the flipping issue while preserving validation logic
-            console.log(`Phone validation: ${status} - ${message}`);
+            statusElement.className = 'phone-validation-status';
+
+            switch (status) {
+                case 'valid':
+                    this.phoneInput.classList.add('is-valid');
+                    statusElement.classList.add('text-success');
+                    statusElement.innerHTML = `<i class="fa fa-check"></i> ${message}`;
+                    break;
+                case 'invalid':
+                    this.phoneInput.classList.add('is-invalid');
+                    statusElement.classList.add('text-danger');
+                    statusElement.innerHTML = `<i class="fa fa-times"></i> ${message}`;
+                    break;
+                case 'loading':
+                    this.phoneInput.classList.add('loading');
+                    statusElement.classList.add('text-muted');
+                    statusElement.innerHTML = `<i class="fa fa-spinner fa-spin"></i> ${message}`;
+                    break;
+                case 'error':
+                    statusElement.classList.add('text-warning');
+                    statusElement.innerHTML = `<i class="fa fa-exclamation-triangle"></i> ${message}`;
+                    break;
+            }
         }
 
         makeSelectSearchable() {
