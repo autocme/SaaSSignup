@@ -24,8 +24,8 @@
                 <link rel="stylesheet" href="/j_signup_validation/static/src/css/signup_form.css"/>
             </t>
 
-            <div class="oe_signup j-custom-signup">
-                <div class="oe_signup_form j-custom-signup-form">
+            <div class="oe_signup j-enhanced-registration-container">
+                <div class="oe_signup_form j-enhanced-registration-form">
                     <div class="signup-form-header text-center mb-4">
                         <h3 class="mb-2">
                             <i class="fa fa-user-plus me-2"></i>
