@@ -235,6 +235,15 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - No red borders or "field required" messages displayed - clean, professional user experience
   - Form validation works seamlessly in background without visual distractions
   - Fixed model references after removing 'j' prefix from all class names and model names throughout the project
+- July 2, 2025: WEB.LOGIN_LAYOUT INTEGRATION - Integrated signup form with Odoo's standard login layout
+  - Added t-call="web.login_layout" to display signup form within standard Odoo login page structure
+  - Completely rewrote CSS to properly style form for login layout (removed standalone page styling)
+  - Form now displays in smaller, more appropriate size (max-width: 480px) within login layout
+  - Removed custom HTML structure (body, head tags) and integrated cleanly with web.login_layout
+  - Updated template structure to use .oe_signup and .oe_signup_form classes for proper login layout integration
+  - Form maintains all functionality while appearing as integrated part of Odoo's standard UI
+  - Responsive design ensures form works properly on mobile devices within login layout
+  - CSS styling optimized for login layout context with proper spacing and positioning
 
 ## User Preferences
 
