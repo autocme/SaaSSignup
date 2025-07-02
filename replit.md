@@ -226,14 +226,15 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
 - July 2, 2025: DYNAMIC FIELD REQUIRED VALIDATION FIX - Critical bug fix for dynamic field requirements
   - FIXED: Required dynamic fields validation now working properly in both frontend and backend
   - Enhanced JavaScript validation with validateDynamicFields() method that checks all required dynamic fields before form submission
-  - Added bindDynamicFieldEvents() method to provide real-time validation feedback on required dynamic fields
+  - Added bindDynamicFieldEvents() method to provide silent validation that updates submit button state
   - Updated isFormValid() method to include dynamic field validation in addition to standard field validation
-  - Enhanced showFormErrors() method to include specific error messages for empty required dynamic fields
   - BACKEND: Added _validate_dynamic_fields() method to controller for comprehensive server-side validation of required dynamic fields
   - Dynamic field validation supports all field types: text, number, date, file upload, with proper type-specific validation
-  - Users can no longer submit signup form with empty required dynamic fields - form button stays disabled and shows validation errors
+  - BEHAVIOR: Dynamic fields now behave exactly like standard fields (e.g., confirm password) - no visual error states or error messages
+  - Required dynamic fields silently prevent form submission by keeping "Create Account" button disabled
+  - No red borders or "field required" messages displayed - clean, professional user experience
+  - Form validation works seamlessly in background without visual distractions
   - Fixed model references after removing 'j' prefix from all class names and model names throughout the project
-  - Real-time validation provides immediate feedback when users fill required dynamic fields
 
 ## User Preferences
 

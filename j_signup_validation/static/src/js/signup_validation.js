@@ -425,18 +425,9 @@
             for (let field of requiredDynamicFields) {
                 const value = field.value.trim();
                 
-                // Check if field has value
+                // Check if field has value - no visual feedback, just return validation state
                 if (!value) {
-                    // Mark field as invalid
-                    field.classList.remove('is-valid');
-                    field.classList.add('is-invalid');
-                    this.setInputFeedback(field, 'This field is required', 'invalid');
                     return false;
-                } else {
-                    // Mark field as valid
-                    field.classList.remove('is-invalid');
-                    field.classList.add('is-valid');
-                    this.setInputFeedback(field, '', 'valid');
                 }
             }
             
@@ -461,23 +452,7 @@
         }
 
         handleDynamicFieldInput(event) {
-            const field = event.target;
-            const value = field.value.trim();
-            
-            // If field is required, validate it
-            if (field.hasAttribute('required')) {
-                if (!value) {
-                    field.classList.remove('is-valid');
-                    field.classList.add('is-invalid');
-                    this.setInputFeedback(field, 'This field is required', 'invalid');
-                } else {
-                    field.classList.remove('is-invalid');
-                    field.classList.add('is-valid');
-                    this.setInputFeedback(field, '', 'valid');
-                }
-            }
-            
-            // Update submit button state
+            // Simply update submit button state - no visual feedback on the field itself
             this.updateSubmitButton();
         }
 
@@ -532,15 +507,7 @@
             if (!this.validationStates.password) errors.push('Password is required');
             if (!this.validationStates.confirmPassword) errors.push('Password confirmation is required');
 
-            // Check dynamic required fields
-            const requiredDynamicFields = this.form.querySelectorAll('[id^="dynamic_"][required]');
-            requiredDynamicFields.forEach(field => {
-                if (!field.value.trim()) {
-                    const label = field.parentNode.querySelector('label');
-                    const fieldName = label ? label.textContent.replace('*', '').trim() : 'Additional field';
-                    errors.push(`${fieldName} is required`);
-                }
-            });
+            // Don't show dynamic field errors - they behave silently like confirm password
 
             this.showError(errors.join(', '));
         }
