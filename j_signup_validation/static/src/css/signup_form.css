@@ -43,7 +43,12 @@
     position: relative !important;
 }
 
-.j-enhanced-registration-form .form-floating > .form-control {
+.j-enhanced-registration-form .form-floating > .form-control,
+.j-enhanced-registration-form .form-floating > input,
+.j-enhanced-registration-form input[type="text"],
+.j-enhanced-registration-form input[type="email"],
+.j-enhanced-registration-form input[type="password"],
+.j-enhanced-registration-form input[type="tel"] {
     height: 4rem !important;
     padding: 1.25rem 0.75rem !important;
     font-size: 1rem !important;
@@ -52,15 +57,22 @@
     transition: all 0.3s ease !important;
     box-sizing: border-box !important;
     width: 100% !important;
+    background-color: white !important;
 }
 
-.j-enhanced-registration-form .form-floating > .form-control:focus {
+.j-enhanced-registration-form .form-floating > .form-control:focus,
+.j-enhanced-registration-form .form-floating > input:focus,
+.j-enhanced-registration-form input[type="text"]:focus,
+.j-enhanced-registration-form input[type="email"]:focus,
+.j-enhanced-registration-form input[type="password"]:focus,
+.j-enhanced-registration-form input[type="tel"]:focus {
     border-color: #667eea !important;
     box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.15) !important;
     outline: none !important;
 }
 
-.j-enhanced-registration-form .form-floating > label {
+.j-enhanced-registration-form .form-floating > label,
+.j-enhanced-registration-form label {
     padding: 1.25rem 0.75rem !important;
     font-size: 0.9rem !important;
     color: #6c757d !important;
@@ -84,7 +96,9 @@
 }
 
 /* Country selector styling within enhanced form */
-.j-enhanced-registration-form .country-select {
+.j-enhanced-registration-form .country-select,
+.j-enhanced-registration-form select[name="phone_country_id"],
+.j-enhanced-registration-form select {
     border: 2px solid #e9ecef !important;
     border-radius: 8px !important;
     padding: 1rem !important;
@@ -93,9 +107,12 @@
     height: 4rem !important;
     width: 100% !important;
     box-sizing: border-box !important;
+    background-color: white !important;
 }
 
-.j-enhanced-registration-form .country-select:focus {
+.j-enhanced-registration-form .country-select:focus,
+.j-enhanced-registration-form select[name="phone_country_id"]:focus,
+.j-enhanced-registration-form select:focus {
     border-color: #667eea !important;
     box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.15) !important;
     outline: none !important;
@@ -244,6 +261,26 @@
 /* Loading state within enhanced form */
 .j-enhanced-registration-form .btn.loading {
     pointer-events: none;
+}
+
+/* Phone field specific styling */
+.j-enhanced-registration-form input[name="phone"],
+.j-enhanced-registration-form input[id="phone"] {
+    height: 4rem !important;
+    padding: 1.25rem 0.75rem !important;
+    font-size: 1rem !important;
+    border: 2px solid #e9ecef !important;
+    border-radius: 8px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    background-color: white !important;
+}
+
+.j-enhanced-registration-form input[name="phone"]:focus,
+.j-enhanced-registration-form input[id="phone"]:focus {
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.15) !important;
+    outline: none !important;
 }
 
 /* Phone preview within enhanced form */
