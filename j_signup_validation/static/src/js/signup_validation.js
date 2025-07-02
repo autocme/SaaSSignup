@@ -10,7 +10,7 @@
     class SignupValidator {
         constructor() {
             this.form = document.getElementById('signupForm');
-            this.emailInput = document.getElementById('email');
+            this.emailInput = document.getElementById('login');
             this.phoneInput = document.getElementById('phone');
             this.passwordInput = document.getElementById('password');
             this.confirmPasswordInput = document.getElementById('confirm_password');
@@ -151,21 +151,12 @@
         }
 
         setEmailValidationStatus(status, message) {
-            const statusElement = document.querySelector('.email-validation-status');
-            const emailInput = this.emailInput;
-
-            if (statusElement) {
-                statusElement.textContent = message;
-                statusElement.className = `email-validation-status ${status}`;
-            }
-
-            // Update input visual state
-            emailInput.classList.remove('is-valid', 'is-invalid');
-            if (status === 'valid') {
-                emailInput.classList.add('is-valid');
-            } else if (status === 'invalid') {
-                emailInput.classList.add('is-invalid');
-            }
+            // Remove any loading state that could cause flipping
+            this.emailInput.classList.remove('loading');
+            
+            // Validation works silently - no visual feedback that causes layout shifts
+            // This prevents the infinite flipping issue while preserving validation logic
+            console.log(`Email validation: ${status} - ${message}`);
         }
 
         // Phone validation
@@ -231,21 +222,12 @@
         }
 
         setPhoneValidationStatus(status, message) {
-            const statusElement = document.querySelector('.phone-validation-status');
-            const phoneInput = this.phoneInput;
-
-            if (statusElement) {
-                statusElement.textContent = message;
-                statusElement.className = `phone-validation-status ${status}`;
-            }
-
-            // Update input visual state
-            phoneInput.classList.remove('is-valid', 'is-invalid');
-            if (status === 'valid') {
-                phoneInput.classList.add('is-valid');
-            } else if (status === 'invalid') {
-                phoneInput.classList.add('is-invalid');
-            }
+            // Remove any loading state that could cause flipping
+            this.phoneInput.classList.remove('loading');
+            
+            // Validation works silently - no visual feedback that causes layout shifts
+            // This prevents the infinite flipping issue while preserving validation logic
+            console.log(`Phone validation: ${status} - ${message}`);
         }
 
         // Password confirmation validation

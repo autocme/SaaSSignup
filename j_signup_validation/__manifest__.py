@@ -42,6 +42,7 @@
     'assets': {
         'web.assets_frontend': [
             'j_signup_validation/static/src/css/signup_form.css',
+            'j_signup_validation/static/src/css/elegant_compact.css',
             'j_signup_validation/static/src/js/password_strength.js',
             'j_signup_validation/static/src/js/signup_validation.js',
             'j_signup_validation/static/src/js/country_phone_selector.js',

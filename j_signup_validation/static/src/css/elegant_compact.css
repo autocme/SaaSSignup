@@ -1,0 +1,314 @@
+/**
+ * Elegant Compact Signup Form Styling
+ * Refined, smaller design while preserving all functionality
+ */
+
+/* Main form container - more compact */
+.oe_signup_form {
+    max-width: 480px !important;
+    padding: 2rem !important;
+    background: white !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+    border: 1px solid #e5e7eb !important;
+}
+
+/* Form title - smaller, elegant */
+.oe_signup_form h2 {
+    font-size: 1.5rem !important;
+    font-weight: 600 !important;
+    color: #1f2937 !important;
+    text-align: center !important;
+    margin-bottom: 1.5rem !important;
+}
+
+.oe_signup_form h2 i {
+    color: #3b82f6 !important;
+    margin-right: 0.5rem !important;
+}
+
+/* Account type selection - refined */
+.account-type-selection {
+    margin-bottom: 1.5rem !important;
+}
+
+.account-type-selection h6 {
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    color: #374151 !important;
+    margin-bottom: 0.75rem !important;
+}
+
+.account-type-options {
+    display: flex !important;
+    gap: 0.75rem !important;
+}
+
+.account-type-card {
+    flex: 1 !important;
+    position: relative !important;
+    cursor: pointer !important;
+    border: 2px solid #e5e7eb !important;
+    border-radius: 8px !important;
+    padding: 0.75rem !important;
+    text-align: center !important;
+    transition: all 0.2s ease !important;
+    background: white !important;
+}
+
+.account-type-card:hover {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1) !important;
+}
+
+.account-type-card.selected {
+    border-color: #3b82f6 !important;
+    background: #eff6ff !important;
+}
+
+.account-type-card input[type="radio"] {
+    position: absolute !important;
+    opacity: 0 !important;
+}
+
+.account-type-card i {
+    font-size: 1.25rem !important;
+    color: #6b7280 !important;
+    margin-bottom: 0.25rem !important;
+}
+
+.account-type-card.selected i {
+    color: #3b82f6 !important;
+}
+
+.account-type-card span {
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    color: #374151 !important;
+}
+
+/* Form fields - compact and elegant */
+.form-floating {
+    margin-bottom: 1rem !important;
+}
+
+.form-floating > .form-control {
+    height: 2.5rem !important;
+    padding: 0.75rem 0.75rem 0.25rem !important;
+    font-size: 0.875rem !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 6px !important;
+    transition: all 0.2s ease !important;
+}
+
+.form-floating > .form-control:focus {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+}
+
+.form-floating > label {
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.8rem !important;
+    font-weight: 500 !important;
+    color: #6b7280 !important;
+}
+
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label {
+    transform: scale(0.85) translateY(-0.75rem) translateX(0.1rem) !important;
+    color: #3b82f6 !important;
+}
+
+/* Name fields in row - smaller */
+.row .col-md-6 .form-floating {
+    margin-bottom: 1rem !important;
+}
+
+/* Country selector styling */
+.country-selector {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e") !important;
+    background-position: right 0.75rem center !important;
+    background-repeat: no-repeat !important;
+    background-size: 1rem !important;
+    padding-right: 2.5rem !important;
+}
+
+/* VAT/CR field animations */
+#vat_cr_field {
+    transition: all 0.3s ease !important;
+    overflow: hidden !important;
+}
+
+#vat_cr_field.show {
+    opacity: 1 !important;
+    max-height: 100px !important;
+}
+
+/* Password field container */
+.password-field-container {
+    position: relative !important;
+}
+
+/* Password toggle button - refined */
+.password-toggle-btn {
+    position: absolute !important;
+    right: 0.75rem !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    background: none !important;
+    border: none !important;
+    color: #6b7280 !important;
+    cursor: pointer !important;
+    padding: 0.25rem !important;
+    font-size: 0.875rem !important;
+    z-index: 10 !important;
+}
+
+.password-toggle-btn:hover {
+    color: #374151 !important;
+}
+
+/* Password strength indicator - compact */
+.password-strength-container {
+    margin-top: 0.5rem !important;
+}
+
+.password-strength-bar {
+    height: 3px !important;
+    background-color: #e5e7eb !important;
+    border-radius: 2px !important;
+    overflow: hidden !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.password-strength-progress {
+    height: 100% !important;
+    transition: all 0.3s ease !important;
+    border-radius: 2px !important;
+}
+
+.password-strength-progress.very-weak { background-color: #ef4444 !important; }
+.password-strength-progress.weak { background-color: #f97316 !important; }
+.password-strength-progress.fair { background-color: #eab308 !important; }
+.password-strength-progress.good { background-color: #22c55e !important; }
+.password-strength-progress.strong { background-color: #10b981 !important; }
+
+/* Password requirements - compact grid */
+.password-requirements-list {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.25rem !important;
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.password-requirements-list li {
+    font-size: 0.75rem !important;
+    color: #6b7280 !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+.password-requirements-list li i {
+    width: 1rem !important;
+    margin-right: 0.25rem !important;
+    font-size: 0.7rem !important;
+}
+
+.password-requirements-list li.met {
+    color: #22c55e !important;
+}
+
+/* Dynamic fields section */
+.additional-information {
+    margin-top: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+}
+
+.additional-information h6 {
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    color: #374151 !important;
+    margin-bottom: 1rem !important;
+    padding-bottom: 0.5rem !important;
+    border-bottom: 1px solid #e5e7eb !important;
+}
+
+/* Submit button - elegant gradient */
+.btn-primary {
+    width: 100% !important;
+    height: 2.75rem !important;
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+    border: none !important;
+    border-radius: 6px !important;
+    transition: all 0.2s ease !important;
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
+}
+
+.btn-primary:disabled {
+    background: #9ca3af !important;
+    transform: none !important;
+    box-shadow: none !important;
+    cursor: not-allowed !important;
+}
+
+/* Login link */
+.text-center {
+    margin-top: 1rem !important;
+}
+
+.text-center a {
+    color: #3b82f6 !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+}
+
+.text-center a:hover {
+    text-decoration: underline !important;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .oe_signup_form {
+        max-width: 100% !important;
+        margin: 1rem !important;
+        padding: 1.5rem !important;
+    }
+    
+    .account-type-options {
+        flex-direction: column !important;
+    }
+    
+    .password-requirements-list {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* Remove any conflicting validation feedback styling */
+.invalid-feedback,
+.valid-feedback,
+.email-validation-status,
+.phone-validation-status {
+    display: none !important;
+}
+
+/* Clean loading states */
+.form-control.loading {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M10 2v2m0 12v2m8-8h-2M4 10H2m15.071-5.071L15.657 6.343M4.343 4.343L5.757 5.757m0 8.486L4.343 15.657m10.314 0L13.243 13.243'/%3e%3c/svg%3e") !important;
+    background-position: right 0.75rem center !important;
+    background-repeat: no-repeat !important;
+    background-size: 1rem !important;
+    animation: spin 1s linear infinite !important;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
