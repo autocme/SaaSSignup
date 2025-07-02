@@ -19,6 +19,8 @@
 
     <!-- Custom Signup Form Template -->
     <template id="custom_signup_form" name="Custom Signup Form">
+        <t t-call="web.login_layout">
+
         <html>
             <head>
                 <meta charset="utf-8"/>
@@ -469,5 +471,6 @@
                 <script src="/j_signup_validation/static/src/js/signup_validation.js"></script>
             </body>
         </html>
+        </t>
     </template>
 </odoo>

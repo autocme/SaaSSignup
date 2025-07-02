@@ -49,7 +49,7 @@ class CustomAuthSignup(http.Controller):
         """Test route to verify controller is working."""
         return "Custom signup controller is working!"
 
-    @http.route('/j_signup_validation/signup', type='http', auth='public', csrf=False)
+    @http.route('/j_signup_validation/signup', type='http', auth='public', website=True, sitemap=True, csrf=False)
     def web_auth_signup(self, **kw):
         """
         Display custom signup form.
