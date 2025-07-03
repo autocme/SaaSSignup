@@ -172,22 +172,31 @@ class CustomAuthSignup(http.Controller):
             }
 
     @http.route('/j_signup_validation/validate_phone', type='json', auth='public')
-    def validate_phone_ajax(self, phone):
+    def validate_phone_ajax(self, phone, country_id=None):
         """
         AJAX endpoint for real-time phone validation.
         """
         try:
-            _logger.info(f"Validating phone via AJAX: {phone}")
+            _logger.info(f"Validating phone via AJAX: {phone}, Country ID: {country_id}")
             
             config_settings = request.env['res.config.settings']
             phone_rules = config_settings.get_phone_validation_rules()
             
-            validation_result = self._validate_phone(phone, phone_rules)
+            # If no country_id provided, try to get it from the form or use default
+            if not country_id:
+                # Try to get default Saudi Arabia
+                default_country = request.env.ref('base.sa', raise_if_not_found=False)
+                if default_country:
+                    country_id = default_country.id
+                    _logger.info(f"AJAX validation: Using default Saudi Arabia country ID: {country_id}")
+            
+            validation_result = self._validate_phone(phone, phone_rules, country_id)
             
             return {
                 'valid': validation_result['valid'],
                 'messages': validation_result['messages'],
-                'formatted': validation_result.get('formatted', phone)
+                'formatted': validation_result.get('formatted', phone),
+                'phone_type': validation_result.get('phone_type', 'unknown')
             }
             
         except Exception as e:
@@ -312,12 +321,14 @@ class CustomAuthSignup(http.Controller):
             phone_country = form_data.get('phone_country')
             _logger.info(f"Phone validation debug - Phone: {form_data['phone']}, Country: {phone_country}, Type: {type(phone_country)}")
             
-            # If no country is provided, use default Saudi Arabia
-            if not phone_country or phone_country == '':
+            # Only use default Saudi Arabia if NO country is provided at all
+            if not phone_country or phone_country == '' or phone_country == 'None':
                 default_country = request.env.ref('base.sa', raise_if_not_found=False)
                 if default_country:
                     phone_country = default_country.id
-                    _logger.info(f"Using default Saudi Arabia country ID: {phone_country}")
+                    _logger.info(f"No country provided - using default Saudi Arabia country ID: {phone_country}")
+            else:
+                _logger.info(f"User selected country ID: {phone_country}")
             
             phone_validation = self._validate_phone(form_data['phone'], phone_rules, phone_country)
             if not phone_validation['valid']:
@@ -571,22 +582,8 @@ class CustomAuthSignup(http.Controller):
                 # Country is REQUIRED for strict validation
                 if not country or not country_code:
                     _logger.error(f"Country selection required for phone validation - country: {country}, country_id: {country_id}")
-                    
-                    # Try one more fallback - get Saudi Arabia as default
-                    try:
-                        saudi_country = request.env['res.country'].sudo().search([('code', '=', 'SA')], limit=1)
-                        if saudi_country:
-                            country = saudi_country
-                            country_code = 'SA'
-                            _logger.info(f"Using Saudi Arabia as final fallback: {country.name} ({country_code})")
-                        else:
-                            _logger.error("Saudi Arabia country not found as fallback")
-                            messages.append(_('Please select a country for phone number validation'))
-                            return {'valid': False, 'messages': messages, 'formatted': formatted_phone, 'phone_type': phone_type}
-                    except Exception as e:
-                        _logger.error(f"Failed to get Saudi Arabia fallback: {str(e)}")
-                        messages.append(_('Please select a country for phone number validation'))
-                        return {'valid': False, 'messages': messages, 'formatted': formatted_phone, 'phone_type': phone_type}
+                    messages.append(_('Please select a country for phone number validation'))
+                    return {'valid': False, 'messages': messages, 'formatted': formatted_phone, 'phone_type': phone_type}
                 
                 # STEP 1: Parse phone number with selected country region
                 parsed = None

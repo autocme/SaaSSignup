@@ -203,8 +203,17 @@
                     return;
                 }
 
-                // Server-side validation
-                const response = await this.makeAjaxRequest('/j_signup_validation/validate_phone', { phone });
+                // Get selected country ID
+                const countrySelect = document.getElementById('phone_country');
+                const countryId = countrySelect ? countrySelect.value : null;
+
+                console.log('Phone validation - Phone:', phone, 'Country ID:', countryId);
+
+                // Server-side validation with country ID
+                const response = await this.makeAjaxRequest('/j_signup_validation/validate_phone', { 
+                    phone: phone,
+                    country_id: countryId 
+                });
 
                 this.phoneInput.classList.remove('loading');
 
@@ -635,6 +644,9 @@
 
         // Create and initialize validator
         const validator = new SignupValidator();
+        
+        // Expose globally for country phone selector integration
+        window.signupValidator = validator;
 
         console.log('Signup form validation initialized');
     }

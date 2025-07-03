@@ -377,6 +377,17 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - TEMPLATE IMPROVEMENT: Removed disabled "Select Country" option to force proper country selection
   - DEBUG LOGGING: Added extensive logging to track country ID processing through entire validation chain
   - ROBUST VALIDATION: Phone validation now works even when country selection has UI/JavaScript issues
+- July 3, 2025: JAVASCRIPT AJAX VALIDATION FIX - Fixed country selection not being passed to phone validation
+  - ISSUE IDENTIFIED: Two different JavaScript validation systems with conflicting behavior
+    - signup_validation.js was calling AJAX endpoint without country parameter
+    - country_phone_selector.js was calling same endpoint with country parameter but not triggering main validation
+  - ROOT CAUSE: Phone validation showing "must belong to Saudi Arabia" despite Jordan being selected in UI
+  - AJAX ENDPOINT UPDATE: Enhanced /j_signup_validation/validate_phone to accept optional country_id parameter
+  - JAVASCRIPT COORDINATION: Updated signup_validation.js to pass selected country ID to AJAX validation
+  - CROSS-COMMUNICATION: Added global window.signupValidator reference for country selector integration
+  - COUNTRY CHANGE TRIGGER: Country selector now triggers main validation system when country changes
+  - COMPREHENSIVE LOGGING: Added console logging to track country ID flow in JavaScript validation
+  - VALIDATION SYNCHRONIZATION: Both validation systems now work together with consistent country information
 
 ## User Preferences
 

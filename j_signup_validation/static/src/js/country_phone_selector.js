@@ -172,6 +172,12 @@
             // Re-validate phone number when country changes
             if (this.phoneInput.value) {
                 this.validatePhoneNumber();
+                
+                // Also trigger main validation system if it exists
+                const signupValidator = window.signupValidator;
+                if (signupValidator && typeof signupValidator.validatePhone === 'function') {
+                    signupValidator.validatePhone(this.phoneInput.value);
+                }
             }
         }
 
