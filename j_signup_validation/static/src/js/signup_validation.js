@@ -218,7 +218,7 @@
                 this.phoneInput.classList.remove('loading');
 
                 if (response.valid) {
-                    this.setPhoneValidationStatus('valid', `Valid: ${response.formatted}`);
+                    this.setPhoneValidationStatus('valid', 'Phone is valid');
                     this.validationStates.phone = true;
                     // Update input with formatted number
                     if (response.formatted && response.formatted !== phone) {
@@ -301,16 +301,14 @@
             const value = input.value.trim();
             const fieldName = input.id === 'first_name' ? 'firstName' : 'lastName';
 
-            if (value.length >= 2) {
+            if (value.length >= 1) {
                 this.validationStates[fieldName] = true;
                 input.classList.remove('is-invalid');
                 input.classList.add('is-valid');
             } else {
                 this.validationStates[fieldName] = false;
                 input.classList.remove('is-valid');
-                if (value.length > 0) {
-                    input.classList.add('is-invalid');
-                }
+                input.classList.add('is-invalid');
             }
 
             this.updateSubmitButton();

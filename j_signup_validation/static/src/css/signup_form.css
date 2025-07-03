@@ -149,6 +149,27 @@ input[name="confirm_password"].form-control.is-valid {
     margin-top: 0.25rem;
 }
 
+/* Phone validation status styling */
+.phone-validation-status {
+    display: block;
+    font-size: 0.875em;
+    margin-top: 0.125rem;
+    margin-bottom: 0;
+    padding: 0;
+}
+
+.phone-validation-status.valid {
+    color: #28a745;
+}
+
+.phone-validation-status.invalid {
+    color: #dc3545;
+}
+
+.phone-validation-status.loading {
+    color: #6c757d;
+}
+
 /* Password strength indicator */
 .password-strength-container {
     margin-top: 0.5rem;
@@ -574,13 +595,14 @@ input[name="confirm_password"].form-control.is-valid {
 
 /* Country selector styling */
 .country-selector {
-    height: calc(2.5rem + 2px);
+    height: calc(3.5rem + 2px);
     border: 2px solid #e9ecef;
-    border-radius: 8px;
+    border-radius: 12px;
     transition: all 0.3s ease;
-    font-size: 0.85rem;
-    padding: 0.65rem 0.7rem;
+    font-size: 0.95rem;
+    padding: 0.875rem 0.75rem;
     background-color: #fff;
+    min-width: 100%;
 }
 
 .country-selector:focus {
@@ -692,6 +714,12 @@ input[name="confirm_password"].form-control.is-valid {
         padding: 0.875rem 0.75rem !important;
     }
     
+    .country-selector {
+        height: calc(3.25rem + 2px) !important;
+        font-size: 0.9rem !important;
+        padding: 0.875rem 0.75rem !important;
+    }
+    
     .btn-signup, .btn-primary.btn-lg {
         font-size: 1rem !important;
         padding: 0.875rem 1.5rem !important;
@@ -716,6 +744,12 @@ input[name="confirm_password"].form-control.is-valid {
     
     .form-floating {
         margin-bottom: 1.25rem !important;
+    }
+    
+    .country-selector {
+        height: calc(3rem + 2px) !important;
+        font-size: 0.85rem !important;
+        padding: 0.75rem 0.65rem !important;
     }
     
     .account-type-section {

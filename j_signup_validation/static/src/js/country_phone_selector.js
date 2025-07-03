@@ -238,7 +238,7 @@
                 });
 
                 if (response.valid) {
-                    this.setPhoneValidationStatus('valid', 'Valid phone number');
+                    this.setPhoneValidationStatus('valid', 'Phone is valid');
                 } else {
                     this.setPhoneValidationStatus('invalid', response.messages.join(', '));
                 }
