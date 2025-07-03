@@ -101,12 +101,6 @@
     font-weight: 500;
     font-size: 0.8rem;
     transition: all 0.3s ease;
-    line-height: 1.5;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    display: flex;
-    align-items: center;
 }
 
 .form-floating > .form-control:focus ~ label,
@@ -610,18 +604,6 @@ input[name="confirm_password"].form-control.is-valid {
 /* Phone preview styling - Hidden to avoid duplication */
 .phone-preview, #phone-preview-text {
     display: none !important;
-}
-
-/* Phone validation container spacing fix */
-.form-text.mb-3 {
-    margin-bottom: 1.25rem !important;
-    margin-top: -0.5rem !important;
-}
-
-/* Specific phone validation spacing adjustment */
-.phone-validation-status {
-    margin-top: 0.25rem !important;
-    margin-bottom: 0 !important;
 }
 
 /* Loading state for phone validation */
