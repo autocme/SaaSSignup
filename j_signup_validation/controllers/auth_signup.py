@@ -7,6 +7,7 @@ Custom controllers for handling user registration with advanced validation.
 import json
 import logging
 import re
+import time
 from odoo import http, _
 from odoo.http import request
 from odoo.exceptions import ValidationError, UserError
@@ -99,18 +100,22 @@ class CustomAuthSignup(http.Controller):
         """
         try:
             email = post.get('email', '').strip().lower()
-            _logger.info(f"Processing signup submission for email: {email}")
+            request_id = f"{email}_{int(time.time() * 1000)}"
+            _logger.info(f"Processing signup submission for email: {email}, request ID: {request_id}")
             
-            # Check for existing user first to prevent duplicates
-            existing_saas_user = request.env['saas.user'].sudo().search([('su_email', '=', email)], limit=1)
-            if existing_saas_user:
-                _logger.warning(f"Duplicate signup attempt for existing email: {email}")
-                return self._redirect_with_error(_('An account with this email address already exists. Please try to login instead.'))
-            
-            existing_portal_user = request.env['res.users'].sudo().search([('login', '=', email)], limit=1)
-            if existing_portal_user:
-                _logger.warning(f"Portal user already exists for email: {email}")
-                return self._redirect_with_error(_('An account with this email address already exists. Please try to login instead.'))
+            # COMPREHENSIVE DUPLICATE PREVENTION - Check for existing users first
+            with request.env.cr.savepoint():
+                # Check for existing SaaS user
+                existing_saas_user = request.env['saas.user'].sudo().search([('su_email', '=', email)], limit=1)
+                if existing_saas_user:
+                    _logger.warning(f"Duplicate signup attempt for existing SaaS user: {email}, request ID: {request_id}")
+                    return self._redirect_with_error(_('An account with this email address already exists. Please try to login instead.'))
+                
+                # Check for existing portal user
+                existing_portal_user = request.env['res.users'].sudo().search([('login', '=', email)], limit=1)
+                if existing_portal_user:
+                    _logger.warning(f"Portal user already exists for email: {email}, request ID: {request_id}")
+                    return self._redirect_with_error(_('An account with this email address already exists. Please try to login instead.'))
             
             # Extract form data
             form_data = self._extract_form_data(post)

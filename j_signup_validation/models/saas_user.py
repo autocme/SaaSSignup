@@ -145,6 +145,11 @@ class SaasUser(models.Model):
         tracking=True,
         help='Indicates if the SaaS user record is active'
     )
+    
+    # SQL constraints for database-level duplicate prevention
+    _sql_constraints = [
+        ('unique_email', 'UNIQUE(su_email)', 'An account with this email address already exists.'),
+    ]
 
     @api.depends('su_first_name', 'su_last_name')
     def _compute_complete_name(self):

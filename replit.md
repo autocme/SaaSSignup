@@ -388,6 +388,14 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - COUNTRY CHANGE TRIGGER: Country selector now triggers main validation system when country changes
   - COMPREHENSIVE LOGGING: Added console logging to track country ID flow in JavaScript validation
   - VALIDATION SYNCHRONIZATION: Both validation systems now work together with consistent country information
+- July 3, 2025: DUPLICATE PREVENTION RESTORATION - Fixed duplicate user creation issues after country validation updates
+  - CRITICAL ISSUE: JavaScript changes broke duplicate prevention causing multiple SaaS users and portal users for same email
+  - JAVASCRIPT FIX: Removed premature form submission flag reset in successful registration scenarios
+  - ENHANCED PROTECTION: Form submission flag now stays true on successful registration to prevent any further submissions  
+  - SERVER-SIDE PROTECTION: Added comprehensive duplicate prevention with unique request IDs and transaction savepoints
+  - DATABASE CONSTRAINT: Added SQL unique constraint on su_email field to prevent duplicate SaaS users at database level
+  - MULTI-LAYER PROTECTION: JavaScript prevents UI duplicates, controller prevents logic duplicates, database prevents data duplicates
+  - ROBUST HANDLING: Only reset submission flag on actual errors to allow retry while preventing successful duplicate submissions
 
 ## User Preferences
 

@@ -408,24 +408,26 @@
                 });
 
                 if (response.ok) {
-                    // Handle successful registration
+                    // Handle successful registration - DO NOT reset flag to prevent duplicate submissions
+                    console.log('Registration successful, redirecting...');
                     window.location.href = response.url;
+                    // Form submission flag stays 'true' to prevent any further submissions
                 } else {
                     // Handle server errors
                     const errorText = await response.text();
                     this.showError('Registration failed. Please try again.');
                     console.error('Registration error:', errorText);
-                    // Reset submission flag to allow retry
+                    // Reset submission flag to allow retry only on errors
                     this.form.dataset.submitting = 'false';
+                    this.setSubmitButtonLoading(false);
                 }
 
             } catch (error) {
                 console.error('Form submission error:', error);
                 this.showError('Network error. Please check your connection and try again.');
-            } finally {
-                this.setSubmitButtonLoading(false);
-                // Reset submission flag to allow retry
+                // Reset submission flag to allow retry only on errors
                 this.form.dataset.submitting = 'false';
+                this.setSubmitButtonLoading(false);
             }
         }
 
