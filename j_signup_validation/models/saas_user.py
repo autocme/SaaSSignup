@@ -193,6 +193,20 @@ class SaasUser(models.Model):
         # Create the SaaS user record first
         saas_user = super(SaasUser, self).create(vals)
         
+        # Skip portal user creation if explicitly disabled in context
+        if self.env.context.get('skip_portal_user_creation', False):
+            return saas_user
+            
+        # Skip portal user creation if advance_signup_page module is installed
+        # to prevent conflicts and duplicate user creation
+        try:
+            self.env['signup.configuration']  # Check if advance_signup_page model exists
+            _logger.info(f"advance_signup_page module detected, skipping auto portal user creation for SaaS user {saas_user.id}")
+            return saas_user
+        except KeyError:
+            # advance_signup_page not installed, proceed with normal creation
+            pass
+        
         try:
             # Check if portal user should be created (skip if already linked)
             if not saas_user.su_portal_user_id and saas_user.su_email and saas_user.su_password:
