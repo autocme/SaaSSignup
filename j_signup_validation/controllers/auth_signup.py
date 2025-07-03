@@ -106,6 +106,12 @@ class CustomAuthSignup(http.Controller):
                 _logger.warning(f"Signup validation failed: {validation_result['errors']}")
                 return self._redirect_with_error(validation_result['errors'])
             
+            # Check for existing user with same email before creating
+            existing_saas_user = request.env['saas.user'].sudo().search([('su_email', '=', form_data['email'])], limit=1)
+            if existing_saas_user:
+                _logger.warning(f"Duplicate signup attempt for email: {form_data['email']}")
+                return self._redirect_with_error(_('An account with this email already exists. Please use a different email or try to login.'))
+            
             # Create SaaS user and portal account
             saas_user, portal_user = self._create_user_accounts(form_data, validation_result)
             
