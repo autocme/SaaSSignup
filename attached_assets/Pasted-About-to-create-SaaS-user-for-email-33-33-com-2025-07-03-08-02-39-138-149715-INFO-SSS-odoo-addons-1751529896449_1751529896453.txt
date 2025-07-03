@@ -1,0 +1,20 @@
+About to create SaaS user for email: 33@33.com 
+2025-07-03 08:02:39,138 149715 INFO SSS odoo.addons.j_signup_validation.models.saas_user: SaasUser.create() called with email: 33@33.com 
+2025-07-03 08:02:39,144 149715 INFO SSS odoo.addons.j_signup_validation.controllers.auth_signup: Country found: Saudi Arabia, code: SA, phone_code: 966 
+2025-07-03 08:02:39,144 149715 INFO SSS odoo.addons.j_signup_validation.controllers.auth_signup: Phone already valid with country code: +966 55 438 1200 
+2025-07-03 08:02:39,145 149715 INFO SSS odoo.addons.j_signup_validation.controllers.auth_signup: Phone validation SUCCESS: +966 55 438 1200 
+2025-07-03 08:02:39,145 149715 INFO SSS odoo.addons.j_signup_validation.models.res_config_settings: Retrieved password validation rules: {'enabled': True, 'min_length': 5, 'require_number': True, 'require_uppercase': False, 'require_lowercase': True, 'require_special': False} 
+2025-07-03 08:02:39,151 149715 INFO SSS odoo.addons.j_signup_validation.controllers.auth_signup: About to create SaaS user for email: 33@33.com 
+2025-07-03 08:02:39,151 149715 INFO SSS odoo.addons.j_signup_validation.models.saas_user: SaasUser.create() called with email: 33@33.com 
+2025-07-03 08:02:39,196 149715 INFO SSS odoo.addons.j_signup_validation.models.saas_user: SaaS user created successfully with ID: 13 
+2025-07-03 08:02:39,200 149715 INFO SSS odoo.addons.j_signup_validation.models.saas_user: SaaS user created successfully with ID: 14 
+2025-07-03 08:02:39,201 149715 INFO SSS odoo.addons.j_signup_validation.models.saas_user: Auto-creating portal user for SaaS user 13 with email: 33@33.com 
+2025-07-03 08:02:39,202 149715 INFO SSS odoo.addons.j_signup_validation.models.saas_user: Computed complete names for 1 SaaS user records 
+2025-07-03 08:02:39,203 149715 INFO SSS odoo.addons.j_signup_validation.models.saas_user: Auto-creating portal user for SaaS user 14 with email: 33@33.com 
+2025-07-03 08:02:39,203 149715 INFO SSS odoo.addons.j_signup_validation.models.saas_user: Computed complete names for 1 SaaS user records 
+2025-07-03 08:02:40,880 149715 INFO SSS odoo.addons.j_signup_validation.models.saas_user: Successfully auto-created portal user 17 for SaaS user 14 
+2025-07-03 08:02:40,880 149715 INFO SSS odoo.addons.j_signup_validation.controllers.auth_signup: SaaS user creation completed in controller for ID: 14 
+2025-07-03 08:02:40,881 149715 INFO SSS odoo.addons.j_signup_validation.controllers.auth_signup: Successfully created SaaS user 14 and portal user 17 for 33@33.com 
+2025-07-03 08:02:40,882 149715 INFO SSS odoo.addons.j_signup_validation.models.saas_user: Successfully auto-created portal user 16 for SaaS user 13 
+2025-07-03 08:02:40,882 149715 INFO SSS odoo.addons.j_signup_validation.controllers.auth_signup: SaaS user creation completed in controller for ID: 13 
+2025-07-03 08:02:40,882 149715 INFO SSS odoo.addons.j_signup_validation.controllers.auth_signup: Successfully created SaaS user 13 and portal user 16 for 33@33.com

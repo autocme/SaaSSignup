@@ -94,20 +94,31 @@ class CustomAuthSignup(http.Controller):
         """
         Process signup form submission with validation.
         """
+        email = post.get('email', post.get('login', ''))
+        request_id = f"{email}_{hash(str(post))}"
+        
         try:
-            email = post.get('email', post.get('login', ''))
-            _logger.info(f"Processing signup submission for email: {email}")
+            _logger.info(f"Processing signup submission for email: {email}, request_id: {request_id}")
             
-            # Check for recent submission with same email (within last 30 seconds)
-            # This prevents rapid double-submissions
-            # Simple approach: just check if any user with this email exists
-            recent_submission = request.env['saas.user'].sudo().search([
+            # Check for processing request with same signature (prevents duplicates)
+            if hasattr(request, '_processed_signups'):
+                if request_id in request._processed_signups:
+                    _logger.warning(f"Ignoring duplicate submission for email: {email}, request_id: {request_id}")
+                    return self._redirect_with_error(_('Registration already in progress. Please wait.'))
+            else:
+                request._processed_signups = set()
+            
+            # Mark request as being processed
+            request._processed_signups.add(request_id)
+            
+            # Check for existing user with same email
+            existing_user = request.env['saas.user'].sudo().search([
                 ('su_email', '=', email)
             ], limit=1)
             
-            if recent_submission:
-                _logger.warning(f"Ignoring duplicate submission for email: {email}")
-                return self._redirect_with_error(_('Registration already in progress. Please wait.'))
+            if existing_user:
+                _logger.warning(f"User already exists for email: {email}")
+                return self._redirect_with_error(_('An account with this email already exists. Please use a different email or try to login.'))
             
             # Extract form data
             form_data = self._extract_form_data(post)
@@ -119,14 +130,12 @@ class CustomAuthSignup(http.Controller):
                 _logger.warning(f"Signup validation failed: {validation_result['errors']}")
                 return self._redirect_with_error(validation_result['errors'])
             
-            # Check for existing user with same email before creating
-            existing_saas_user = request.env['saas.user'].sudo().search([('su_email', '=', form_data['email'])], limit=1)
-            if existing_saas_user:
-                _logger.warning(f"Duplicate signup attempt for email: {form_data['email']}")
-                return self._redirect_with_error(_('An account with this email already exists. Please use a different email or try to login.'))
-            
             # Create SaaS user and portal account
             saas_user, portal_user = self._create_user_accounts(form_data, validation_result)
+            
+            # Clean up processed request ID
+            if hasattr(request, '_processed_signups'):
+                request._processed_signups.discard(request_id)
             
             # Auto-login if configured
             if self._should_auto_login():
@@ -137,9 +146,15 @@ class CustomAuthSignup(http.Controller):
                 
         except ValidationError as e:
             _logger.error(f"Validation error during signup: {str(e)}")
+            # Clean up processed request ID
+            if hasattr(request, '_processed_signups'):
+                request._processed_signups.discard(request_id)
             return self._redirect_with_error(str(e))
         except Exception as e:
             _logger.error(f"Unexpected error during signup: {str(e)}")
+            # Clean up processed request ID
+            if hasattr(request, '_processed_signups'):
+                request._processed_signups.discard(request_id)
             return self._redirect_with_error(_('Registration failed. Please try again.'))
 
     @http.route('/j_signup_validation/validate_email', type='json', auth='public')
