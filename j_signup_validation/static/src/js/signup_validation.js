@@ -372,11 +372,20 @@
         async handleFormSubmit(event) {
             event.preventDefault();
 
+            // Prevent multiple submissions
+            if (this.form.dataset.submitting === 'true') {
+                console.log('Form already submitting, preventing duplicate submission');
+                return;
+            }
+
             // Final validation check
             if (!this.isFormValid()) {
                 this.showFormErrors();
                 return;
             }
+
+            // Mark form as submitting to prevent duplicates
+            this.form.dataset.submitting = 'true';
 
             // Show loading state
             this.setSubmitButtonLoading(true);
@@ -397,6 +406,8 @@
                     const errorText = await response.text();
                     this.showError('Registration failed. Please try again.');
                     console.error('Registration error:', errorText);
+                    // Reset submission flag to allow retry
+                    this.form.dataset.submitting = 'false';
                 }
 
             } catch (error) {
@@ -404,6 +415,8 @@
                 this.showError('Network error. Please check your connection and try again.');
             } finally {
                 this.setSubmitButtonLoading(false);
+                // Reset submission flag to allow retry
+                this.form.dataset.submitting = 'false';
             }
         }
 
