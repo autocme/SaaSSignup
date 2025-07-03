@@ -1,0 +1,30 @@
+Processing signup submission for email: 66@6m.com, request_id: 66@6m.com_-7257675457614042798 
+2025-07-03 08:11:24,587 150288 INFO SSS odoo.addons.j_signup_validation.controllers.auth_signup: Processing signup submission for email: 66@6m.com, request_id: 66@6m.com_-7257675457614042798 
+2025-07-03 08:11:24,605 150288 INFO SSS odoo.addons.j_signup_validation.models.res_config_settings: Retrieved email validation rules: {'syntax_check': True, 'mx_verification': True, 'disposable_check': True} 
+2025-07-03 08:11:24,608 150288 INFO SSS odoo.addons.j_signup_validation.models.res_config_settings: Retrieved email validation rules: {'syntax_check': True, 'mx_verification': True, 'disposable_check': True} 
+2025-07-03 08:11:24,653 150288 INFO SSS odoo.addons.j_signup_validation.models.res_config_settings: Retrieved phone validation rules: {'validation_enabled': True, 'require_mobile': False} 
+2025-07-03 08:11:24,666 150288 INFO SSS odoo.addons.j_signup_validation.models.res_config_settings: Retrieved phone validation rules: {'validation_enabled': True, 'require_mobile': False} 
+2025-07-03 08:11:24,669 150288 INFO SSS odoo.addons.j_signup_validation.controllers.auth_signup: Country found: Saudi Arabia, code: SA, phone_code: 966 
+2025-07-03 08:11:24,670 150288 INFO SSS odoo.addons.j_signup_validation.controllers.auth_signup: Phone already valid with country code: +966 55 321 9900 
+2025-07-03 08:11:24,670 150288 INFO SSS odoo.addons.j_signup_validation.controllers.auth_signup: Phone validation SUCCESS: +966 55 321 9900 
+2025-07-03 08:11:24,677 150288 INFO SSS odoo.addons.j_signup_validation.controllers.auth_signup: Country found: Saudi Arabia, code: SA, phone_code: 966 
+2025-07-03 08:11:24,677 150288 INFO SSS odoo.addons.j_signup_validation.controllers.auth_signup: Phone already valid with country code: +966 55 321 9900 
+2025-07-03 08:11:24,679 150288 INFO SSS odoo.addons.j_signup_validation.controllers.auth_signup: Phone validation SUCCESS: +966 55 321 9900 
+2025-07-03 08:11:24,683 150288 INFO SSS odoo.addons.j_signup_validation.models.res_config_settings: Retrieved password validation rules: {'enabled': True, 'min_length': 5, 'require_number': True, 'require_uppercase': False, 'require_lowercase': True, 'require_special': False} 
+2025-07-03 08:11:24,685 150288 INFO SSS odoo.addons.j_signup_validation.models.res_config_settings: Retrieved password validation rules: {'enabled': True, 'min_length': 5, 'require_number': True, 'require_uppercase': False, 'require_lowercase': True, 'require_special': False} 
+2025-07-03 08:11:24,686 150288 INFO SSS odoo.addons.j_signup_validation.controllers.auth_signup: About to create SaaS user for email: 66@6m.com 
+2025-07-03 08:11:24,687 150288 INFO SSS odoo.addons.j_signup_validation.models.saas_user: SaasUser.create() called with email: 66@6m.com 
+2025-07-03 08:11:24,689 150288 INFO SSS odoo.addons.j_signup_validation.controllers.auth_signup: About to create SaaS user for email: 66@6m.com 
+2025-07-03 08:11:24,689 150288 INFO SSS odoo.addons.j_signup_validation.models.saas_user: SaasUser.create() called with email: 66@6m.com 
+2025-07-03 08:11:24,744 150288 INFO SSS odoo.addons.j_signup_validation.models.saas_user: SaaS user created successfully with ID: 15 
+2025-07-03 08:11:24,747 150288 INFO SSS odoo.addons.j_signup_validation.models.saas_user: SaaS user created successfully with ID: 16 
+2025-07-03 08:11:24,750 150288 INFO SSS odoo.addons.j_signup_validation.models.saas_user: Auto-creating portal user for SaaS user 15 with email: 66@6m.com 
+2025-07-03 08:11:24,750 150288 INFO SSS odoo.addons.j_signup_validation.models.saas_user: Computed complete names for 1 SaaS user records 
+2025-07-03 08:11:24,753 150288 INFO SSS odoo.addons.j_signup_validation.models.saas_user: Auto-creating portal user for SaaS user 16 with email: 66@6m.com 
+2025-07-03 08:11:24,753 150288 INFO SSS odoo.addons.j_signup_validation.models.saas_user: Computed complete names for 1 SaaS user records 
+2025-07-03 08:11:26,336 150288 INFO SSS odoo.addons.j_signup_validation.models.saas_user: Successfully auto-created portal user 19 for SaaS user 16 
+2025-07-03 08:11:26,336 150288 INFO SSS odoo.addons.j_signup_validation.controllers.auth_signup: SaaS user creation completed in controller for ID: 16 
+2025-07-03 08:11:26,337 150288 INFO SSS odoo.addons.j_signup_validation.controllers.auth_signup: Successfully created SaaS user 16 and portal user 19 for 66@6m.com 
+2025-07-03 08:11:26,337 150288 INFO SSS odoo.addons.j_signup_validation.models.saas_user: Successfully auto-created portal user 18 for SaaS user 15 
+2025-07-03 08:11:26,338 150288 INFO SSS odoo.addons.j_signup_validation.controllers.auth_signup: SaaS user creation completed in controller for ID: 15 
+2025-07-03 08:11:26,338 150288 INFO SSS odoo.addons.j_signup_validation.controllers.auth_signup: Successfully created SaaS user 15 and portal user 18 for 66@6m.com 

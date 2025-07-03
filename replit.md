@@ -321,14 +321,14 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - EMAIL CONSTRAINTS: Database-level email uniqueness constraint prevents duplicate SaaS users
   - ROBUST HANDLING: System gracefully handles existing users and provides appropriate user feedback
   - PREVENT DUPLICATES: Comprehensive protection against double form submissions and existing email conflicts
-- July 3, 2025: ROBUST DUPLICATE PREVENTION SYSTEM - Implemented comprehensive protection against duplicate user creation
-  - ISSUE IDENTIFIED: Single form submission being processed twice by controller (not client-side double-clicks)
-  - REQUEST TRACKING: Added unique request ID system based on email + form data hash
-  - SERVER-SIDE DEDUPLICATION: Controller tracks processed requests and blocks duplicates within same session
-  - ENHANCED LOGGING: Added request ID tracking to identify exact duplicate submission patterns
-  - CLEANUP MECHANISM: Automatic cleanup of processed request IDs after successful or failed completion
-  - BULLETPROOF PROTECTION: System prevents duplicate submissions regardless of client-side JavaScript state
-  - COMPREHENSIVE COVERAGE: Protects against browser double-submission, script conflicts, and template inheritance issues
+- July 3, 2025: CONTROLLER CONFLICT RESOLUTION - Fixed duplicate user creation caused by conflicting controller routes
+  - ROOT CAUSE IDENTIFIED: advance_signup_page module files existed with duplicate /web/signup route handlers
+  - DUPLICATE ROUTES: advance_signup_page controller had TWO @http.route('/web/signup') declarations causing double execution
+  - MODULE CONFLICT: Even though module wasn't "installed", Odoo was loading conflicting controller code from files
+  - COMPLETE REMOVAL: Deleted entire advance_signup_page folder to eliminate route conflicts
+  - CLEAN EXECUTION: Each form submission now processed exactly once by j_signup_validation controller
+  - DEBUGGING SUCCESS: Logs confirmed single controller execution instead of duplicate processing
+  - ARCHITECTURAL LESSON: Module files in addons path are loaded regardless of installation status
 
 ## User Preferences
 
