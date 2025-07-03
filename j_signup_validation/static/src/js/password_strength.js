@@ -280,6 +280,7 @@
             
             if (result.valid && input.value.length > 0) {
                 input.classList.remove('is-invalid');
+                // For password fields, use is-valid class but CSS will override to show only green border
                 input.classList.add('is-valid');
             } else if (input.value.length > 0) {
                 input.classList.remove('is-valid');

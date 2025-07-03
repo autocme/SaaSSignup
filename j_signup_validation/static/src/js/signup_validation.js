@@ -283,7 +283,9 @@
             if (password === confirmPassword) {
                 this.validationStates.confirmPassword = true;
                 confirmInput.classList.remove('is-invalid');
-                confirmInput.classList.add('is-valid');
+                // For password fields, use custom class instead of is-valid to avoid check symbols
+                confirmInput.classList.add('is-valid'); 
+                // Note: CSS will override to show only green border, no check symbol
                 this.setInputFeedback(confirmInput, 'Passwords match', 'valid');
             } else {
                 this.validationStates.confirmPassword = false;
