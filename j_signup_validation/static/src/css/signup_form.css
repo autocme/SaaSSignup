@@ -72,7 +72,6 @@
 }
 
 .form-floating > .form-control {
-    height: calc(2.5rem + 2px);
     padding: 0.65rem 0.7rem;
     border: 2px solid #e9ecef;
     border-radius: 8px;
@@ -457,8 +456,14 @@ input[name="confirm_password"].form-control.is-valid {
     position: relative;
 }
 
+/* Password field with toggle (confirm password only) */
 .password-input-with-toggle {
     padding-right: 3rem !important;
+}
+
+/* Password field without toggle (main password field) - ensure normal padding */
+#password.form-control {
+    padding-right: 0.75rem !important;
 }
 
 .password-toggle-btn {

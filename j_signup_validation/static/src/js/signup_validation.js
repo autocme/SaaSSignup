@@ -562,51 +562,33 @@
         }
 
         addPasswordToggle() {
-            const passwordInputs = [this.passwordInput, this.confirmPasswordInput];
+            // Only add toggle button to confirm password field
+            const input = this.confirmPasswordInput;
 
-            passwordInputs.forEach(input => {
-                if (!input) return;
+            if (!input) return;
 
-                const wrapper = input.parentNode;
+            const wrapper = input.parentNode;
 
-                // Add proper CSS classes
-                wrapper.classList.add('password-field-container', 'position-relative');
-                input.classList.add('password-input-with-toggle');
+            // Add proper CSS classes
+            wrapper.classList.add('password-field-container', 'position-relative');
+            input.classList.add('password-input-with-toggle');
 
-                const toggle = document.createElement('button');
-                toggle.type = 'button';
-                toggle.className = 'password-toggle-btn';
-                toggle.innerHTML = '<i class="fa fa-eye"></i>';
+            const toggle = document.createElement('button');
+            toggle.type = 'button';
+            toggle.className = 'password-toggle-btn';
+            toggle.innerHTML = '<i class="fa fa-eye"></i>';
 
-                toggle.addEventListener('click', () => {
-                    const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
-                    input.setAttribute('type', type);
+            toggle.addEventListener('click', () => {
+                const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                input.setAttribute('type', type);
 
-                    const icon = toggle.querySelector('i');
-                    icon.className = type === 'password' ? 'fa fa-eye' : 'fa fa-eye-slash';
-                });
-
-                // For password field, insert before the password strength container
-                // For confirm password, just append to wrapper
-                if (input.id === 'password') {
-                    const passwordStrengthContainer = wrapper.querySelector('.password-strength-container');
-                    const invalidFeedback = wrapper.querySelector('.invalid-feedback');
-
-                    // Insert after input and label, but before other elements
-                    if (invalidFeedback) {
-                        wrapper.insertBefore(toggle, invalidFeedback);
-                    } else if (passwordStrengthContainer) {
-                        wrapper.insertBefore(toggle, passwordStrengthContainer);
-                    } else {
-                        wrapper.appendChild(toggle);
-                    }
-
-                    console.log('Password toggle added for password field:', toggle);
-                } else {
-                    wrapper.appendChild(toggle);
-                    console.log('Password toggle added for confirm password field:', toggle);
-                }
+                const icon = toggle.querySelector('i');
+                icon.className = type === 'password' ? 'fa fa-eye' : 'fa fa-eye-slash';
             });
+
+            // Add toggle button to confirm password field
+            wrapper.appendChild(toggle);
+            console.log('Password toggle added for confirm password field only:', toggle);
         }
 
         async makeAjaxRequest(url, data) {
