@@ -107,7 +107,7 @@
 .form-floating > .form-control:not(:placeholder-shown) ~ label {
     color: #667eea;
     font-size: 0.75rem;
-    transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+    transform: scale(0.85) translateY(-0.3rem) translateX(0.15rem);
     line-height: 1.2;
     overflow: visible;
 }
