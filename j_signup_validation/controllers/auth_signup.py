@@ -710,7 +710,6 @@ class CustomAuthSignup(http.Controller):
                 'su_last_name': form_data['last_name'],
                 'su_email': email,
                 'su_phone': form_data['phone'],
-                'su_phone_country_id': form_data.get('phone_country'),
                 'su_password': form_data['password'],
                 'su_account_type': form_data.get('account_type', 'individual'),
                 'su_vat_cr_number': form_data.get('vat_cr_number', ''),
@@ -720,6 +719,27 @@ class CustomAuthSignup(http.Controller):
                 'su_registration_ip': form_data['registration_ip'],
                 'su_user_agent': form_data['user_agent'],
             }
+            
+            # Handle phone country - convert string ID to integer
+            phone_country = form_data.get('phone_country')
+            if phone_country:
+                try:
+                    phone_country_id = int(phone_country)
+                    saas_user_vals['su_phone_country_id'] = phone_country_id
+                    _logger.info(f"Setting phone country ID to {phone_country_id} for SaaS user creation")
+                except (ValueError, TypeError) as e:
+                    _logger.warning(f"Invalid phone country value '{phone_country}': {str(e)}")
+                    # Use default country (Saudi Arabia) if conversion fails
+                    default_country = request.env.ref('base.sa', raise_if_not_found=False)
+                    if default_country:
+                        saas_user_vals['su_phone_country_id'] = default_country.id
+                        _logger.info(f"Using default country {default_country.id} (Saudi Arabia)")
+            else:
+                # Use default country if no country provided
+                default_country = request.env.ref('base.sa', raise_if_not_found=False)
+                if default_country:
+                    saas_user_vals['su_phone_country_id'] = default_country.id
+                    _logger.info(f"Using default country {default_country.id} (Saudi Arabia) - no country provided")
             
             # Create SaaS user with dynamic fields in context
             # The create method will automatically create the portal user

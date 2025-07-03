@@ -216,11 +216,16 @@ class SaasUser(models.Model):
                     'login': saas_user.su_email,
                     'email': saas_user.su_email,
                     'mobile': saas_user.su_phone,
+                    'phone': saas_user.su_phone,  # Add phone field as well
                     'password': saas_user.su_password,
-                    'country_id': saas_user.su_phone_country_id.id if saas_user.su_phone_country_id else False,
                     'is_company': True if saas_user.su_account_type == 'company' else False,
                     'vat': saas_user.su_vat_cr_number if saas_user.su_account_type == 'company' and saas_user.su_vat_cr_number else False,
                 }
+                
+                # Set country_id only if we have a valid country
+                if saas_user.su_phone_country_id and saas_user.su_phone_country_id.id:
+                    portal_user_vals['country_id'] = saas_user.su_phone_country_id.id
+                    _logger.info(f"Setting country_id to {saas_user.su_phone_country_id.id} ({saas_user.su_phone_country_id.name}) for portal user")
 
                 # Check if any dynamic fields were passed in context
                 dynamic_fields = self.env.context.get('dynamic_fields', {})
@@ -272,11 +277,16 @@ class SaasUser(models.Model):
                 'login': self.su_email,
                 'email': self.su_email,
                 'mobile': self.su_phone,
+                'phone': self.su_phone,  # Add phone field as well
                 'password': self.su_password,
-                'country_id': self.su_phone_country_id.id if self.su_phone_country_id else False,
                 'is_company': True if self.su_account_type == 'company' else False,
                 'vat': self.su_vat_cr_number if self.su_account_type == 'company' and self.su_vat_cr_number else False,
             }
+            
+            # Set country_id only if we have a valid country
+            if self.su_phone_country_id and self.su_phone_country_id.id:
+                portal_user_vals['country_id'] = self.su_phone_country_id.id
+                _logger.info(f"Setting country_id to {self.su_phone_country_id.id} ({self.su_phone_country_id.name}) for portal user")
             
             # Create portal user using normal create method
             portal_group = self.env.ref('base.group_portal')

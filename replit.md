@@ -343,6 +343,14 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - ERROR HANDLING: Form submission flag gets reset on server errors or network failures to allow retry
   - COMPREHENSIVE PROTECTION: Prevents both rapid clicking and network-related duplicate submissions
   - MAINTAINS VALIDATION: All dynamic field validation and other validation logic preserved alongside duplicate prevention
+- July 3, 2025: PHONE COUNTRY FIELD FIX - Fixed portal user country field mapping issue
+  - ISSUE IDENTIFIED: Portal user country_id was false while SaaS user had correct country
+  - ROOT CAUSE: Form data phone_country was string but Many2one field expected integer ID
+  - CONTROLLER FIX: Added proper string-to-integer conversion for phone_country field
+  - FALLBACK LOGIC: Added default country (Saudi Arabia) when conversion fails or no country provided
+  - MODEL ENHANCEMENT: Improved portal user creation with explicit country_id validation and logging
+  - PHONE FIELDS: Added both 'mobile' and 'phone' fields to portal user for better compatibility
+  - DEBUG LOGGING: Added country ID logging for troubleshooting portal user creation
 
 ## User Preferences
 
