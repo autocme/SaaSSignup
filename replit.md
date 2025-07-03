@@ -403,6 +403,8 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - CSS OVERRIDE: Added specific CSS rules for password fields to show only green borders without background check symbols
   - MAINTAINED VALIDATION: Other form fields (name, email, phone) still show full validation with check symbols and green borders
   - CLEANER UI: Password field validation now shows visual feedback through border color only, creating cleaner appearance
+  - PASSWORD TOGGLE POSITIONING: Moved password toggle buttons to exact position where check symbols appear (calc(0.375em + 0.1875rem) from right)
+  - CONSISTENT POSITIONING: All password toggle CSS rules (.password-toggle-btn, .password-toggle, .form-floating variants) now use Bootstrap's validation icon position
 
 ## User Preferences
 
