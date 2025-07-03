@@ -351,6 +351,22 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - MODEL ENHANCEMENT: Improved portal user creation with explicit country_id validation and logging
   - PHONE FIELDS: Added both 'mobile' and 'phone' fields to portal user for better compatibility
   - DEBUG LOGGING: Added country ID logging for troubleshooting portal user creation
+- July 3, 2025: ADVANCED PHONE VALIDATION SYSTEM - Complete overhaul of phone validation logic
+  - REQUIREMENT 1: STRICT COUNTRY MATCHING - Phone number must belong to selected country
+    - Enforced strict validation: users cannot select Saudi Arabia and enter Jordan phone number
+    - Phone number region must exactly match selected country using phonenumbers library
+    - Clear error messages when country mismatch is detected
+  - REQUIREMENT 2: PHONE TYPE DETECTION - Determine mobile vs fixed line using phonenumbers library
+    - Added phone type detection: MOBILE, FIXED_LINE, FIXED_LINE_OR_MOBILE
+    - Mobile numbers assigned to portal user 'mobile' field
+    - Fixed line numbers assigned to portal user 'phone' field
+    - FIXED_LINE_OR_MOBILE assigned to both fields for compatibility
+  - VALIDATION LOGIC: Complete rewrite of _validate_phone method with strict country validation
+  - PORTAL USER ASSIGNMENT: Phone field assignment based on detected phone type
+  - CONTEXT PASSING: Phone type and formatted phone passed through creation context
+  - MANUAL CREATION: Phone type detection added to manual portal user creation
+  - COMPREHENSIVE LOGGING: Detailed logging for phone type detection and field assignment
+  - ERROR HANDLING: Clear validation messages for country mismatch and invalid phone types
 
 ## User Preferences
 

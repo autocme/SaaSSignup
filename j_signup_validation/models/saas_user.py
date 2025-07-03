@@ -215,8 +215,6 @@ class SaasUser(models.Model):
                     'name': saas_user.su_complete_name,
                     'login': saas_user.su_email,
                     'email': saas_user.su_email,
-                    'mobile': saas_user.su_phone,
-                    'phone': saas_user.su_phone,  # Add phone field as well
                     'password': saas_user.su_password,
                     'is_company': True if saas_user.su_account_type == 'company' else False,
                     'vat': saas_user.su_vat_cr_number if saas_user.su_account_type == 'company' and saas_user.su_vat_cr_number else False,
@@ -226,6 +224,30 @@ class SaasUser(models.Model):
                 if saas_user.su_phone_country_id and saas_user.su_phone_country_id.id:
                     portal_user_vals['country_id'] = saas_user.su_phone_country_id.id
                     _logger.info(f"Setting country_id to {saas_user.su_phone_country_id.id} ({saas_user.su_phone_country_id.name}) for portal user")
+                
+                # Handle phone field assignment based on phone type
+                phone_type = self.env.context.get('phone_type', 'unknown')
+                formatted_phone = self.env.context.get('formatted_phone', saas_user.su_phone)
+                
+                _logger.info(f"Portal user phone assignment - Type: {phone_type}, Phone: {formatted_phone}")
+                
+                if phone_type == 'mobile':
+                    # Mobile number goes to mobile field
+                    portal_user_vals['mobile'] = formatted_phone
+                    _logger.info(f"Assigned mobile number: {formatted_phone}")
+                elif phone_type == 'fixed_line':
+                    # Fixed line number goes to phone field
+                    portal_user_vals['phone'] = formatted_phone
+                    _logger.info(f"Assigned fixed line number: {formatted_phone}")
+                elif phone_type == 'fixed_line_or_mobile':
+                    # Could be either, assign to both for compatibility
+                    portal_user_vals['mobile'] = formatted_phone
+                    portal_user_vals['phone'] = formatted_phone
+                    _logger.info(f"Assigned to both mobile and phone fields: {formatted_phone}")
+                else:
+                    # Unknown type, assign to mobile by default (most common)
+                    portal_user_vals['mobile'] = formatted_phone
+                    _logger.info(f"Unknown phone type, assigned to mobile field: {formatted_phone}")
 
                 # Check if any dynamic fields were passed in context
                 dynamic_fields = self.env.context.get('dynamic_fields', {})
@@ -276,8 +298,6 @@ class SaasUser(models.Model):
                 'name': self.su_complete_name,
                 'login': self.su_email,
                 'email': self.su_email,
-                'mobile': self.su_phone,
-                'phone': self.su_phone,  # Add phone field as well
                 'password': self.su_password,
                 'is_company': True if self.su_account_type == 'company' else False,
                 'vat': self.su_vat_cr_number if self.su_account_type == 'company' and self.su_vat_cr_number else False,
@@ -287,6 +307,50 @@ class SaasUser(models.Model):
             if self.su_phone_country_id and self.su_phone_country_id.id:
                 portal_user_vals['country_id'] = self.su_phone_country_id.id
                 _logger.info(f"Setting country_id to {self.su_phone_country_id.id} ({self.su_phone_country_id.name}) for portal user")
+            
+            # For manual creation, we need to determine phone type using phonenumbers library
+            phone_type = 'unknown'
+            if self.su_phone and self.su_phone_country_id:
+                try:
+                    import phonenumbers
+                    from phonenumbers import NumberParseException, number_type, PhoneNumberType
+                    
+                    # Parse phone number to determine type
+                    parsed = phonenumbers.parse(self.su_phone, self.su_phone_country_id.code)
+                    if phonenumbers.is_valid_number(parsed):
+                        num_type = number_type(parsed)
+                        if num_type == PhoneNumberType.MOBILE:
+                            phone_type = 'mobile'
+                        elif num_type == PhoneNumberType.FIXED_LINE:
+                            phone_type = 'fixed_line'
+                        elif num_type == PhoneNumberType.FIXED_LINE_OR_MOBILE:
+                            phone_type = 'fixed_line_or_mobile'
+                        
+                        _logger.info(f"Manual portal user creation - Phone type determined: {phone_type}")
+                except Exception as e:
+                    _logger.warning(f"Could not determine phone type for manual creation: {str(e)}")
+                    phone_type = 'unknown'
+            
+            # Handle phone field assignment based on phone type
+            _logger.info(f"Manual portal user phone assignment - Type: {phone_type}, Phone: {self.su_phone}")
+            
+            if phone_type == 'mobile':
+                # Mobile number goes to mobile field
+                portal_user_vals['mobile'] = self.su_phone
+                _logger.info(f"Assigned mobile number: {self.su_phone}")
+            elif phone_type == 'fixed_line':
+                # Fixed line number goes to phone field
+                portal_user_vals['phone'] = self.su_phone
+                _logger.info(f"Assigned fixed line number: {self.su_phone}")
+            elif phone_type == 'fixed_line_or_mobile':
+                # Could be either, assign to both for compatibility
+                portal_user_vals['mobile'] = self.su_phone
+                portal_user_vals['phone'] = self.su_phone
+                _logger.info(f"Assigned to both mobile and phone fields: {self.su_phone}")
+            else:
+                # Unknown type, assign to mobile by default (most common)
+                portal_user_vals['mobile'] = self.su_phone
+                _logger.info(f"Unknown phone type, assigned to mobile field: {self.su_phone}")
             
             # Create portal user using normal create method
             portal_group = self.env.ref('base.group_portal')
