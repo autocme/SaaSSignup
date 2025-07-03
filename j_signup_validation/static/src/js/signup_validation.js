@@ -421,16 +421,21 @@
         validateDynamicFields() {
             // Get all dynamic fields that are marked as required
             const requiredDynamicFields = this.form.querySelectorAll('[id^="dynamic_"][required]');
+            
+            console.log(`Found ${requiredDynamicFields.length} required dynamic fields`);
 
             for (let field of requiredDynamicFields) {
                 const value = field.value.trim();
+                console.log(`Dynamic field ${field.id}: value="${value}", valid=${!!value}`);
 
                 // Check if field has value - no visual feedback, just return validation state
                 if (!value) {
+                    console.log(`Dynamic field validation failed for ${field.id}`);
                     return false;
                 }
             }
 
+            console.log('All dynamic fields validation passed');
             return true;
         }
 
@@ -632,23 +637,3 @@
     window.SignupValidator = SignupValidator;
 
 })();
-// Global function to prevent multiple submissions
-        window.validateFormBeforeSubmit = function(form) {
-            // Prevent multiple submissions
-            if (form.dataset.submitting === 'true') {
-                return false;
-            }
-            form.dataset.submitting = 'true';
-
-            // Disable submit button
-            const submitBtn = form.querySelector('button[type="submit"]');
-            if (submitBtn) {
-                submitBtn.disabled = true;
-                submitBtn.textContent = 'Creating Account...';
-            }
-
-            return true;
-        };
-
-        // Form submission handler
-        $(document).on('submit', '.oe_signup_form', function(e) {
