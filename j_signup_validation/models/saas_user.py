@@ -196,6 +196,18 @@ class SaasUser(models.Model):
         try:
             # Check if portal user should be created (skip if already linked)
             if not saas_user.su_portal_user_id and saas_user.su_email and saas_user.su_password:
+                
+                # Check if portal user already exists to prevent duplicates
+                existing_portal_user = self.env['res.users'].sudo().search([
+                    ('login', '=', saas_user.su_email)
+                ], limit=1)
+                
+                if existing_portal_user:
+                    _logger.info(f"Portal user already exists for email {saas_user.su_email}, linking to SaaS user {saas_user.id}")
+                    # Link existing portal user to SaaS user
+                    saas_user.write({'su_portal_user_id': existing_portal_user.id})
+                    return saas_user
+                
                 _logger.info(f"Auto-creating portal user for SaaS user {saas_user.id} with email: {saas_user.su_email}")
                 
                 # Prepare portal user data
@@ -222,12 +234,14 @@ class SaasUser(models.Model):
                 portal_user_vals['groups_id'] = [(6, 0, [portal_group.id])]
                 portal_user_vals['active'] = True
                 
-                portal_user = self.env['res.users'].sudo().create(portal_user_vals)
-                
-                # Link the portal user to SaaS user
-                saas_user.write({'su_portal_user_id': portal_user.id})
-                
-                _logger.info(f"Successfully auto-created portal user {portal_user.id} for SaaS user {saas_user.id}")
+                # Use savepoint to ensure atomicity
+                with self.env.cr.savepoint():
+                    portal_user = self.env['res.users'].sudo().create(portal_user_vals)
+                    
+                    # Link the portal user to SaaS user
+                    saas_user.write({'su_portal_user_id': portal_user.id})
+                    
+                    _logger.info(f"Successfully auto-created portal user {portal_user.id} for SaaS user {saas_user.id}")
                 
         except Exception as e:
             _logger.error(f"Error auto-creating portal user for SaaS user {saas_user.id}: {str(e)}")

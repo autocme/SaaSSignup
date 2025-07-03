@@ -49,13 +49,17 @@ class CustomAuthSignup(http.Controller):
         """Test route to verify controller is working."""
         return "Custom signup controller is working!"
 
-    @http.route('/j_signup_validation/signup', type='http', auth='public', website=True, sitemap=True, csrf=False)
+    @http.route(['/j_signup_validation/signup', '/web/signup'], type='http', auth='public', website=True, sitemap=True, csrf=False)
     def web_auth_signup(self, **kw):
         """
         Display custom signup form.
         """
         try:
             _logger.info("Accessing custom signup form")
+            
+            # Check if this is a POST request to prevent double processing
+            if request.httprequest.method == 'POST':
+                return self.web_auth_signup_submit(**kw)
             
             # Get validation rules for frontend
             config_settings = request.env['res.config.settings']
@@ -88,13 +92,25 @@ class CustomAuthSignup(http.Controller):
             _logger.error(f"Error loading signup form: {str(e)}")
             return request.render('web.login', {'error': _('Unable to load signup form. Please try again.')})
 
-    @http.route('/j_signup_validation/submit', type='http', auth='public', methods=['POST'], csrf=False)
+    @http.route(['/j_signup_validation/submit'], type='http', auth='public', methods=['POST'], csrf=False)
     def web_auth_signup_submit(self, **post):
         """
         Process signup form submission with validation.
         """
         try:
-            _logger.info(f"Processing signup submission for email: {post.get('email')}")
+            email = post.get('email', '').strip().lower()
+            _logger.info(f"Processing signup submission for email: {email}")
+            
+            # Check for existing user first to prevent duplicates
+            existing_saas_user = request.env['saas.user'].sudo().search([('su_email', '=', email)], limit=1)
+            if existing_saas_user:
+                _logger.warning(f"Duplicate signup attempt for existing email: {email}")
+                return self._redirect_with_error(_('An account with this email address already exists. Please try to login instead.'))
+            
+            existing_portal_user = request.env['res.users'].sudo().search([('login', '=', email)], limit=1)
+            if existing_portal_user:
+                _logger.warning(f"Portal user already exists for email: {email}")
+                return self._redirect_with_error(_('An account with this email address already exists. Please try to login instead.'))
             
             # Extract form data
             form_data = self._extract_form_data(post)
@@ -106,8 +122,15 @@ class CustomAuthSignup(http.Controller):
                 _logger.warning(f"Signup validation failed: {validation_result['errors']}")
                 return self._redirect_with_error(validation_result['errors'])
             
-            # Create SaaS user and portal account
-            saas_user, portal_user = self._create_user_accounts(form_data, validation_result)
+            # Create SaaS user and portal account (using transaction to ensure atomicity)
+            with request.env.cr.savepoint():
+                saas_user, portal_user = self._create_user_accounts(form_data, validation_result)
+                
+                # Verify both users were created successfully
+                if not saas_user or not portal_user:
+                    raise UserError(_('Failed to create user accounts. Please try again.'))
+                
+                _logger.info(f"Successfully created SaaS user {saas_user.id} and portal user {portal_user.id}")
             
             # Auto-login if configured
             if self._should_auto_login():
@@ -669,33 +692,57 @@ class CustomAuthSignup(http.Controller):
         """
         Create SaaS user record and portal user account.
         """
-        # Prepare SaaS user data
-        saas_user_vals = {
-            'su_first_name': form_data['first_name'],
-            'su_last_name': form_data['last_name'],
-            'su_email': form_data['email'],
-            'su_phone': form_data['phone'],
-            'su_phone_country_id': form_data.get('phone_country'),
-            'su_password': form_data['password'],  # This should be encrypted in production
-            'su_account_type': form_data.get('account_type', 'individual'),
-            'su_vat_cr_number': form_data.get('vat_cr_number', ''),
-            'su_email_validated': validation_result['email_validated'],
-            'su_phone_validated': validation_result['phone_validated'],
-            'su_password_strength': validation_result['password_score'],
-            'su_registration_ip': form_data['registration_ip'],
-            'su_user_agent': form_data['user_agent'],
-        }
-        
-        # Create SaaS user with dynamic fields in context
-        # The create method will automatically create the portal user
-        saas_user_model = request.env['saas.user'].sudo()
-        dynamic_fields = form_data.get('dynamic_fields', {})
-        
-        saas_user = saas_user_model.with_context(dynamic_fields=dynamic_fields).create(saas_user_vals)
-        
-        _logger.info(f"Successfully created SaaS user {saas_user.id} and portal user {saas_user.su_portal_user_id.id if saas_user.su_portal_user_id else 'None'} for {form_data['email']}")
-        
-        return saas_user, saas_user.su_portal_user_id
+        try:
+            email = form_data['email']
+            
+            # Double-check for existing users in the same transaction
+            existing_saas = request.env['saas.user'].sudo().search([('su_email', '=', email)], limit=1)
+            if existing_saas:
+                raise ValidationError(_('A SaaS user with this email already exists.'))
+                
+            existing_portal = request.env['res.users'].sudo().search([('login', '=', email)], limit=1)
+            if existing_portal:
+                raise ValidationError(_('A portal user with this email already exists.'))
+            
+            # Prepare SaaS user data
+            saas_user_vals = {
+                'su_first_name': form_data['first_name'],
+                'su_last_name': form_data['last_name'],
+                'su_email': email,
+                'su_phone': form_data['phone'],
+                'su_phone_country_id': form_data.get('phone_country'),
+                'su_password': form_data['password'],
+                'su_account_type': form_data.get('account_type', 'individual'),
+                'su_vat_cr_number': form_data.get('vat_cr_number', ''),
+                'su_email_validated': validation_result['email_validated'],
+                'su_phone_validated': validation_result['phone_validated'],
+                'su_password_strength': validation_result['password_score'],
+                'su_registration_ip': form_data['registration_ip'],
+                'su_user_agent': form_data['user_agent'],
+            }
+            
+            # Create SaaS user with dynamic fields in context
+            # The create method will automatically create the portal user
+            saas_user_model = request.env['saas.user'].sudo()
+            dynamic_fields = form_data.get('dynamic_fields', {})
+            
+            # Create with explicit context to prevent duplicate creation
+            saas_user = saas_user_model.with_context(
+                dynamic_fields=dynamic_fields,
+                from_signup_form=True  # Flag to indicate this is from signup form
+            ).create(saas_user_vals)
+            
+            # Verify portal user was created
+            if not saas_user.su_portal_user_id:
+                raise UserError(_('Failed to create portal user account.'))
+            
+            _logger.info(f"Successfully created SaaS user {saas_user.id} and portal user {saas_user.su_portal_user_id.id} for {email}")
+            
+            return saas_user, saas_user.su_portal_user_id
+            
+        except Exception as e:
+            _logger.error(f"Error creating user accounts for {form_data.get('email', 'unknown')}: {str(e)}")
+            raise
 
     def _should_auto_login(self):
         """

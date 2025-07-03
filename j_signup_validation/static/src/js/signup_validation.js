@@ -18,7 +18,7 @@
             this.accountTypeRadios = document.querySelectorAll('input[name="account_type"]');
             this.vatCrField = document.getElementById('vat_cr_field');
             this.vatCrInput = document.getElementById('vat_cr_number');
-            
+
             this.validationRules = window.signupValidationRules || {};
             this.validationTimeouts = {};
             this.validationStates = {
@@ -86,7 +86,7 @@
         // Email validation
         handleEmailInput(event) {
             const email = event.target.value.trim();
-            
+
             // Clear previous timeout
             if (this.validationTimeouts.email) {
                 clearTimeout(this.validationTimeouts.email);
@@ -129,7 +129,7 @@
 
                 // Server-side validation
                 const response = await this.makeAjaxRequest('/j_signup_validation/validate_email', { email });
-                
+
                 this.emailInput.classList.remove('loading');
 
                 if (response.valid) {
@@ -171,7 +171,7 @@
         // Phone validation
         handlePhoneInput(event) {
             const phone = event.target.value.trim();
-            
+
             // Clear previous timeout
             if (this.validationTimeouts.phone) {
                 clearTimeout(this.validationTimeouts.phone);
@@ -205,7 +205,7 @@
 
                 // Server-side validation
                 const response = await this.makeAjaxRequest('/j_signup_validation/validate_phone', { phone });
-                
+
                 this.phoneInput.classList.remove('loading');
 
                 if (response.valid) {
@@ -308,7 +308,7 @@
         // Account type change handler
         handleAccountTypeChange(event) {
             const accountType = event.target.value;
-            
+
             if (accountType === 'company') {
                 // Show VAT/CR field with animation and make it required
                 this.vatCrField.style.display = 'block';
@@ -317,7 +317,7 @@
                 }, 10);
                 this.vatCrInput.setAttribute('required', 'required');
                 this.validationStates.vatCr = false; // Reset validation state
-                
+
                 // Validate if there's already a value
                 if (this.vatCrInput.value.trim()) {
                     this.validateVatCr(this.vatCrInput.value.trim());
@@ -332,7 +332,7 @@
                 this.vatCrInput.classList.remove('is-valid', 'is-invalid');
                 this.validationStates.vatCr = true; // Valid for individual
             }
-            
+
             this.updateSubmitButton();
         }
 
@@ -345,7 +345,7 @@
 
         validateVatCr(value) {
             const input = this.vatCrInput;
-            
+
             if (!value) {
                 this.validationStates.vatCr = false;
                 input.classList.remove('is-valid', 'is-invalid');
@@ -354,7 +354,7 @@
 
             // Basic VAT/CR validation (at least 10 characters, alphanumeric)
             const vatCrRegex = /^[A-Za-z0-9]{10,}$/;
-            
+
             if (vatCrRegex.test(value)) {
                 this.validationStates.vatCr = true;
                 input.classList.remove('is-invalid');
@@ -411,39 +411,39 @@
         isFormValid() {
             // Check basic validation states
             const basicValidation = Object.values(this.validationStates).every(state => state === true);
-            
+
             // Check dynamic required fields
             const dynamicValidation = this.validateDynamicFields();
-            
+
             return basicValidation && dynamicValidation;
         }
 
         validateDynamicFields() {
             // Get all dynamic fields that are marked as required
             const requiredDynamicFields = this.form.querySelectorAll('[id^="dynamic_"][required]');
-            
+
             for (let field of requiredDynamicFields) {
                 const value = field.value.trim();
-                
+
                 // Check if field has value - no visual feedback, just return validation state
                 if (!value) {
                     return false;
                 }
             }
-            
+
             return true;
         }
 
         bindDynamicFieldEvents() {
             // Get all dynamic fields and add event listeners
             const dynamicFields = this.form.querySelectorAll('[id^="dynamic_"]');
-            
+
             dynamicFields.forEach(field => {
                 // Add input event listener for real-time validation
                 field.addEventListener('input', (event) => {
                     this.handleDynamicFieldInput(event);
                 });
-                
+
                 // Add blur event listener for validation on focus loss
                 field.addEventListener('blur', (event) => {
                     this.handleDynamicFieldBlur(event);
@@ -464,7 +464,7 @@
         updateSubmitButton() {
             const isValid = this.isFormValid();
             this.submitBtn.disabled = !isValid;
-            
+
             if (isValid) {
                 this.submitBtn.classList.remove('btn-secondary');
                 this.submitBtn.classList.add('btn-primary');
@@ -499,7 +499,7 @@
 
         showFormErrors() {
             const errors = [];
-            
+
             if (!this.validationStates.firstName) errors.push('First name is required');
             if (!this.validationStates.lastName) errors.push('Last name is required');
             if (!this.validationStates.email) errors.push('Valid email is required');
@@ -525,42 +525,42 @@
                 `;
                 this.form.insertBefore(alert, this.form.firstChild);
             }
-            
+
             alert.querySelector('.error-message').textContent = message;
             alert.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
         addPasswordToggle() {
             const passwordInputs = [this.passwordInput, this.confirmPasswordInput];
-            
+
             passwordInputs.forEach(input => {
                 if (!input) return;
-                
+
                 const wrapper = input.parentNode;
-                
+
                 // Add proper CSS classes
                 wrapper.classList.add('password-field-container', 'position-relative');
                 input.classList.add('password-input-with-toggle');
-                
+
                 const toggle = document.createElement('button');
                 toggle.type = 'button';
                 toggle.className = 'password-toggle-btn';
                 toggle.innerHTML = '<i class="fa fa-eye"></i>';
-                
+
                 toggle.addEventListener('click', () => {
                     const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
                     input.setAttribute('type', type);
-                    
+
                     const icon = toggle.querySelector('i');
                     icon.className = type === 'password' ? 'fa fa-eye' : 'fa fa-eye-slash';
                 });
-                
+
                 // For password field, insert before the password strength container
                 // For confirm password, just append to wrapper
                 if (input.id === 'password') {
                     const passwordStrengthContainer = wrapper.querySelector('.password-strength-container');
                     const invalidFeedback = wrapper.querySelector('.invalid-feedback');
-                    
+
                     // Insert after input and label, but before other elements
                     if (invalidFeedback) {
                         wrapper.insertBefore(toggle, invalidFeedback);
@@ -569,7 +569,7 @@
                     } else {
                         wrapper.appendChild(toggle);
                     }
-                    
+
                     console.log('Password toggle added for password field:', toggle);
                 } else {
                     wrapper.appendChild(toggle);
@@ -591,17 +591,17 @@
                     id: Date.now()
                 })
             });
-            
+
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            
+
             const result = await response.json();
-            
+
             if (result.error) {
                 throw new Error(result.error.message || 'Server error');
             }
-            
+
             return result.result;
         }
     }
@@ -609,7 +609,7 @@
     // Initialize signup validation
     function initSignupValidation() {
         const form = document.getElementById('signupForm');
-        
+
         if (!form) {
             console.warn('Signup form not found');
             return;
@@ -632,3 +632,23 @@
     window.SignupValidator = SignupValidator;
 
 })();
+// Global function to prevent multiple submissions
+        window.validateFormBeforeSubmit = function(form) {
+            // Prevent multiple submissions
+            if (form.dataset.submitting === 'true') {
+                return false;
+            }
+            form.dataset.submitting = 'true';
+
+            // Disable submit button
+            const submitBtn = form.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Creating Account...';
+            }
+
+            return true;
+        };
+
+        // Form submission handler
+        $(document).on('submit', '.oe_signup_form', function(e) {

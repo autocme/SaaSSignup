@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    
+
     <!-- Add Signup Link to Login Form -->
     <template id="login_signup_link" inherit_id="web.login" name="Add Signup Link">
         <xpath expr="//form[@class='oe_login_form']" position="after">
@@ -318,7 +318,7 @@
                                                                 </label>
                                                             </div>
                                                         </t>
-                                                        
+
                                                         <!-- Number Fields -->
                                                         <t t-if="field['field_type'] in ['integer', 'float']">
                                                             <div class="form-floating">
@@ -336,7 +336,7 @@
                                                                 </label>
                                                             </div>
                                                         </t>
-                                                        
+
                                                         <!-- Selection Fields -->
 <!--                                                        <t t-if="field['field_type'] in ['selection']">-->
 <!--                                                            <select class="form-control"-->
@@ -396,7 +396,7 @@
                                                                 </t>
                                                             </div>
                                                         </t>
-                                                        
+
                                                         <!-- Boolean Field -->
                                                         <t t-if="field['field_type'] == 'boolean'">
                                                             <div class="form-check mb-2">
@@ -417,7 +417,7 @@
                                                                 </t>
                                                             </div>
                                                         </t>
-                                                        
+
                                                         <!-- Help Text for non-boolean fields -->
                                                         <t t-if="field['help_text'] and field['field_type'] != 'boolean' and field['field_type'] != 'binary'">
                                                             <div class="form-text">
