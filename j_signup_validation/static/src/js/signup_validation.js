@@ -21,6 +21,7 @@
             
             this.validationRules = window.signupValidationRules || {};
             this.validationTimeouts = {};
+            this.isSubmitting = false; // Prevent double submission
             this.validationStates = {
                 email: false,
                 phone: false,
@@ -372,13 +373,20 @@
         async handleFormSubmit(event) {
             event.preventDefault();
 
+            // Prevent double submission
+            if (this.isSubmitting) {
+                console.log('Form submission already in progress, ignoring duplicate submission');
+                return;
+            }
+
             // Final validation check
             if (!this.isFormValid()) {
                 this.showFormErrors();
                 return;
             }
 
-            // Show loading state
+            // Set submission flag and show loading state
+            this.isSubmitting = true;
             this.setSubmitButtonLoading(true);
 
             try {
@@ -404,6 +412,7 @@
                 this.showError('Network error. Please check your connection and try again.');
             } finally {
                 this.setSubmitButtonLoading(false);
+                this.isSubmitting = false; // Reset submission flag
             }
         }
 

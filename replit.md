@@ -321,13 +321,14 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - EMAIL CONSTRAINTS: Database-level email uniqueness constraint prevents duplicate SaaS users
   - ROBUST HANDLING: System gracefully handles existing users and provides appropriate user feedback
   - PREVENT DUPLICATES: Comprehensive protection against double form submissions and existing email conflicts
-- July 3, 2025: MODULE CONFLICT RESOLUTION - Fixed duplicate user creation caused by advance_signup_page module conflict
-  - CONFLICT IDENTIFIED: advance_signup_page module also handles /web/signup route causing duplicate processing
-  - TEMPLATE CONFLICTS: Both modules inherit auth_signup.fields template leading to double user creation
-  - PREVENTION LOGIC: Added check to skip automatic portal user creation when advance_signup_page is installed
-  - MODULE DETECTION: System detects advance_signup_page presence and disables conflicting functionality
-  - CLEAN SEPARATION: Each module now handles its own routes without interfering with the other
-  - COMPATIBILITY: Both modules can coexist without creating duplicate users or portal accounts
+- July 3, 2025: DOUBLE SUBMISSION PREVENTION - Fixed duplicate user creation caused by rapid form submissions
+  - ROOT CAUSE IDENTIFIED: JavaScript form submission handler allowed multiple rapid submissions causing duplicate records
+  - CLIENT-SIDE PROTECTION: Added isSubmitting flag in JavaScript to prevent duplicate form submissions
+  - SUBMIT BUTTON LOGIC: Form submission disabled during processing and re-enabled after completion or error
+  - SERVER-SIDE VALIDATION: Added email existence check before processing to prevent duplicate users
+  - DEBUGGING ADDED: Enhanced logging in both controller and model to track submission flow
+  - RAPID CLICK PREVENTION: Users can no longer trigger multiple submissions by rapid clicking or network delays
+  - CLEAN SUBMISSION FLOW: Each signup form submission now creates exactly one SaaS user and one portal user
 
 ## User Preferences
 

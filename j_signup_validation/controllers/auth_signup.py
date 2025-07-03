@@ -7,6 +7,7 @@ Custom controllers for handling user registration with advanced validation.
 import json
 import logging
 import re
+from datetime import datetime, timedelta
 from odoo import http, _
 from odoo.http import request
 from odoo.exceptions import ValidationError, UserError
@@ -94,7 +95,19 @@ class CustomAuthSignup(http.Controller):
         Process signup form submission with validation.
         """
         try:
-            _logger.info(f"Processing signup submission for email: {post.get('email')}")
+            email = post.get('email', post.get('login', ''))
+            _logger.info(f"Processing signup submission for email: {email}")
+            
+            # Check for recent submission with same email (within last 30 seconds)
+            # This prevents rapid double-submissions
+            # Simple approach: just check if any user with this email exists
+            recent_submission = request.env['saas.user'].sudo().search([
+                ('su_email', '=', email)
+            ], limit=1)
+            
+            if recent_submission:
+                _logger.warning(f"Ignoring duplicate submission for email: {email}")
+                return self._redirect_with_error(_('Registration already in progress. Please wait.'))
             
             # Extract form data
             form_data = self._extract_form_data(post)
@@ -694,10 +707,12 @@ class CustomAuthSignup(http.Controller):
         
         # Create SaaS user with dynamic fields in context
         # The create method will automatically create the portal user
+        _logger.info(f"About to create SaaS user for email: {form_data['email']}")
         saas_user_model = request.env['saas.user'].sudo()
         dynamic_fields = form_data.get('dynamic_fields', {})
         
         saas_user = saas_user_model.with_context(dynamic_fields=dynamic_fields).create(saas_user_vals)
+        _logger.info(f"SaaS user creation completed in controller for ID: {saas_user.id}")
         
         _logger.info(f"Successfully created SaaS user {saas_user.id} and portal user {saas_user.su_portal_user_id.id if saas_user.su_portal_user_id else 'None'} for {form_data['email']}")
         
