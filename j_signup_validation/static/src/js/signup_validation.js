@@ -28,8 +28,7 @@
                 confirmPassword: false,
                 firstName: false,
                 lastName: false,
-                vatCr: true, // Default true for individual, false for company
-                dynamicFields: true // Will be updated based on actual dynamic fields
+                vatCr: true // Default true for individual, false for company
             };
 
             this.init();
@@ -81,7 +80,6 @@
 
         initValidation() {
             // Set initial validation states
-            this.validationStates.dynamicFields = this.validateDynamicFields();
             this.updateSubmitButton();
         }
 
@@ -411,11 +409,13 @@
 
         // Utility methods
         isFormValid() {
-            // Update dynamic fields validation state
-            this.validationStates.dynamicFields = this.validateDynamicFields();
-            
-            // Check all validation states
-            return Object.values(this.validationStates).every(state => state === true);
+            // Check basic validation states
+            const basicValidation = Object.values(this.validationStates).every(state => state === true);
+
+            // Check dynamic required fields
+            const dynamicValidation = this.validateDynamicFields();
+
+            return basicValidation && dynamicValidation;
         }
 
         validateDynamicFields() {
@@ -423,22 +423,11 @@
             const requiredDynamicFields = this.form.querySelectorAll('[id^="dynamic_"][required]');
 
             for (let field of requiredDynamicFields) {
-                if (field.type === 'checkbox') {
-                    // For boolean fields, check if checked
-                    if (!field.checked) {
-                        return false;
-                    }
-                } else if (field.type === 'file') {
-                    // For file fields, check if file is selected
-                    if (!field.files || field.files.length === 0) {
-                        return false;
-                    }
-                } else {
-                    // For text, number, date fields, check if value exists
-                    const value = field.value ? field.value.trim() : '';
-                    if (!value) {
-                        return false;
-                    }
+                const value = field.value.trim();
+
+                // Check if field has value - no visual feedback, just return validation state
+                if (!value) {
+                    return false;
                 }
             }
 
@@ -463,17 +452,13 @@
         }
 
         handleDynamicFieldInput(event) {
-            // Update dynamic field validation state
-            this.validationStates.dynamicFields = this.validateDynamicFields();
-            // Update submit button state - no visual feedback on the field itself
+            // Simply update submit button state - no visual feedback on the field itself
             this.updateSubmitButton();
         }
 
         handleDynamicFieldBlur(event) {
-            // Update dynamic field validation state
-            this.validationStates.dynamicFields = this.validateDynamicFields();
             // Same validation as input, ensures validation on focus loss
-            this.updateSubmitButton();
+            this.handleDynamicFieldInput(event);
         }
 
         updateSubmitButton() {
