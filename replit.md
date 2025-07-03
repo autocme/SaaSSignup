@@ -308,6 +308,12 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - FORM VIEW: Added "Create Portal User" button in SaaS User form header for manual portal user creation
   - ERROR HANDLING: Portal user creation failures don't prevent SaaS user creation (can be created manually later)
   - COMPATIBILITY: Maintains all existing validation logic while simplifying the creation process
+- July 3, 2025: NORMAL CREATE METHOD - Changed portal user creation to use standard create method
+  - PORTAL USER CREATION: Changed from Odoo's signup mechanism to normal res.users.create() method
+  - SIMPLIFIED LOGIC: Removed _signup_create_user method calls and related signup context
+  - STANDARD APPROACH: Both automatic and manual portal user creation now use consistent create() method
+  - GROUPS ASSIGNMENT: Portal group assignment now happens during creation instead of after
+  - CLEANER CODE: Simplified portal user creation logic with fewer method calls and contexts
 
 ## User Preferences
 

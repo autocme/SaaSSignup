@@ -217,13 +217,12 @@ class SaasUser(models.Model):
                     if hasattr(self.env['res.users'], field_name):
                         portal_user_vals[field_name] = field_value
                 
-                # Create portal user using Odoo's signup mechanism
-                portal_user = self.env['res.users'].sudo().with_context(no_reset_password=True)._signup_create_user(portal_user_vals)
-                
-                # Add portal group to the user
+                # Create portal user using normal create method
                 portal_group = self.env.ref('base.group_portal')
-                portal_user.write({'groups_id': [(6, 0, [portal_group.id])]})
-                portal_user.write({'active': True})
+                portal_user_vals['groups_id'] = [(6, 0, [portal_group.id])]
+                portal_user_vals['active'] = True
+                
+                portal_user = self.env['res.users'].sudo().create(portal_user_vals)
                 
                 # Link the portal user to SaaS user
                 saas_user.write({'su_portal_user_id': portal_user.id})
@@ -265,13 +264,12 @@ class SaasUser(models.Model):
                 'vat': self.su_vat_cr_number if self.su_account_type == 'company' and self.su_vat_cr_number else False,
             }
             
-            # Create portal user using Odoo's signup mechanism
-            portal_user = self.env['res.users'].sudo().with_context(no_reset_password=True)._signup_create_user(portal_user_vals)
-            
-            # Add portal group to the user
+            # Create portal user using normal create method
             portal_group = self.env.ref('base.group_portal')
-            portal_user.write({'groups_id': [(6, 0, [portal_group.id])]})
-            portal_user.write({'active': True})
+            portal_user_vals['groups_id'] = [(6, 0, [portal_group.id])]
+            portal_user_vals['active'] = True
+            
+            portal_user = self.env['res.users'].sudo().create(portal_user_vals)
             
             # Link the portal user to SaaS user
             self.write({'su_portal_user_id': portal_user.id})
