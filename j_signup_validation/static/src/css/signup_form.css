@@ -46,8 +46,7 @@
     overflow: hidden;
     width: 100%;
     max-width: 450px;
-    margin: 1.5rem auto;
-    min-width: 320px;
+    min-width: 290px;
     display: block;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
     position: relative;
@@ -90,7 +89,7 @@
     padding: 0.65rem 0.7rem;
     color: #6c757d;
     font-weight: 500;
-    font-size: 0.8rem;
+    font-size: 0.1rem;
 }
 
 /* Validation feedback */
@@ -377,8 +376,7 @@
 .col-md-6 {
     flex: 0 0 50%;
     max-width: 50%;
-    padding-right: 15px;
-    padding-left: 15px;
+
 }
 
 /* Responsive adjustments */
