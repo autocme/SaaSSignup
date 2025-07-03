@@ -7,7 +7,6 @@ Custom controllers for handling user registration with advanced validation.
 import json
 import logging
 import re
-from datetime import datetime, timedelta
 from odoo import http, _
 from odoo.http import request
 from odoo.exceptions import ValidationError, UserError
@@ -95,8 +94,7 @@ class CustomAuthSignup(http.Controller):
         Process signup form submission with validation.
         """
         try:
-            email = post.get('email', post.get('login', ''))
-            _logger.info(f"Processing signup submission for email: {email}")
+            _logger.info(f"Processing signup submission for email: {post.get('email')}")
             
             # Extract form data
             form_data = self._extract_form_data(post)
@@ -690,12 +688,10 @@ class CustomAuthSignup(http.Controller):
         
         # Create SaaS user with dynamic fields in context
         # The create method will automatically create the portal user
-        _logger.info(f"About to create SaaS user for email: {form_data['email']}")
         saas_user_model = request.env['saas.user'].sudo()
         dynamic_fields = form_data.get('dynamic_fields', {})
         
         saas_user = saas_user_model.with_context(dynamic_fields=dynamic_fields).create(saas_user_vals)
-        _logger.info(f"SaaS user creation completed in controller for ID: {saas_user.id}")
         
         _logger.info(f"Successfully created SaaS user {saas_user.id} and portal user {saas_user.su_portal_user_id.id if saas_user.su_portal_user_id else 'None'} for {form_data['email']}")
         

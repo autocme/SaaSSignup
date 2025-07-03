@@ -190,25 +190,12 @@ class SaasUser(models.Model):
         """
         Override create method to automatically create portal user when SaaS user is created.
         """
-        _logger.info(f"SaasUser.create() called with email: {vals.get('su_email', 'N/A')}")
-        
         # Create the SaaS user record first
         saas_user = super(SaasUser, self).create(vals)
-        _logger.info(f"SaaS user created successfully with ID: {saas_user.id}")
-        
-        # Skip portal user creation if explicitly disabled in context
-        if self.env.context.get('skip_portal_user_creation', False):
-            return saas_user
         
         try:
             # Check if portal user should be created (skip if already linked)
             if not saas_user.su_portal_user_id and saas_user.su_email and saas_user.su_password:
-                # Check if a portal user with this email already exists
-                existing_portal_user = self.env['res.users'].sudo().search([('login', '=', saas_user.su_email)], limit=1)
-                if existing_portal_user:
-                    _logger.warning(f"Portal user with email {saas_user.su_email} already exists. Linking to existing user.")
-                    saas_user.write({'su_portal_user_id': existing_portal_user.id})
-                    return saas_user
                 _logger.info(f"Auto-creating portal user for SaaS user {saas_user.id} with email: {saas_user.su_email}")
                 
                 # Prepare portal user data
@@ -264,21 +251,6 @@ class SaasUser(models.Model):
         
         try:
             _logger.info(f"Manually creating portal user for SaaS user {self.id} with email: {self.su_email}")
-            
-            # Check if a portal user with this email already exists
-            existing_portal_user = self.env['res.users'].sudo().search([('login', '=', self.su_email)], limit=1)
-            if existing_portal_user:
-                _logger.warning(f"Portal user with email {self.su_email} already exists. Linking to existing user.")
-                self.write({'su_portal_user_id': existing_portal_user.id})
-                return {
-                    'type': 'ir.actions.client',
-                    'tag': 'display_notification',
-                    'params': {
-                        'title': _('Success'),
-                        'message': _('Linked to existing portal user successfully.'),
-                        'type': 'success',
-                    },
-                }
             
             # Prepare portal user data
             portal_user_vals = {
