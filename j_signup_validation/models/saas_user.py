@@ -186,54 +186,84 @@ class SaasUser(models.Model):
                     )
 
     @api.model
-    def create_saas_user_with_portal(self, user_data):
+    def create(self, vals):
         """
-        Create a SaaS user record and corresponding portal user.
+        Override create method to automatically create portal user when SaaS user is created.
+        """
+        # Create the SaaS user record first
+        saas_user = super(SaasUser, self).create(vals)
         
-        Args:
-            user_data (dict): Dictionary containing user registration data
-            
-        Returns:
-            tuple: (saas_user_record, portal_user_record)
-        """
         try:
-            _logger.info(f"Creating SaaS user with email: {user_data.get('email')}")
+            # Check if portal user should be created (skip if already linked)
+            if not saas_user.su_portal_user_id and saas_user.su_email and saas_user.su_password:
+                _logger.info(f"Auto-creating portal user for SaaS user {saas_user.id} with email: {saas_user.su_email}")
+                
+                # Prepare portal user data
+                portal_user_vals = {
+                    'name': saas_user.su_complete_name,
+                    'login': saas_user.su_email,
+                    'email': saas_user.su_email,
+                    'mobile': saas_user.su_phone,
+                    'password': saas_user.su_password,
+                    'country_id': saas_user.su_phone_country_id.id if saas_user.su_phone_country_id else False,
+                    'is_company': True if saas_user.su_account_type == 'company' else False,
+                    'vat': saas_user.su_vat_cr_number if saas_user.su_account_type == 'company' and saas_user.su_vat_cr_number else False,
+                }
+
+                # Check if any dynamic fields were passed in context
+                dynamic_fields = self.env.context.get('dynamic_fields', {})
+                for field_name, field_value in dynamic_fields.items():
+                    # Only add if the field exists in res.users model
+                    if hasattr(self.env['res.users'], field_name):
+                        portal_user_vals[field_name] = field_value
+                
+                # Create portal user using Odoo's signup mechanism
+                portal_user = self.env['res.users'].sudo().with_context(no_reset_password=True)._signup_create_user(portal_user_vals)
+                
+                # Add portal group to the user
+                portal_group = self.env.ref('base.group_portal')
+                portal_user.write({'groups_id': [(6, 0, [portal_group.id])]})
+                portal_user.write({'active': True})
+                
+                # Link the portal user to SaaS user
+                saas_user.write({'su_portal_user_id': portal_user.id})
+                
+                _logger.info(f"Successfully auto-created portal user {portal_user.id} for SaaS user {saas_user.id}")
+                
+        except Exception as e:
+            _logger.error(f"Error auto-creating portal user for SaaS user {saas_user.id}: {str(e)}")
+            # Don't raise error here to prevent SaaS user creation failure
+            # Portal user can be created manually later if needed
             
-            # Create SaaS user record
-            saas_user = self.create({
-                'su_first_name': user_data.get('first_name'),
-                'su_last_name': user_data.get('last_name'),
-                'su_email': user_data.get('email'),
-                'su_phone': user_data.get('phone'),
-                'su_phone_country_id': user_data.get('phone_country'),
-                'su_password': user_data.get('password'),  # Should be encrypted
-                'su_account_type': user_data.get('account_type', 'individual'),
-                'su_vat_cr_number': user_data.get('vat_cr_number', ''),
-                'su_email_validated': user_data.get('email_validated', False),
-                'su_phone_validated': user_data.get('phone_validated', False),
-                'su_password_strength': user_data.get('password_strength', 0),
-                'su_registration_ip': user_data.get('registration_ip'),
-                'su_user_agent': user_data.get('user_agent'),
-            })
+        return saas_user
+
+    def action_create_portal_user(self):
+        """
+        Manually create portal user for existing SaaS user records.
+        This is useful for SaaS users created before the automatic portal user creation.
+        """
+        self.ensure_one()
+        
+        if self.su_portal_user_id:
+            raise UserError(_('This SaaS user already has a linked portal user.'))
+        
+        if not self.su_email or not self.su_password:
+            raise UserError(_('Email and password are required to create a portal user.'))
+        
+        try:
+            _logger.info(f"Manually creating portal user for SaaS user {self.id} with email: {self.su_email}")
             
             # Prepare portal user data
             portal_user_vals = {
-                'name': saas_user.su_complete_name,
-                'login': saas_user.su_email,
-                'email': saas_user.su_email,
-                'mobile': saas_user.su_phone,
-                'password': user_data.get('password'),
-                'country_id': user_data.get('phone_country'),
-                'is_company': True if saas_user.su_account_type == 'company' else False,
-                'vat': saas_user.su_vat_cr_number if saas_user.su_account_type == 'company' and saas_user.su_vat_cr_number else False,
+                'name': self.su_complete_name,
+                'login': self.su_email,
+                'email': self.su_email,
+                'mobile': self.su_phone,
+                'password': self.su_password,
+                'country_id': self.su_phone_country_id.id if self.su_phone_country_id else False,
+                'is_company': True if self.su_account_type == 'company' else False,
+                'vat': self.su_vat_cr_number if self.su_account_type == 'company' and self.su_vat_cr_number else False,
             }
-
-            # Add dynamic fields to portal user creation
-            dynamic_fields = user_data.get('dynamic_fields', {})
-            for field_name, field_value in dynamic_fields.items():
-                # Only add if the field exists in res.users model
-                if hasattr(self.env['res.users'], field_name):
-                    portal_user_vals[field_name] = field_value
             
             # Create portal user using Odoo's signup mechanism
             portal_user = self.env['res.users'].sudo().with_context(no_reset_password=True)._signup_create_user(portal_user_vals)
@@ -243,18 +273,24 @@ class SaasUser(models.Model):
             portal_user.write({'groups_id': [(6, 0, [portal_group.id])]})
             portal_user.write({'active': True})
             
-            # Link the records
-            saas_user.su_portal_user_id = portal_user.id
+            # Link the portal user to SaaS user
+            self.write({'su_portal_user_id': portal_user.id})
             
-            _logger.info(f"Successfully created SaaS user {saas_user.id} and portal user {portal_user.id}")
+            _logger.info(f"Successfully created portal user {portal_user.id} for SaaS user {self.id}")
             
-            return saas_user, portal_user
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': _('Success'),
+                    'message': _('Portal user created successfully.'),
+                    'type': 'success',
+                },
+            }
             
         except Exception as e:
-            _logger.error(f"Error creating SaaS user: {str(e)}")
-            raise ValidationError(
-                _("Failed to create user account. Please try again or contact support.")
-            )
+            _logger.error(f"Error creating portal user for SaaS user {self.id}: {str(e)}")
+            raise UserError(_("Failed to create portal user. Please check the logs for details."))
 
     def get_user_stats(self):
         """

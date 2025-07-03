@@ -298,6 +298,16 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - CENTERING: Added specific CSS rules for .oe_signup and .oe_signup_form proper centering
   - PASSWORD TOGGLES: Updated toggle button positioning for smaller field heights
   - MOBILE: Updated responsive breakpoints to maintain compact design on all screen sizes
+- July 2, 2025: AUTOMATED PORTAL USER CREATION - Simplified user creation logic
+  - ARCHITECTURE CHANGE: Modified SaaS User model to automatically create portal users in the create() method
+  - SIGNUP FLOW: Signup form now only creates SaaS User record, portal user creation happens automatically
+  - SYSTEM INTEGRATION: Works for both signup form submissions and manual SaaS User creation within the system
+  - CONTROLLER UPDATE: Simplified _create_user_accounts method to use direct SaaS User creation with context
+  - DYNAMIC FIELDS: Portal user creation includes dynamic fields passed through context
+  - MANUAL CREATION: Added action_create_portal_user method for existing SaaS users without linked portal users
+  - FORM VIEW: Added "Create Portal User" button in SaaS User form header for manual portal user creation
+  - ERROR HANDLING: Portal user creation failures don't prevent SaaS user creation (can be created manually later)
+  - COMPATIBILITY: Maintains all existing validation logic while simplifying the creation process
 
 ## User Preferences
 

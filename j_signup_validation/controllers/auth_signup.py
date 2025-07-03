@@ -669,31 +669,33 @@ class CustomAuthSignup(http.Controller):
         """
         Create SaaS user record and portal user account.
         """
-        # Prepare user data
-        user_data = {
-            'first_name': form_data['first_name'],
-            'last_name': form_data['last_name'],
-            'email': form_data['email'],
-            'phone': form_data['phone'],
-            'phone_country': form_data.get('phone_country'),
-            'password': form_data['password'],  # This should be encrypted in production
-            'account_type': form_data.get('account_type', 'individual'),
-            'vat_cr_number': form_data.get('vat_cr_number', ''),
-            'email_validated': validation_result['email_validated'],
-            'phone_validated': validation_result['phone_validated'],
-            'password_strength': validation_result['password_score'],
-            'registration_ip': form_data['registration_ip'],
-            'user_agent': form_data['user_agent'],
-            'dynamic_fields': form_data.get('dynamic_fields', {}),
+        # Prepare SaaS user data
+        saas_user_vals = {
+            'su_first_name': form_data['first_name'],
+            'su_last_name': form_data['last_name'],
+            'su_email': form_data['email'],
+            'su_phone': form_data['phone'],
+            'su_phone_country_id': form_data.get('phone_country'),
+            'su_password': form_data['password'],  # This should be encrypted in production
+            'su_account_type': form_data.get('account_type', 'individual'),
+            'su_vat_cr_number': form_data.get('vat_cr_number', ''),
+            'su_email_validated': validation_result['email_validated'],
+            'su_phone_validated': validation_result['phone_validated'],
+            'su_password_strength': validation_result['password_score'],
+            'su_registration_ip': form_data['registration_ip'],
+            'su_user_agent': form_data['user_agent'],
         }
         
-        # Create accounts
+        # Create SaaS user with dynamic fields in context
+        # The create method will automatically create the portal user
         saas_user_model = request.env['saas.user'].sudo()
-        saas_user, portal_user = saas_user_model.create_saas_user_with_portal(user_data)
+        dynamic_fields = form_data.get('dynamic_fields', {})
         
-        _logger.info(f"Successfully created accounts for {form_data['email']}")
+        saas_user = saas_user_model.with_context(dynamic_fields=dynamic_fields).create(saas_user_vals)
         
-        return saas_user, portal_user
+        _logger.info(f"Successfully created SaaS user {saas_user.id} and portal user {saas_user.su_portal_user_id.id if saas_user.su_portal_user_id else 'None'} for {form_data['email']}")
+        
+        return saas_user, saas_user.su_portal_user_id
 
     def _should_auto_login(self):
         """

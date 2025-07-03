@@ -30,6 +30,8 @@
             <field name="arch" type="xml">
                 <form string="SaaS User">
                     <header>
+                        <button name="action_create_portal_user" type="object" string="Create Portal User" 
+                                class="oe_highlight" invisible="su_portal_user_id != False"/>
                         <field name="su_active" widget="boolean_toggle"/>
                     </header>
                     
