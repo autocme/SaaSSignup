@@ -42,53 +42,72 @@
 
 .custom-signup-card {
     border: none;
-    border-radius: 16px;
+    border-radius: 20px;
     overflow: hidden;
     width: 100%;
-    max-width: 450px;
-    min-width: 290px;
+    max-width: 520px;
+    min-width: 320px;
     display: block;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 8px 25px rgba(0, 0, 0, 0.1);
     position: relative;
     left: 0;
     right: 0;
+    background: #ffffff;
 }
 
 .custom-signup-card .card-header {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 2rem 1.5rem;
+    padding: 2.5rem 2rem;
     border: none;
+    text-align: center;
+    position: relative;
 }
 
 .custom-signup-card .card-body {
-    padding: 2rem 1.5rem;
+    padding: 2.5rem 2rem 3rem 2rem;
     background: #ffffff;
 }
 
 /* Form styling */
 .form-floating {
     position: relative;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
 }
 
 .form-floating > .form-control {
-    padding: 0.65rem 0.7rem;
+    padding: 1rem 0.875rem;
     border: 2px solid #e9ecef;
-    border-radius: 8px;
+    border-radius: 12px;
     transition: all 0.3s ease;
-    font-size: 0.85rem;
+    font-size: 0.95rem;
+    height: 3.5rem;
+    line-height: 1.5;
+}
+
+.form-floating > .form-control:hover {
+    border-color: #adb5bd;
+    transform: translateY(-1px);
 }
 
 .form-floating > .form-control:focus {
     border-color: #667eea;
-    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.15), 0 8px 20px rgba(102, 126, 234, 0.1);
+    transform: translateY(-2px);
 }
 
 .form-floating > label {
-    padding: 0.65rem 0.7rem;
+    padding: 1rem 0.875rem;
     color: #6c757d;
     font-weight: 500;
-    font-size: 0.6rem;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label {
+    color: #667eea;
+    font-size: 0.75rem;
+    transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
 }
 
 /* Validation feedback */
@@ -344,29 +363,37 @@ input[name="confirm_password"].form-control.is-valid {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border: none;
     color: white;
-    padding: 0.75rem 1.5rem;
-    border-radius: 8px;
+    padding: 1rem 2rem;
+    border-radius: 12px;
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 1.1rem;
     transition: all 0.3s ease;
     width: 100%;
-    margin-top: 1.5rem;
+    margin-top: 2rem;
     height: auto;
-    min-height: 48px;
+    min-height: 56px;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
 .btn-signup:hover, .btn-primary.btn-lg:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.5);
     color: white;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+}
+
+.btn-signup:active, .btn-primary.btn-lg:active {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
 }
 
 .btn-signup:disabled, .btn-primary.btn-lg:disabled {
     opacity: 0.6;
     cursor: not-allowed;
     transform: none;
-    box-shadow: none;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
 }
 
 /* Loading spinner */
@@ -464,6 +491,21 @@ input[name="confirm_password"].form-control.is-valid {
 /* Password field without toggle (main password field) - ensure normal padding */
 #password.form-control {
     padding-right: 0.75rem !important;
+}
+
+/* Form section spacing */
+.account-type-section {
+    margin-bottom: 2rem !important;
+}
+
+.password-section {
+    margin-top: 1.5rem !important;
+}
+
+.additional-info-section {
+    margin-top: 2rem !important;
+    padding-top: 1.5rem !important;
+    border-top: 1px solid #f1f3f4 !important;
 }
 
 .password-toggle-btn {
@@ -572,25 +614,40 @@ input[name="confirm_password"].form-control.is-valid {
 }
 
 .form-check-input[type="radio"] {
-    width: 20px !important;
-    height: 20px !important;
+    width: 22px !important;
+    height: 22px !important;
     margin: 0 !important;
     cursor: pointer !important;
+    border: 2px solid #e9ecef !important;
+    transition: all 0.3s ease !important;
+}
+
+.form-check-input[type="radio"]:hover {
+    border-color: #667eea !important;
+    transform: scale(1.1) !important;
+}
+
+.form-check-input[type="radio"]:checked {
+    background-color: #667eea !important;
+    border-color: #667eea !important;
 }
 
 .form-check-label {
-    font-size: 1rem !important;
+    font-size: 1.05rem !important;
     font-weight: 500 !important;
     color: #495057 !important;
     cursor: pointer !important;
     margin: 0 !important;
+    margin-left: 0.75rem !important;
     display: flex !important;
     align-items: center !important;
+    transition: all 0.3s ease !important;
 }
 
 .form-check-input[type="radio"]:checked + .form-check-label {
-    color: #007bff !important;
+    color: #667eea !important;
     font-weight: 600 !important;
+    transform: translateX(2px) !important;
 }
 
 /* VAT/CR Field Animation */
@@ -606,4 +663,62 @@ input[name="confirm_password"].form-control.is-valid {
     opacity: 1;
     max-height: 100px;
     margin-bottom: 1rem !important;
+}
+
+/* Enhanced Mobile Responsiveness */
+@media (max-width: 768px) {
+    .custom-signup-card {
+        max-width: 95vw !important;
+        margin: 1rem auto !important;
+        border-radius: 16px !important;
+    }
+    
+    .custom-signup-card .card-header {
+        padding: 2rem 1.5rem !important;
+    }
+    
+    .custom-signup-card .card-body {
+        padding: 2rem 1.5rem 2.5rem 1.5rem !important;
+    }
+    
+    .form-floating > .form-control {
+        height: 3.25rem !important;
+        font-size: 0.9rem !important;
+        padding: 0.875rem 0.75rem !important;
+    }
+    
+    .form-floating > label {
+        font-size: 0.85rem !important;
+        padding: 0.875rem 0.75rem !important;
+    }
+    
+    .btn-signup, .btn-primary.btn-lg {
+        font-size: 1rem !important;
+        padding: 0.875rem 1.5rem !important;
+        min-height: 52px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .custom-signup-card {
+        max-width: 100vw !important;
+        margin: 0.5rem auto !important;
+        border-radius: 12px !important;
+    }
+    
+    .custom-signup-card .card-header {
+        padding: 1.5rem 1rem !important;
+    }
+    
+    .custom-signup-card .card-body {
+        padding: 1.5rem 1rem 2rem 1rem !important;
+    }
+    
+    .form-floating {
+        margin-bottom: 1.25rem !important;
+    }
+    
+    .account-type-section {
+        margin-bottom: 1.5rem !important;
+    }
 }
