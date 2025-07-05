@@ -173,7 +173,7 @@
 
         <!-- Menu Items under Technical Settings -->
         <menuitem id="menu_saas_user" name="SaaS Users" parent="base.menu_custom" 
-                  action="action_saas_user" sequence="10"/>
+                  action="action_saas_user" sequence="-100"/>
 
 
     </data>

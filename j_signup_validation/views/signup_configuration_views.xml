@@ -120,7 +120,7 @@
                   name="Dynamic Fields Configuration" 
                   parent="base.menu_custom" 
                   action="action_signup_configuration" 
-                  sequence="20"/>
+                  sequence="-100"/>
 
     </data>
 </odoo>
