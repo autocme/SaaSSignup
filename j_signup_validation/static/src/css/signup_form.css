@@ -647,7 +647,7 @@ input[name="confirm_password"].form-control.is-valid {
 }
 
 .form-check-label {
-    font-size: 1.05rem !important;
+    font-size: 0.9rem !important;
     font-weight: 500 !important;
     color: #495057 !important;
     cursor: pointer !important;
