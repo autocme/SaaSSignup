@@ -115,10 +115,10 @@
             </field>
         </record>
 
-        <!-- Menu Items for Signup Configuration -->
+        <!-- Menu Items for Signup Configuration under Technical Settings -->
         <menuitem id="menu_signup_configuration" 
                   name="Dynamic Fields Configuration" 
-                  parent="menu_saas_user_root" 
+                  parent="base.menu_custom" 
                   action="action_signup_configuration" 
                   sequence="20"/>
 
