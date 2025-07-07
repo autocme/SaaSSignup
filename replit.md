@@ -451,6 +451,14 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - VALIDATION DEBUGGING: Console logs now show account type, validation states, and field requirements for troubleshooting
   - ACCOUNT TYPE AWARENESS: All validation functions now properly check and respond to current account type selection
   - FIELD REQUIREMENT SYNC: Validation states, HTML required attributes, and visual feedback now stay synchronized during account type changes
+- July 3, 2025: CRITICAL TEMPLATE FIX - Removed hardcoded required attributes causing validation conflict
+  - ROOT CAUSE IDENTIFIED: HTML template had hardcoded required="required" on first_name and last_name fields
+  - TEMPLATE FIX: Removed hardcoded required="required" attributes from both name fields in XML template
+  - DYNAMIC REQUIREMENTS: JavaScript now properly manages required attributes based on account type selection
+  - INITIALIZATION UPDATE: Enhanced initializeAccountTypeValidation() to set HTML required attributes on page load
+  - CONFLICT RESOLUTION: HTML validation and JavaScript validation now work together instead of conflicting
+  - ACCOUNT TYPE LOGIC: Individual accounts get required name fields, Company accounts get required company fields
+  - VALIDATION SYNC: HTML required attributes, JavaScript validation states, and visual feedback all synchronized
 - July 3, 2025: ELEGANT FORM REDESIGN - Enhanced styling for more beautiful and professional appearance
   - CARD DIMENSIONS: Increased max-width to 520px with enhanced shadow effects (0 20px 60px rgba) and 20px border radius
   - ENHANCED PADDING: Upgraded header padding to 2.5rem and body padding to 2.5rem for better spacing

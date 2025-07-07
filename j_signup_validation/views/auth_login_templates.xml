@@ -103,7 +103,6 @@
                                                            id="first_name"
                                                            name="first_name"
                                                            placeholder="First Name"
-                                                           required="required"
                                                            autocomplete="given-name"/>
                                                     <label for="first_name">
                                                         <i class="fa fa-user me-1"></i>First Name *
@@ -118,7 +117,6 @@
                                                            id="last_name"
                                                            name="last_name"
                                                            placeholder="Last Name"
-                                                           required="required"
                                                            autocomplete="family-name"/>
                                                     <label for="last_name">
                                                         <i class="fa fa-user me-1"></i>Last Name *

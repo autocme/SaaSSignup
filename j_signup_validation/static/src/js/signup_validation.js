@@ -63,12 +63,28 @@
                 this.validationStates.lastName = true;
                 this.validationStates.companyName = false;
                 this.validationStates.vatCr = false;
+                
+                // Remove required attributes from name fields
+                document.getElementById('first_name')?.removeAttribute('required');
+                document.getElementById('last_name')?.removeAttribute('required');
+                
+                // Add required attributes to company fields
+                document.getElementById('company_name')?.setAttribute('required', 'required');
+                document.getElementById('vat_cr_number')?.setAttribute('required', 'required');
             } else {
                 // For individual accounts, name fields are required
                 this.validationStates.firstName = false;
                 this.validationStates.lastName = false;
                 this.validationStates.companyName = true;
                 this.validationStates.vatCr = true;
+                
+                // Add required attributes to name fields
+                document.getElementById('first_name')?.setAttribute('required', 'required');
+                document.getElementById('last_name')?.setAttribute('required', 'required');
+                
+                // Remove required attributes from company fields
+                document.getElementById('company_name')?.removeAttribute('required');
+                document.getElementById('vat_cr_number')?.removeAttribute('required');
             }
             
             console.log('initializeAccountTypeValidation - After setting validation states:', this.validationStates);
