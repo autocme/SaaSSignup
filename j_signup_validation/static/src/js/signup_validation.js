@@ -46,7 +46,32 @@
 
             this.bindEvents();
             this.initValidation();
+            this.initializeAccountTypeValidation();
             console.log('Signup validation initialized');
+        }
+
+        initializeAccountTypeValidation() {
+            // Initialize validation states based on the default account type
+            const accountType = document.querySelector('input[name="account_type"]:checked')?.value || 'individual';
+            
+            console.log('initializeAccountTypeValidation - Account type:', accountType);
+            console.log('initializeAccountTypeValidation - Before setting validation states:', this.validationStates);
+            
+            if (accountType === 'company') {
+                // For company accounts, name fields are not required
+                this.validationStates.firstName = true;
+                this.validationStates.lastName = true;
+                this.validationStates.companyName = false;
+                this.validationStates.vatCr = false;
+            } else {
+                // For individual accounts, name fields are required
+                this.validationStates.firstName = false;
+                this.validationStates.lastName = false;
+                this.validationStates.companyName = true;
+                this.validationStates.vatCr = true;
+            }
+            
+            console.log('initializeAccountTypeValidation - After setting validation states:', this.validationStates);
         }
 
         bindEvents() {
@@ -324,6 +349,9 @@
         // Account type change handler
         handleAccountTypeChange(event) {
             const accountType = event.target.value;
+            
+            console.log('handleAccountTypeChange - Account type:', accountType);
+            console.log('handleAccountTypeChange - Before change validation states:', this.validationStates);
 
             if (accountType === 'company') {
                 // Hide individual name fields
@@ -345,9 +373,13 @@
                 this.vatCrInput.setAttribute('required', 'required');
                 this.validationStates.vatCr = false; // Reset validation state
 
-                // Clear individual name requirements
+                // Clear individual name requirements and reset validation states
                 document.getElementById('first_name')?.removeAttribute('required');
                 document.getElementById('last_name')?.removeAttribute('required');
+                // Clear validation classes from name fields
+                document.getElementById('first_name')?.classList.remove('is-valid', 'is-invalid');
+                document.getElementById('last_name')?.classList.remove('is-valid', 'is-invalid');
+                // Set name fields as valid for company accounts (they're not required)
                 this.validationStates.firstName = true;
                 this.validationStates.lastName = true;
 
@@ -397,6 +429,7 @@
                 }
             }
 
+            console.log('handleAccountTypeChange - After change validation states:', this.validationStates);
             this.updateSubmitButton();
         }
 
@@ -535,11 +568,23 @@
                 }
             }
             
+            console.log('isFormValid - Account type:', accountType);
+            console.log('isFormValid - Required fields:', requiredFields);
+            console.log('isFormValid - Validation states:', this.validationStates);
+            
             // Check only required fields based on account type
-            const basicValidation = requiredFields.every(field => this.validationStates[field] === true);
+            const basicValidation = requiredFields.every(field => {
+                const isValid = this.validationStates[field] === true;
+                console.log(`isFormValid - Field ${field}: ${isValid}`);
+                return isValid;
+            });
 
             // Check dynamic required fields
             const dynamicValidation = this.validateDynamicFields();
+
+            console.log('isFormValid - Basic validation:', basicValidation);
+            console.log('isFormValid - Dynamic validation:', dynamicValidation);
+            console.log('isFormValid - Overall valid:', basicValidation && dynamicValidation);
 
             return basicValidation && dynamicValidation;
         }
@@ -631,6 +676,9 @@
         showFormErrors() {
             const errors = [];
             const accountType = document.querySelector('input[name="account_type"]:checked')?.value || 'individual';
+
+            console.log('showFormErrors - Account type:', accountType);
+            console.log('showFormErrors - Validation states:', this.validationStates);
 
             // Only check name fields based on account type
             if (accountType === 'individual') {
