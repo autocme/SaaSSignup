@@ -518,8 +518,25 @@
 
         // Utility methods
         isFormValid() {
-            // Check basic validation states
-            const basicValidation = Object.values(this.validationStates).every(state => state === true);
+            // Get current account type
+            const accountType = document.querySelector('input[name="account_type"]:checked')?.value || 'individual';
+            
+            // Create validation requirements based on account type
+            const requiredFields = ['email', 'phone', 'password', 'confirmPassword'];
+            
+            if (accountType === 'individual') {
+                requiredFields.push('firstName', 'lastName');
+            } else if (accountType === 'company') {
+                requiredFields.push('companyName');
+                // Check if VAT/CR field is required for companies
+                const vatCrInput = document.getElementById('vat_cr_number');
+                if (vatCrInput && vatCrInput.hasAttribute('required')) {
+                    requiredFields.push('vatCr');
+                }
+            }
+            
+            // Check only required fields based on account type
+            const basicValidation = requiredFields.every(field => this.validationStates[field] === true);
 
             // Check dynamic required fields
             const dynamicValidation = this.validateDynamicFields();
@@ -613,9 +630,17 @@
 
         showFormErrors() {
             const errors = [];
+            const accountType = document.querySelector('input[name="account_type"]:checked')?.value || 'individual';
 
-            if (!this.validationStates.firstName) errors.push('First name is required');
-            if (!this.validationStates.lastName) errors.push('Last name is required');
+            // Only check name fields based on account type
+            if (accountType === 'individual') {
+                if (!this.validationStates.firstName) errors.push('First name is required');
+                if (!this.validationStates.lastName) errors.push('Last name is required');
+            } else if (accountType === 'company') {
+                if (!this.validationStates.companyName) errors.push('Company name is required');
+            }
+
+            // Common required fields for all account types
             if (!this.validationStates.email) errors.push('Valid email is required');
             if (!this.validationStates.phone) errors.push('Valid phone number is required');
             if (!this.validationStates.password) errors.push('Password is required');
@@ -623,7 +648,9 @@
 
             // Don't show dynamic field errors - they behave silently like confirm password
 
-            this.showError(errors.join(', '));
+            if (errors.length > 0) {
+                this.showError(errors.join(', '));
+            }
         }
 
         showError(message) {

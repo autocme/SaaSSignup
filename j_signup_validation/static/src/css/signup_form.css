@@ -90,9 +90,10 @@
 }
 
 .form-floating > .form-control:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.15), 0 8px 20px rgba(102, 126, 234, 0.1);
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.15), 0 8px 20px rgba(102, 126, 234, 0.1) !important;
     transform: translateY(-2px);
+    z-index: 2 !important;
 }
 
 .form-floating > label {
@@ -108,8 +109,34 @@
     color: #667eea;
     font-size: 0.75rem;
     transform: scale(0.85) translateY(-0.3rem) translateX(0.15rem);
+    z-index: 1 !important;
     line-height: 1.2;
     overflow: visible;
+}
+
+/* Fix for company name and VAT/CR field focus border interruption */
+#company_name_field .form-floating > .form-control:focus,
+#vat_cr_field .form-floating > .form-control:focus {
+    border: 2px solid #667eea !important;
+    box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.15), 0 8px 20px rgba(102, 126, 234, 0.1) !important;
+    outline: none !important;
+    position: relative !important;
+    z-index: 3 !important;
+}
+
+/* Ensure labels don't interfere with borders */
+#company_name_field .form-floating > label,
+#vat_cr_field .form-floating > label {
+    background: transparent !important;
+    z-index: 1 !important;
+}
+
+#company_name_field .form-floating > .form-control:focus ~ label,
+#vat_cr_field .form-floating > .form-control:focus ~ label {
+    background: white !important;
+    padding-left: 0.25rem !important;
+    padding-right: 0.25rem !important;
+    z-index: 2 !important;
 }
 
 /* Validation feedback */
