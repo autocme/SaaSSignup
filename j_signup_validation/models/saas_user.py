@@ -26,16 +26,20 @@ class SaasUser(models.Model):
     # Basic Information Fields
     su_first_name = fields.Char(
         'First Name',
-        required=True,
         tracking=True,
-        help='User\'s first name as provided during registration'
+        help='User\'s first name as provided during registration - required for individual accounts'
     )
     
     su_last_name = fields.Char(
         'Last Name',
-        required=True,
         tracking=True,
-        help='User\'s last name as provided during registration'
+        help='User\'s last name as provided during registration - required for individual accounts'
+    )
+    
+    su_company_name = fields.Char(
+        'Company Name',
+        tracking=True,
+        help='Company name - required for company accounts'
     )
     
     su_complete_name = fields.Char(
@@ -151,19 +155,26 @@ class SaasUser(models.Model):
         ('unique_email', 'UNIQUE(su_email)', 'An account with this email address already exists.'),
     ]
 
-    @api.depends('su_first_name', 'su_last_name')
+    @api.depends('su_first_name', 'su_last_name', 'su_company_name', 'su_account_type')
     def _compute_complete_name(self):
         """
-        Compute the complete name from first and last name.
+        Compute the complete name from first and last name for individuals or company name for companies.
         """
         for record in self:
             try:
-                if record.su_first_name and record.su_last_name:
-                    record.su_complete_name = f"{record.su_first_name} {record.su_last_name}"
-                elif record.su_first_name:
-                    record.su_complete_name = record.su_first_name
-                elif record.su_last_name:
-                    record.su_complete_name = record.su_last_name
+                if record.su_account_type == 'company' and record.su_company_name:
+                    # For company accounts, use company name
+                    record.su_complete_name = record.su_company_name
+                elif record.su_account_type == 'individual':
+                    # For individual accounts, use first and last name
+                    if record.su_first_name and record.su_last_name:
+                        record.su_complete_name = f"{record.su_first_name} {record.su_last_name}"
+                    elif record.su_first_name:
+                        record.su_complete_name = record.su_first_name
+                    elif record.su_last_name:
+                        record.su_complete_name = record.su_last_name
+                    else:
+                        record.su_complete_name = 'Unnamed User'
                 else:
                     record.su_complete_name = 'Unnamed User'
             except Exception as e:
@@ -188,6 +199,25 @@ class SaasUser(models.Model):
                     raise ValidationError(
                         _("An account with this email address already exists. "
                           "Please use a different email or try to login.")
+                    )
+
+    @api.constrains('su_account_type', 'su_first_name', 'su_last_name', 'su_company_name')
+    def _check_account_type_fields(self):
+        """
+        Validate required fields based on account type.
+        For individual accounts: first_name and last_name are required
+        For company accounts: company_name is required
+        """
+        for record in self:
+            if record.su_account_type == 'individual':
+                if not record.su_first_name or not record.su_last_name:
+                    raise ValidationError(
+                        _("First Name and Last Name are required for individual accounts.")
+                    )
+            elif record.su_account_type == 'company':
+                if not record.su_company_name:
+                    raise ValidationError(
+                        _("Company Name is required for company accounts.")
                     )
 
     @api.model
@@ -265,12 +295,14 @@ class SaasUser(models.Model):
                 portal_group = self.env.ref('base.group_portal')
                 portal_user_vals['groups_id'] = [(6, 0, [portal_group.id])]
                 portal_user_vals['active'] = True
+                # Set bidirectional relation - portal user points to SaaS user
+                portal_user_vals['saas_user_id'] = saas_user.id
                 
                 # Use savepoint to ensure atomicity
                 with self.env.cr.savepoint():
                     portal_user = self.env['res.users'].sudo().create(portal_user_vals)
                     
-                    # Link the portal user to SaaS user
+                    # Link the portal user to SaaS user (completing bidirectional relation)
                     saas_user.write({'su_portal_user_id': portal_user.id})
                     
                     _logger.info(f"Successfully auto-created portal user {portal_user.id} for SaaS user {saas_user.id}")
@@ -361,10 +393,12 @@ class SaasUser(models.Model):
             portal_group = self.env.ref('base.group_portal')
             portal_user_vals['groups_id'] = [(6, 0, [portal_group.id])]
             portal_user_vals['active'] = True
+            # Set bidirectional relation - portal user points to SaaS user
+            portal_user_vals['saas_user_id'] = self.id
             
             portal_user = self.env['res.users'].sudo().create(portal_user_vals)
             
-            # Link the portal user to SaaS user
+            # Link the portal user to SaaS user (completing bidirectional relation)
             self.write({'su_portal_user_id': portal_user.id})
             
             _logger.info(f"Successfully created portal user {portal_user.id} for SaaS user {self.id}")
@@ -382,6 +416,94 @@ class SaasUser(models.Model):
         except Exception as e:
             _logger.error(f"Error creating portal user for SaaS user {self.id}: {str(e)}")
             raise UserError(_("Failed to create portal user. Please check the logs for details."))
+
+    def write(self, vals):
+        """
+        Override write method to sync changes to linked portal user.
+        """
+        result = super(SaasUser, self).write(vals)
+        
+        # Sync data to portal user if any relevant fields changed
+        sync_fields = ['su_first_name', 'su_last_name', 'su_company_name', 'su_email', 'su_phone', 'su_phone_country_id', 'su_account_type', 'su_vat_cr_number']
+        
+        if any(field in vals for field in sync_fields):
+            for record in self:
+                if record.su_portal_user_id:
+                    record._sync_to_portal_user()
+        
+        return result
+
+    def _sync_to_portal_user(self):
+        """
+        Sync SaaS User data to linked Portal User.
+        Only syncs from SaaS User → Portal User (one-way sync).
+        """
+        self.ensure_one()
+        
+        if not self.su_portal_user_id:
+            _logger.warning(f"No portal user linked to SaaS user {self.id}, skipping sync")
+            return
+        
+        try:
+            _logger.info(f"Syncing SaaS user {self.id} data to portal user {self.su_portal_user_id.id}")
+            
+            # Prepare sync values
+            sync_vals = {
+                'name': self.su_complete_name,
+                'email': self.su_email,
+                'is_company': True if self.su_account_type == 'company' else False,
+                'vat': self.su_vat_cr_number if self.su_account_type == 'company' and self.su_vat_cr_number else False,
+            }
+            
+            # Set country_id if available
+            if self.su_phone_country_id:
+                sync_vals['country_id'] = self.su_phone_country_id.id
+            
+            # Handle phone field sync based on phone type
+            if self.su_phone:
+                phone_type = 'unknown'
+                if self.su_phone_country_id:
+                    try:
+                        import phonenumbers
+                        from phonenumbers import NumberParseException, number_type, PhoneNumberType
+                        
+                        # Parse phone number to determine type
+                        parsed = phonenumbers.parse(self.su_phone, self.su_phone_country_id.code)
+                        if phonenumbers.is_valid_number(parsed):
+                            num_type = number_type(parsed)
+                            if num_type == PhoneNumberType.MOBILE:
+                                phone_type = 'mobile'
+                            elif num_type == PhoneNumberType.FIXED_LINE:
+                                phone_type = 'fixed_line'
+                            elif num_type == PhoneNumberType.FIXED_LINE_OR_MOBILE:
+                                phone_type = 'fixed_line_or_mobile'
+                    except Exception as e:
+                        _logger.warning(f"Could not determine phone type for sync: {str(e)}")
+                
+                # Clear existing phone fields first
+                sync_vals['mobile'] = False
+                sync_vals['phone'] = False
+                
+                # Set phone fields based on type
+                if phone_type == 'mobile':
+                    sync_vals['mobile'] = self.su_phone
+                elif phone_type == 'fixed_line':
+                    sync_vals['phone'] = self.su_phone
+                elif phone_type == 'fixed_line_or_mobile':
+                    sync_vals['mobile'] = self.su_phone
+                    sync_vals['phone'] = self.su_phone
+                else:
+                    # Unknown type, assign to mobile by default
+                    sync_vals['mobile'] = self.su_phone
+            
+            # Update portal user
+            self.su_portal_user_id.sudo().write(sync_vals)
+            
+            _logger.info(f"Successfully synced SaaS user {self.id} to portal user {self.su_portal_user_id.id}")
+            
+        except Exception as e:
+            _logger.error(f"Error syncing SaaS user {self.id} to portal user: {str(e)}")
+            # Don't raise error to prevent SaaS user update failures
 
     def get_user_stats(self):
         """

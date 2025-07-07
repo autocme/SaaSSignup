@@ -243,6 +243,7 @@ class CustomAuthSignup(http.Controller):
         form_data = {
             'first_name': post.get('first_name', '').strip(),
             'last_name': post.get('last_name', '').strip(),
+            'company_name': post.get('company_name', '').strip(),
             'email': post.get('email', '').strip().lower(),
             'phone': post.get('phone', '').strip(),
             'phone_country': post.get('phone_country', ''),
@@ -296,10 +297,19 @@ class CustomAuthSignup(http.Controller):
         password_validation = {'valid': False, 'score': 0}
         
         # Basic field validation
-        if not form_data['first_name']:
-            errors.append(_('First name is required'))
-        if not form_data['last_name']:
-            errors.append(_('Last name is required'))
+        account_type = form_data.get('account_type', 'individual')
+        
+        # Validate required fields based on account type
+        if account_type == 'individual':
+            if not form_data['first_name']:
+                errors.append(_('First name is required for individual accounts'))
+            if not form_data['last_name']:
+                errors.append(_('Last name is required for individual accounts'))
+        elif account_type == 'company':
+            if not form_data['company_name']:
+                errors.append(_('Company name is required for company accounts'))
+        
+        # Common required fields for all account types
         if not form_data['email']:
             errors.append(_('Email address is required'))
         if not form_data['phone']:
@@ -723,6 +733,7 @@ class CustomAuthSignup(http.Controller):
             saas_user_vals = {
                 'su_first_name': form_data['first_name'],
                 'su_last_name': form_data['last_name'],
+                'su_company_name': form_data['company_name'],
                 'su_email': email,
                 'su_phone': form_data['phone'],
                 'su_password': form_data['password'],

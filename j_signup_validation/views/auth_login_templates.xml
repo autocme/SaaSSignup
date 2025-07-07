@@ -94,8 +94,8 @@
 
 
 
-                                        <!-- Name Fields Row -->
-                                        <div class="row">
+                                        <!-- Individual Name Fields Row -->
+                                        <div class="row" id="individual_name_fields">
                                             <div class="col-md-6">
                                                 <div class="form-floating mb-3">
                                                     <input type="text"
@@ -126,6 +126,20 @@
                                                     <div class="invalid-feedback"></div>
                                                 </div>
                                             </div>
+                                        </div>
+
+                                        <!-- Company Name Field (Hidden by default) -->
+                                        <div class="form-floating mb-3" id="company_name_field" style="display: none;">
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id="company_name"
+                                                   name="company_name"
+                                                   placeholder="Company Name"
+                                                   autocomplete="organization"/>
+                                            <label for="company_name">
+                                                <i class="fa fa-building me-1"></i>Company Name *
+                                            </label>
+                                            <div class="invalid-feedback"></div>
                                         </div>
 
                                         <!-- Email Field -->

@@ -664,6 +664,21 @@ input[name="confirm_password"].form-control.is-valid {
     transform: translateX(2px) !important;
 }
 
+/* Company Name Field Animation */
+#company_name_field {
+    transition: all 0.3s ease !important;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    margin-bottom: 0 !important;
+}
+
+#company_name_field.show {
+    opacity: 1;
+    max-height: 100px;
+    margin-bottom: 1rem !important;
+}
+
 /* VAT/CR Field Animation */
 #vat_cr_field {
     transition: all 0.3s ease !important;

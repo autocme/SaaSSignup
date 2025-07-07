@@ -18,6 +18,9 @@
             this.accountTypeRadios = document.querySelectorAll('input[name="account_type"]');
             this.vatCrField = document.getElementById('vat_cr_field');
             this.vatCrInput = document.getElementById('vat_cr_number');
+            this.individualNameFields = document.getElementById('individual_name_fields');
+            this.companyNameField = document.getElementById('company_name_field');
+            this.companyNameInput = document.getElementById('company_name');
 
             this.validationRules = window.signupValidationRules || {};
             this.validationTimeouts = {};
@@ -28,6 +31,7 @@
                 confirmPassword: false,
                 firstName: false,
                 lastName: false,
+                companyName: true, // Default true for individual, false for company
                 vatCr: true // Default true for individual, false for company
             };
 
@@ -62,6 +66,9 @@
             // Name validation
             document.getElementById('first_name')?.addEventListener('input', this.handleNameInput.bind(this));
             document.getElementById('last_name')?.addEventListener('input', this.handleNameInput.bind(this));
+
+            // Company name validation
+            this.companyNameInput?.addEventListener('input', this.handleCompanyNameInput.bind(this));
 
             // Account type changes
             this.accountTypeRadios.forEach(radio => {
@@ -319,6 +326,17 @@
             const accountType = event.target.value;
 
             if (accountType === 'company') {
+                // Hide individual name fields
+                this.individualNameFields.style.display = 'none';
+                
+                // Show company name field with animation and make it required
+                this.companyNameField.style.display = 'block';
+                setTimeout(() => {
+                    this.companyNameField.classList.add('show');
+                }, 10);
+                this.companyNameInput.setAttribute('required', 'required');
+                this.validationStates.companyName = false; // Reset validation state
+
                 // Show VAT/CR field with animation and make it required
                 this.vatCrField.style.display = 'block';
                 setTimeout(() => {
@@ -327,11 +345,32 @@
                 this.vatCrInput.setAttribute('required', 'required');
                 this.validationStates.vatCr = false; // Reset validation state
 
+                // Clear individual name requirements
+                document.getElementById('first_name')?.removeAttribute('required');
+                document.getElementById('last_name')?.removeAttribute('required');
+                this.validationStates.firstName = true;
+                this.validationStates.lastName = true;
+
                 // Validate if there's already a value
+                if (this.companyNameInput.value.trim()) {
+                    this.validateCompanyName(this.companyNameInput.value.trim());
+                }
                 if (this.vatCrInput.value.trim()) {
                     this.validateVatCr(this.vatCrInput.value.trim());
                 }
             } else {
+                // Show individual name fields
+                this.individualNameFields.style.display = 'block';
+                
+                // Hide company name field with animation and remove requirement
+                this.companyNameField.classList.remove('show');
+                setTimeout(() => {
+                    this.companyNameField.style.display = 'none';
+                }, 300);
+                this.companyNameInput.removeAttribute('required');
+                this.companyNameInput.classList.remove('is-valid', 'is-invalid');
+                this.validationStates.companyName = true; // Valid for individual
+
                 // Hide VAT/CR field with animation and remove requirement
                 this.vatCrField.classList.remove('show');
                 setTimeout(() => {
@@ -340,8 +379,25 @@
                 this.vatCrInput.removeAttribute('required');
                 this.vatCrInput.classList.remove('is-valid', 'is-invalid');
                 this.validationStates.vatCr = true; // Valid for individual
+
+                // Set individual name requirements
+                document.getElementById('first_name')?.setAttribute('required', 'required');
+                document.getElementById('last_name')?.setAttribute('required', 'required');
+                this.validationStates.firstName = false;
+                this.validationStates.lastName = false;
+
+                // Re-validate name fields
+                this.validateName('first_name');
+                this.validateName('last_name');
             }
 
+            this.updateSubmitButton();
+        }
+
+        // Company name validation
+        handleCompanyNameInput(event) {
+            const value = event.target.value.trim();
+            this.validateCompanyName(value);
             this.updateSubmitButton();
         }
 
@@ -350,6 +406,27 @@
             const value = event.target.value.trim();
             this.validateVatCr(value);
             this.updateSubmitButton();
+        }
+
+        validateCompanyName(value) {
+            const input = this.companyNameInput;
+
+            if (!value) {
+                this.validationStates.companyName = false;
+                input.classList.remove('is-valid', 'is-invalid');
+                return;
+            }
+
+            // Company name validation (at least 2 characters)
+            if (value.length >= 2) {
+                this.validationStates.companyName = true;
+                input.classList.remove('is-invalid');
+                input.classList.add('is-valid');
+            } else {
+                this.validationStates.companyName = false;
+                input.classList.remove('is-valid');
+                input.classList.add('is-invalid');
+            }
         }
 
         validateVatCr(value) {

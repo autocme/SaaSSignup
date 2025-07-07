@@ -408,6 +408,20 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - PASSWORD TOGGLE REMOVAL: Completely removed toggle button from main password field to avoid conflict with password strength indicator
   - CONFIRM PASSWORD ONLY: Password toggle button now appears only in confirm password field for better UI organization
   - IMPROVED LAYOUT: Added specific CSS for password field without toggle to ensure proper padding and spacing
+- July 3, 2025: COMPANY NAME FIELD AND BIDIRECTIONAL USER SYNC - Complete implementation of company account support and user synchronization
+  - COMPANY NAME FIELD: Added su_company_name field to SaaS User model with proper validation constraints
+  - FORM CONDITIONAL LOGIC: Enhanced account type selection to show/hide appropriate fields (Individual: first/last name, Company: company name + VAT/CR)
+  - JAVASCRIPT UPDATES: Updated signup_validation.js with company name field handling, validation, and smooth field transitions
+  - CSS ANIMATIONS: Added company name field animation styling matching VAT/CR field behavior
+  - CONTROLLER UPDATES: Enhanced form data extraction and validation to handle company name requirements
+  - COMPUTE METHOD: Updated su_complete_name computation to use company name for company accounts, individual names for individual accounts
+  - BIDIRECTIONAL RELATION: Implemented complete bidirectional linking between SaaS User and Portal User models
+  - ONE-WAY SYNC: Added automatic sync from SaaS User → Portal User when SaaS user data changes (write method override)
+  - SYNC FIELDS: Email, phone, company name, first/last name, phone country, account type (→ is_company boolean), VAT/CR number
+  - PORTAL USER CREATION: Enhanced both automatic and manual portal user creation to set bidirectional relation (saas_user_id field)
+  - PHONE TYPE SYNC: Maintained phone type detection for proper mobile/phone field assignment during sync
+  - ROBUST SYNC: Sync includes error handling and logging, doesn't break SaaS user operations if sync fails
+  - FIELD VALIDATION: Account type-specific validation (individual requires first/last name, company requires company name)
 - July 3, 2025: ELEGANT FORM REDESIGN - Enhanced styling for more beautiful and professional appearance
   - CARD DIMENSIONS: Increased max-width to 520px with enhanced shadow effects (0 20px 60px rgba) and 20px border radius
   - ENHANCED PADDING: Upgraded header padding to 2.5rem and body padding to 2.5rem for better spacing
