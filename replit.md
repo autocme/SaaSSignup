@@ -423,6 +423,8 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - ROBUST SYNC: Sync includes error handling and logging, doesn't break SaaS user operations if sync fails
   - FIELD VALIDATION: Account type-specific validation (individual requires first/last name, company requires company name)
   - JAVASCRIPT FIX: Fixed "this.validateName is not a function" error by replacing non-existent function calls with existing handleNameInput method
+  - LAYOUT FIX: Fixed first/last name fields displaying vertically instead of horizontally when switching from Company back to Individual account type
+  - CSS ENHANCEMENT: Added Bootstrap row layout enforcement with proper flex properties and responsive mobile design
 - July 3, 2025: ELEGANT FORM REDESIGN - Enhanced styling for more beautiful and professional appearance
   - CARD DIMENSIONS: Increased max-width to 520px with enhanced shadow effects (0 20px 60px rgba) and 20px border radius
   - ENHANCED PADDING: Upgraded header padding to 2.5rem and body padding to 2.5rem for better spacing
