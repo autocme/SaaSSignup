@@ -360,7 +360,7 @@
                 }
             } else {
                 // Show individual name fields with proper Bootstrap row layout
-                this.individualNameFields.style.display = 'flex';
+                this.individualNameFields.style.display = '';
                 
                 // Hide company name field with animation and remove requirement
                 this.companyNameField.classList.remove('show');

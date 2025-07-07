@@ -613,25 +613,24 @@ input[name="confirm_password"].form-control.is-valid {
     padding-top: 0.5rem !important;
 }
 
-/* Individual Name Fields Layout Fix */
-#individual_name_fields {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    margin: 0 -15px !important;
+/* Individual Name Fields Layout Fix - Bootstrap row enforcement */
+.row#individual_name_fields {
+    margin-left: -15px;
+    margin-right: -15px;
 }
 
-#individual_name_fields .col-md-6 {
-    padding-left: 15px !important;
-    padding-right: 15px !important;
-    flex: 0 0 50% !important;
-    max-width: 50% !important;
+.row#individual_name_fields .col-md-6 {
+    padding-left: 15px;
+    padding-right: 15px;
+    flex: 0 0 50%;
+    max-width: 50%;
 }
 
 /* Responsive design for mobile - stack name fields vertically on small screens */
 @media (max-width: 768px) {
-    #individual_name_fields .col-md-6 {
-        flex: 0 0 100% !important;
-        max-width: 100% !important;
+    .row#individual_name_fields .col-md-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
     }
 }
 
