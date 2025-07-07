@@ -451,6 +451,7 @@ class SaasUser(models.Model):
             sync_vals = {
                 'name': self.su_complete_name,
                 'email': self.su_email,
+                'login': self.su_email,
                 'is_company': True if self.su_account_type == 'company' else False,
                 'vat': self.su_vat_cr_number if self.su_account_type == 'company' and self.su_vat_cr_number else False,
             }
