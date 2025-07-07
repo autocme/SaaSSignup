@@ -35,6 +35,7 @@
         'security/ir.model.access.csv',
         'views/auth_login_templates.xml',
         'views/saas_user_views.xml',
+        'views/res_users_views.xml',
         'views/res_config_settings_views.xml',
         'views/signup_configuration_views.xml',
         'data/mail_templates.xml',

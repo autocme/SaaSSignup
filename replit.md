@@ -426,6 +426,14 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - LAYOUT FIX: Fixed first/last name fields displaying vertically instead of horizontally when switching from Company back to Individual account type
   - CSS ENHANCEMENT: Added Bootstrap row layout enforcement with proper flex properties and responsive mobile design
   - VISIBILITY FIX: Corrected individual name fields hiding/showing behavior when switching between account types by removing conflicting CSS display properties
+- July 3, 2025: ACCOUNT TYPE VALIDATION AND VIEW ENHANCEMENTS - Fixed validation logic and added comprehensive view improvements
+  - VALIDATION FIX: Confirmed first and last name fields are not required for company accounts - validation already correctly checks account type
+  - SAAS USER FORM: Added su_company_name field to SaaS user form view with proper visibility rules (hidden for individual accounts)
+  - SAAS USER TREE: Added su_company_name field to SaaS user tree view for better list display
+  - RES.USERS VIEW: Created new res.users view extension with action_view_saas_user button in button box
+  - BIDIRECTIONAL VIEWS: Both SaaS users and portal users now have buttons to navigate to their related records
+  - FIELD VISIBILITY: Individual name fields hidden in SaaS user form when account type is company
+  - MANIFEST UPDATE: Added res_users_views.xml to manifest data files for proper view loading
 - July 3, 2025: ELEGANT FORM REDESIGN - Enhanced styling for more beautiful and professional appearance
   - CARD DIMENSIONS: Increased max-width to 520px with enhanced shadow effects (0 20px 60px rgba) and 20px border radius
   - ENHANCED PADDING: Upgraded header padding to 2.5rem and body padding to 2.5rem for better spacing

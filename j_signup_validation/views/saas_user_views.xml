@@ -8,6 +8,7 @@
             <field name="arch" type="xml">
                 <tree string="SaaS Users" default_order="create_date desc">
                     <field name="su_complete_name"/>
+                    <field name="su_company_name"/>
                     <field name="su_email"/>
                     <field name="su_account_type"/>
                     <field name="su_vat_cr_number"/>
@@ -55,8 +56,12 @@
                         
                         <group>
                             <group string="Personal Information">
-                                <field name="su_first_name" placeholder="First Name"/>
-                                <field name="su_last_name" placeholder="Last Name"/>
+                                <field name="su_first_name" placeholder="First Name"
+                                       invisible="su_account_type == 'company'"/>
+                                <field name="su_last_name" placeholder="Last Name"
+                                       invisible="su_account_type == 'company'"/>
+                                <field name="su_company_name" placeholder="Company Name"
+                                       invisible="su_account_type == 'individual'"/>
                                 <field name="su_email" placeholder="email@example.com"/>
                                 <field name="su_account_type" widget="radio"/>
                                 <field name="su_vat_cr_number" placeholder="VAT/CR Number" 
