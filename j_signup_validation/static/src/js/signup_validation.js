@@ -386,9 +386,15 @@
                 this.validationStates.firstName = false;
                 this.validationStates.lastName = false;
 
-                // Re-validate name fields
-                this.validateName('first_name');
-                this.validateName('last_name');
+                // Re-validate name fields if they have values
+                const firstNameInput = document.getElementById('first_name');
+                const lastNameInput = document.getElementById('last_name');
+                if (firstNameInput && firstNameInput.value.trim()) {
+                    this.handleNameInput({target: firstNameInput});
+                }
+                if (lastNameInput && lastNameInput.value.trim()) {
+                    this.handleNameInput({target: lastNameInput});
+                }
             }
 
             this.updateSubmitButton();
@@ -453,6 +459,8 @@
                 this.setInputFeedback(input, 'VAT/CR number must be at least 10 alphanumeric characters', 'invalid');
             }
         }
+
+
 
         // Form submission
         async handleFormSubmit(event) {
