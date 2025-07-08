@@ -871,32 +871,32 @@ input[name="confirm_password"].form-control.is-valid {
     }
 }
 
-/* Back Button Styling - Compact size matching Next button */
-.btn-outline-secondary {
+/* Back Button Styling - Unique class to avoid affecting other buttons */
+.btn-back-navigation {
     background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%) !important;
     border: none !important;
     color: white !important;
     font-weight: 600 !important;
-    min-height: 48px !important;
+    min-height: 56px !important;
     max-width: 120px !important;
-    padding: 0.75rem 1.5rem !important;
+    padding: 1rem 2rem !important;
     border-radius: 12px !important;
     text-transform: uppercase !important;
     letter-spacing: 0.5px !important;
-    font-size: 0.9rem !important;
+    font-size: 1rem !important;
     transition: all 0.3s ease !important;
     box-shadow: 0 4px 15px rgba(156, 163, 175, 0.3) !important;
 }
 
-.btn-outline-secondary:hover {
+.btn-back-navigation:hover {
     background: linear-gradient(135deg, #8b8f9a 0%, #5a606b 100%) !important;
     color: white !important;
     transform: translateY(-3px) !important;
-    box-shadow: 0 12px 35px rgba(156, 163, 175, 0.4) !important;
+    box-shadow: 0 12px 35px rgba(156, 163, 175, 0.5) !important;
 }
 
-.btn-outline-secondary:focus,
-.btn-outline-secondary:active {
+.btn-back-navigation:focus,
+.btn-back-navigation:active {
     background: linear-gradient(135deg, #74798a 0%, #4b525d 100%) !important;
     color: white !important;
     border: none !important;
@@ -904,26 +904,26 @@ input[name="confirm_password"].form-control.is-valid {
     box-shadow: 0 6px 20px rgba(156, 163, 175, 0.4) !important;
 }
 
-.btn-outline-secondary:focus:not(:focus-visible) {
+.btn-back-navigation:focus:not(:focus-visible) {
     box-shadow: 0 6px 20px rgba(156, 163, 175, 0.4) !important;
 }
 
 /* Mobile responsive back button */
 @media (max-width: 768px) {
-    .btn-outline-secondary {
-        min-height: 44px !important;
+    .btn-back-navigation {
+        min-height: 52px !important;
         max-width: 110px !important;
-        padding: 0.65rem 1.25rem !important;
-        font-size: 0.85rem !important;
+        padding: 0.875rem 1.5rem !important;
+        font-size: 1rem !important;
     }
 }
 
 @media (max-width: 480px) {
-    .btn-outline-secondary {
-        min-height: 40px !important;
+    .btn-back-navigation {
+        min-height: 48px !important;
         max-width: 100px !important;
-        padding: 0.5rem 1rem !important;
-        font-size: 0.8rem !important;
+        padding: 0.75rem 1.25rem !important;
+        font-size: 0.9rem !important;
     }
 }
 

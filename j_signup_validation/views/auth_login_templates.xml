@@ -327,7 +327,7 @@
 
                                         <!-- Navigation Buttons for Step 2 -->
                                         <div class="d-flex gap-2">
-                                            <button type="button" class="btn btn-outline-secondary btn-lg flex-fill" id="prevBtn2">
+                                            <button type="button" class="btn btn-back-navigation btn-lg flex-fill" id="prevBtn2">
                                                 <i class="fa fa-arrow-left me-2"></i>
                                                 <span>Back</span>
                                             </button>
@@ -485,7 +485,7 @@
 
                                         <!-- Navigation Buttons for Step 3 -->
                                         <div class="d-flex gap-2 mt-4">
-                                            <button type="button" class="btn btn-outline-secondary btn-lg flex-fill" id="prevBtn3">
+                                            <button type="button" class="btn btn-back-navigation btn-lg flex-fill" id="prevBtn3">
                                                 <i class="fa fa-arrow-left me-2"></i>
                                                 <span>Back</span>
                                             </button>
@@ -499,7 +499,7 @@
                                     <!-- Step 2 & 3 Final Buttons (when no dynamic fields) -->
                                     <div class="step-final-buttons" id="step-2-final" style="display: none;">
                                         <div class="d-flex gap-2">
-                                            <button type="button" class="btn btn-outline-secondary btn-lg flex-fill" id="prevBtn2Final">
+                                            <button type="button" class="btn btn-back-navigation btn-lg flex-fill" id="prevBtn2Final">
                                                 <i class="fa fa-arrow-left me-2"></i>
                                                 <span>Back</span>
                                             </button>
