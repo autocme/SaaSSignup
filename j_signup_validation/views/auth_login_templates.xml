@@ -43,6 +43,22 @@
                                         Create Your Account
                                     </h3>
                                     <p class="mb-0 mt-2">Join us today and get started!</p>
+                                    
+                                    <!-- Step Progress Indicator -->
+                                    <div class="step-progress mt-3">
+                                        <div class="step-item active" data-step="1">
+                                            <div class="step-circle">1</div>
+                                            <span class="step-label">Basic Info</span>
+                                        </div>
+                                        <div class="step-item" data-step="2">
+                                            <div class="step-circle">2</div>
+                                            <span class="step-label">Password</span>
+                                        </div>
+                                        <div class="step-item" data-step="3" id="additional-step-indicator" style="display: none;">
+                                            <div class="step-circle">3</div>
+                                            <span class="step-label">Additional</span>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="card-body p-4">
                                     <!-- Error Messages -->
@@ -68,7 +84,9 @@
                                           novalidate="novalidate">
                                         <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
 
-                                        <!-- Account Type Selection -->
+                                        <!-- Step 1: Basic Information -->
+                                        <div class="form-step active" id="step-1">
+                                            <!-- Account Type Selection -->
                                         <div class="mb-4">
                                             <div class="row">
                                                 <div class="col-12">
@@ -225,6 +243,17 @@
                                             </div>
                                         </div>
 
+                                        <!-- Next Button for Step 1 -->
+                                        <div class="d-grid gap-2">
+                                            <button type="button" class="btn btn-primary btn-lg" id="nextBtn1">
+                                                <span>Next</span>
+                                                <i class="fa fa-arrow-right ms-2"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Step 2: Password Setup -->
+                                    <div class="form-step" id="step-2">
                                         <!-- Password Field -->
                                         <div class="form-floating mb-3">
                                             <input type="password"
@@ -296,6 +325,21 @@
                                             <div class="invalid-feedback"></div>
                                         </div>
 
+                                        <!-- Navigation Buttons for Step 2 -->
+                                        <div class="d-flex gap-2">
+                                            <button type="button" class="btn btn-outline-secondary btn-lg flex-fill" id="prevBtn2">
+                                                <i class="fa fa-arrow-left me-2"></i>
+                                                <span>Back</span>
+                                            </button>
+                                            <button type="button" class="btn btn-primary btn-lg flex-fill" id="nextBtn2">
+                                                <span>Next</span>
+                                                <i class="fa fa-arrow-right ms-2"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Step 3: Additional Information -->
+                                    <div class="form-step" id="step-3">
                                         <!-- Dynamic Fields Section -->
                                         <t t-if="dynamic_fields">
                                             <div class="mb-4">
@@ -307,14 +351,14 @@
                                                             <div class="form-floating">
                                                                 <t t-if="field['field_type'] == 'char'">
                                                                     <input type="text"
-                                                                           class="form-control"
+                                                                           class="form-control dynamic-field"
                                                                            t-att-id="'dynamic_' + field['field_name']"
                                                                            t-att-name="field['field_name']"
                                                                            t-att-placeholder="field['placeholder'] or field['field_label']"
                                                                            t-att-required="'required' if field['required'] else None"/>
                                                                 </t>
                                                                 <t t-if="field['field_type'] == 'text'">
-                                                                    <textarea class="form-control"
+                                                                    <textarea class="form-control dynamic-field"
                                                                               t-att-id="'dynamic_' + field['field_name']"
                                                                               t-att-name="field['field_name']"
                                                                               t-att-placeholder="field['placeholder'] or field['field_label']"
@@ -333,7 +377,7 @@
                                                         <t t-if="field['field_type'] in ['integer', 'float']">
                                                             <div class="form-floating">
                                                                 <input t-att-type="'number'"
-                                                                       class="form-control"
+                                                                       class="form-control dynamic-field"
                                                                        t-att-id="'dynamic_' + field['field_name']"
                                                                        t-att-name="field['field_name']"
                                                                        t-att-placeholder="field['placeholder'] or field['field_label']"
@@ -373,7 +417,7 @@
                                                         <t t-if="field['field_type'] in ['date', 'datetime']">
                                                             <div class="form-floating">
                                                                 <input t-att-type="'datetime-local' if field['field_type'] == 'datetime' else 'date'"
-                                                                       class="form-control"
+                                                                       class="form-control dynamic-field"
                                                                        t-att-id="'dynamic_' + field['field_name']"
                                                                        t-att-name="field['field_name']"
                                                                        t-att-required="'required' if field['required'] else None"/>
@@ -394,7 +438,7 @@
                                                                     <span t-if="field['required']"> *</span>
                                                                 </label>
                                                                 <input type="file"
-                                                                       class="form-control"
+                                                                       class="form-control dynamic-field"
                                                                        t-att-id="'dynamic_' + field['field_name']"
                                                                        t-att-name="field['field_name']"
                                                                        t-att-accept="'image/*' if 'avatar' in field['field_name'] or 'image' in field['field_name'] else None"
@@ -411,7 +455,7 @@
                                                         <t t-if="field['field_type'] == 'boolean'">
                                                             <div class="form-check mb-2">
                                                                 <input type="checkbox"
-                                                                       class="form-check-input"
+                                                                       class="form-check-input dynamic-field"
                                                                        t-att-id="'dynamic_' + field['field_name']"
                                                                        t-att-name="field['field_name']"
                                                                        value="1"
@@ -439,13 +483,32 @@
                                             </div>
                                         </t>
 
-                                        <!-- Submit Button -->
-                                        <div class="d-grid gap-2">
-                                            <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
+                                        <!-- Navigation Buttons for Step 3 -->
+                                        <div class="d-flex gap-2 mt-4">
+                                            <button type="button" class="btn btn-outline-secondary btn-lg flex-fill" id="prevBtn3">
+                                                <i class="fa fa-arrow-left me-2"></i>
+                                                <span>Back</span>
+                                            </button>
+                                            <button type="submit" class="btn btn-primary btn-lg flex-fill" id="submitBtn">
                                                 <i class="fa fa-user-plus me-2"></i>
                                                 Create Account
                                             </button>
                                         </div>
+                                    </div>
+
+                                    <!-- Step 2 & 3 Final Buttons (when no dynamic fields) -->
+                                    <div class="step-final-buttons" id="step-2-final" style="display: none;">
+                                        <div class="d-flex gap-2">
+                                            <button type="button" class="btn btn-outline-secondary btn-lg flex-fill" id="prevBtn2Final">
+                                                <i class="fa fa-arrow-left me-2"></i>
+                                                <span>Back</span>
+                                            </button>
+                                            <button type="submit" class="btn btn-primary btn-lg flex-fill" id="submitBtn2">
+                                                <i class="fa fa-user-plus me-2"></i>
+                                                Create Account
+                                            </button>
+                                        </div>
+                                    </div>
 
                                         <!-- Login Link -->
                                         <div class="text-center mt-3">

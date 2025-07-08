@@ -6,6 +6,119 @@
 (function() {
     'use strict';
 
+    // Multi-step form controller
+    class MultiStepController {
+        constructor() {
+            this.currentStep = 1;
+            this.totalSteps = 3;
+            this.steps = document.querySelectorAll('.form-step');
+            this.stepItems = document.querySelectorAll('.step-item');
+            this.hasDynamicFields = document.querySelectorAll('.dynamic-field').length > 0;
+            
+            this.init();
+        }
+
+        init() {
+            this.bindNavigationEvents();
+            this.updateStepDisplay();
+            this.updateProgressIndicator();
+            
+            // If no dynamic fields, show only 2 steps
+            if (!this.hasDynamicFields) {
+                this.totalSteps = 2;
+                this.hideStep3();
+            }
+        }
+
+        bindNavigationEvents() {
+            // Step 1 Next
+            const nextBtn1 = document.getElementById('nextBtn1');
+            if (nextBtn1) {
+                nextBtn1.addEventListener('click', () => this.goToStep(2));
+            }
+
+            // Step 2 Previous/Next
+            const prevBtn2 = document.getElementById('prevBtn2');
+            const nextBtn2 = document.getElementById('nextBtn2');
+            if (prevBtn2) {
+                prevBtn2.addEventListener('click', () => this.goToStep(1));
+            }
+            if (nextBtn2) {
+                nextBtn2.addEventListener('click', () => {
+                    if (this.hasDynamicFields) {
+                        this.goToStep(3);
+                    } else {
+                        this.submitForm();
+                    }
+                });
+            }
+
+            // Step 3 Previous (if dynamic fields exist)
+            const prevBtn3 = document.getElementById('prevBtn3');
+            const prevBtn2Final = document.getElementById('prevBtn2Final');
+            if (prevBtn3) {
+                prevBtn3.addEventListener('click', () => this.goToStep(2));
+            }
+            if (prevBtn2Final) {
+                prevBtn2Final.addEventListener('click', () => this.goToStep(1));
+            }
+        }
+
+        goToStep(stepNumber) {
+            // Validate current step before moving forward
+            if (stepNumber > this.currentStep && !this.validateCurrentStep()) {
+                return;
+            }
+
+            this.currentStep = stepNumber;
+            this.updateStepDisplay();
+            this.updateProgressIndicator();
+        }
+
+        updateStepDisplay() {
+            this.steps.forEach((step, index) => {
+                step.classList.toggle('active', index + 1 === this.currentStep);
+            });
+
+            // Handle final buttons for step 2 when no dynamic fields
+            const step2Final = document.getElementById('step-2-final');
+            if (step2Final) {
+                step2Final.classList.toggle('active', this.currentStep === 2 && !this.hasDynamicFields);
+            }
+        }
+
+        updateProgressIndicator() {
+            this.stepItems.forEach((item, index) => {
+                const stepNum = index + 1;
+                item.classList.toggle('active', stepNum === this.currentStep);
+                item.classList.toggle('completed', stepNum < this.currentStep);
+            });
+        }
+
+        hideStep3() {
+            const step3Item = document.querySelector('.step-item:nth-child(3)');
+            if (step3Item) {
+                step3Item.style.display = 'none';
+            }
+        }
+
+        validateCurrentStep() {
+            if (this.currentStep === 1) {
+                return window.signupValidator ? window.signupValidator.validateStep1() : true;
+            } else if (this.currentStep === 2) {
+                return window.signupValidator ? window.signupValidator.validateStep2() : true;
+            }
+            return true;
+        }
+
+        submitForm() {
+            const form = document.getElementById('signupForm');
+            if (form && window.signupValidator && window.signupValidator.isFormValid()) {
+                form.submit();
+            }
+        }
+    }
+
     // Main validation controller
     class SignupValidator {
         constructor() {
@@ -626,6 +739,35 @@
             return true;
         }
 
+        validateStep1() {
+            const accountType = this.getSelectedAccountType();
+            console.log('validateStep1 - Account type:', accountType);
+            
+            // Basic fields required for all accounts
+            const basicValid = this.validationStates.email && this.validationStates.phone;
+            console.log('validateStep1 - Basic validation (email, phone):', basicValid);
+            
+            // Account type specific validation
+            let accountTypeValid = true;
+            if (accountType === 'individual') {
+                accountTypeValid = this.validationStates.firstName && this.validationStates.lastName;
+                console.log('validateStep1 - Individual name validation:', accountTypeValid);
+            } else if (accountType === 'company') {
+                accountTypeValid = this.validationStates.companyName && this.validationStates.vatCr;
+                console.log('validateStep1 - Company validation:', accountTypeValid);
+            }
+            
+            const step1Valid = basicValid && accountTypeValid;
+            console.log('validateStep1 - Overall valid:', step1Valid);
+            return step1Valid;
+        }
+
+        validateStep2() {
+            const passwordValid = this.validationStates.password && this.validationStates.confirmPassword;
+            console.log('validateStep2 - Password validation:', passwordValid);
+            return passwordValid;
+        }
+
         bindDynamicFieldEvents() {
             // Get all dynamic fields and add event listeners
             const dynamicFields = this.form.querySelectorAll('[id^="dynamic_"]');
@@ -805,10 +947,14 @@
         // Create and initialize validator
         const validator = new SignupValidator();
         
+        // Create and initialize multi-step controller
+        const multiStepController = new MultiStepController();
+        
         // Expose globally for country phone selector integration
         window.signupValidator = validator;
+        window.multiStepController = multiStepController;
 
-        console.log('Signup form validation initialized');
+        console.log('Signup form validation and multi-step controller initialized');
     }
 
     // Initialize when DOM is ready
