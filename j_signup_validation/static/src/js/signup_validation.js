@@ -679,9 +679,14 @@
         }
 
         // Utility methods
+        getSelectedAccountType() {
+            const selectedRadio = document.querySelector('input[name="account_type"]:checked');
+            return selectedRadio ? selectedRadio.value : 'individual';
+        }
+
         isFormValid() {
             // Get current account type
-            const accountType = document.querySelector('input[name="account_type"]:checked')?.value || 'individual';
+            const accountType = this.getSelectedAccountType();
             
             // Create validation requirements based on account type
             const requiredFields = ['email', 'phone', 'password', 'confirmPassword'];
@@ -833,7 +838,7 @@
 
         showFormErrors() {
             const errors = [];
-            const accountType = document.querySelector('input[name="account_type"]:checked')?.value || 'individual';
+            const accountType = this.getSelectedAccountType();
 
             console.log('showFormErrors - Account type:', accountType);
             console.log('showFormErrors - Validation states:', this.validationStates);
