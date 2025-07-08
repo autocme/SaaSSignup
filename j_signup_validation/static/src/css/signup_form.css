@@ -871,16 +871,19 @@ input[name="confirm_password"].form-control.is-valid {
     }
 }
 
-/* Back Button Styling - Match form elegant design */
+/* Back Button Styling - Compact size matching Next button */
 .btn-outline-secondary {
     background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%) !important;
     border: none !important;
     color: white !important;
     font-weight: 600 !important;
-    min-height: 56px !important;
+    min-height: 48px !important;
+    max-width: 120px !important;
+    padding: 0.75rem 1.5rem !important;
     border-radius: 12px !important;
     text-transform: uppercase !important;
     letter-spacing: 0.5px !important;
+    font-size: 0.9rem !important;
     transition: all 0.3s ease !important;
     box-shadow: 0 4px 15px rgba(156, 163, 175, 0.3) !important;
 }
@@ -908,15 +911,19 @@ input[name="confirm_password"].form-control.is-valid {
 /* Mobile responsive back button */
 @media (max-width: 768px) {
     .btn-outline-secondary {
-        min-height: 52px !important;
-        font-size: 0.9rem !important;
+        min-height: 44px !important;
+        max-width: 110px !important;
+        padding: 0.65rem 1.25rem !important;
+        font-size: 0.85rem !important;
     }
 }
 
 @media (max-width: 480px) {
     .btn-outline-secondary {
-        min-height: 48px !important;
-        font-size: 0.85rem !important;
+        min-height: 40px !important;
+        max-width: 100px !important;
+        padding: 0.5rem 1rem !important;
+        font-size: 0.8rem !important;
     }
 }
 
