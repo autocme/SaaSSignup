@@ -469,6 +469,16 @@ This is a comprehensive Odoo 17 module that provides advanced user registration 
   - PREMIUM SUBMIT BUTTON: Larger button (56px min-height) with uppercase text, letter spacing, and enhanced shadows
   - SECTION SPACING: Added proper margins between form sections and subtle dividers for better organization
   - MOBILE RESPONSIVE: Enhanced mobile breakpoints for optimal appearance on tablets (768px) and phones (480px)
+- July 22, 2025: CRITICAL CSS CLASS ISOLATION - Complete rewrite to prevent Odoo global styling conflicts
+  - ISSUE IDENTIFIED: Generic CSS classes (.form-floating, .form-control, .card-header) were affecting Odoo's base styling
+  - GLOBAL IMPACT: Enlarged checkboxes in backend, altered invoice payment forms, and other Odoo UI disruptions
+  - COMPLETE REWRITE: Created j_signup_unique.css with 100% unique class names using j-signup- prefix
+  - ISOLATED CLASSES: All CSS classes now use unique names (.j-signup-form-control, .j-signup-card-header, .j-signup-btn-primary)
+  - TEMPLATE UPDATES: Updated HTML template to use new unique class names throughout
+  - MANIFEST UPDATE: Changed asset references from signup_form.css to j_signup_unique.css
+  - NAVIGATION BUTTONS: Converted to small circular arrow-only buttons (.j-signup-btn-back, .j-signup-btn-next)
+  - ZERO CONFLICTS: New CSS ensures no interference with Odoo's backend or frontend styling
+  - ARCHITECTURAL SAFETY: Module now completely isolated from Odoo's global CSS framework
 - July 3, 2025: VALIDATION MESSAGE IMPROVEMENTS - Simplified phone validation messages and removed name length restrictions
   - PHONE VALIDATION: Changed "Valid: +966 55 208 0953" to simple "Phone is valid" message to eliminate duplication
   - NAME VALIDATION: Removed minimum 2-character requirement for first and last names - users can now enter any length

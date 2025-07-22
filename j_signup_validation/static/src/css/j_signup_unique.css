@@ -1,0 +1,476 @@
+/* J Signup Validation - Unique CSS Classes to prevent Odoo conflicts */
+
+/* Step Progress Indicator */
+.j-signup-step-progress {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    padding: 1rem 0;
+}
+
+.j-signup-step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.j-signup-step-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.7);
+    transition: all 0.3s ease;
+}
+
+.j-signup-step-label {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.j-signup-step-item.active .j-signup-step-circle {
+    background-color: white;
+    border-color: white;
+    color: #667eea;
+    transform: scale(1.1);
+}
+
+.j-signup-step-item.active .j-signup-step-label {
+    color: white;
+    font-weight: 600;
+}
+
+.j-signup-step-item.completed .j-signup-step-circle {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: white;
+}
+
+.j-signup-step-item.completed .j-signup-step-label {
+    color: white;
+}
+
+/* Form Steps */
+.j-signup-form-step {
+    display: none;
+    animation: j-signup-fadeIn 0.4s ease-in-out;
+}
+
+.j-signup-form-step.active {
+    display: block;
+}
+
+.j-signup-step-final-buttons {
+    display: none;
+}
+
+.j-signup-step-final-buttons.active {
+    display: block;
+}
+
+@keyframes j-signup-fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Card styling */
+.j-signup-card {
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 520px;
+    min-width: 320px;
+    display: block;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 8px 25px rgba(0, 0, 0, 0.1);
+    position: relative;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+}
+
+.j-signup-card .j-signup-card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 2.5rem 2rem;
+    border: none;
+    text-align: center;
+    position: relative;
+}
+
+.j-signup-card .j-signup-card-body {
+    padding: 2.5rem 2rem 3rem 2rem;
+    background: #ffffff;
+}
+
+/* Form controls - unique classes only */
+.j-signup-form-floating {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.j-signup-form-control {
+    width: 100%;
+    padding: 1rem 0.875rem;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    font-size: 0.85rem;
+    height: 3.5rem;
+    line-height: 1.5;
+    background-color: #fff;
+    appearance: none;
+    font-family: inherit;
+}
+
+.j-signup-form-control:hover {
+    border-color: #adb5bd;
+    transform: translateY(-1px);
+}
+
+.j-signup-form-control:focus {
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.15), 0 8px 20px rgba(102, 126, 234, 0.1) !important;
+    transform: translateY(-2px);
+    z-index: 2 !important;
+    outline: 0;
+}
+
+.j-signup-form-label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 1rem 0.875rem;
+    color: #6c757d;
+    font-weight: 500;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    transform-origin: 0 0;
+    z-index: 1;
+}
+
+.j-signup-form-control:focus ~ .j-signup-form-label,
+.j-signup-form-control:not(:placeholder-shown) ~ .j-signup-form-label {
+    color: #667eea;
+    font-size: 0.75rem;
+    transform: scale(0.85) translateY(-0.3rem) translateX(0.15rem);
+    line-height: 1.2;
+}
+
+/* Button styles */
+.j-signup-btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: 2rem;
+    height: auto;
+    min-height: 48px;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+}
+
+.j-signup-btn-primary:hover {
+    background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+/* Navigation buttons */
+.j-signup-btn-back {
+    background: linear-gradient(135deg, #8e8e93 0%, #636366 100%) !important;
+    border: none !important;
+    color: white !important;
+    font-weight: 600 !important;
+    min-height: 40px !important;
+    width: 40px !important;
+    max-width: 40px !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 2px 8px rgba(142, 142, 147, 0.3) !important;
+    flex: 0 0 auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1rem !important;
+    margin-right: auto !important;
+}
+
+.j-signup-btn-back:hover {
+    background: linear-gradient(135deg, #7c7c80 0%, #545456 100%) !important;
+    color: white !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(142, 142, 147, 0.4) !important;
+}
+
+.j-signup-btn-next {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    border: none !important;
+    color: white !important;
+    font-weight: 600 !important;
+    min-height: 40px !important;
+    width: 40px !important;
+    max-width: 40px !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3) !important;
+    flex: 0 0 auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1rem !important;
+    margin-left: auto !important;
+}
+
+.j-signup-btn-next:hover {
+    background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%) !important;
+    color: white !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4) !important;
+}
+
+/* Navigation layout */
+.j-signup-nav-layout {
+    align-items: center !important;
+    flex-wrap: nowrap !important;
+    justify-content: space-between !important;
+}
+
+.j-signup-nav-layout .j-signup-btn-back {
+    flex: 0 0 auto !important;
+    margin-right: auto !important;
+}
+
+.j-signup-nav-layout .j-signup-btn-next {
+    flex: 0 0 auto !important;
+    margin-left: auto !important;
+}
+
+.j-signup-nav-layout .j-signup-btn-primary {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    margin-left: 1rem !important;
+}
+
+/* Account type radio buttons */
+.j-signup-account-type {
+    margin-bottom: 1.5rem;
+}
+
+.j-signup-radio-wrapper {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.j-signup-radio-card {
+    flex: 1;
+    padding: 1rem;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    position: relative;
+    background: white;
+}
+
+.j-signup-radio-card:hover {
+    border-color: #667eea;
+    box-shadow: 0 2px 10px rgba(102, 126, 234, 0.1);
+    transform: translateY(-1px);
+}
+
+.j-signup-radio-card.selected {
+    border-color: #667eea;
+    background: rgba(102, 126, 234, 0.05);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
+}
+
+.j-signup-radio-input {
+    position: absolute;
+    opacity: 0;
+    width: 22px;
+    height: 22px;
+    margin: 0;
+}
+
+.j-signup-radio-icon {
+    width: 22px;
+    height: 22px;
+    border: 2px solid #adb5bd;
+    border-radius: 50%;
+    margin: 0 auto 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.j-signup-radio-input:checked + .j-signup-radio-icon {
+    border-color: #667eea;
+    background: #667eea;
+}
+
+.j-signup-radio-input:checked + .j-signup-radio-icon::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+}
+
+/* Validation states */
+.j-signup-form-control.is-valid {
+    border-color: #28a745;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='m2.3 6.73.94-.94 2.94-2.94.94.94-3.88 3.88z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+.j-signup-form-control.is-invalid {
+    border-color: #dc3545;
+}
+
+/* Password strength indicator */
+.j-signup-password-strength {
+    margin-top: 0.25rem;
+}
+
+.j-signup-strength-progress {
+    height: 3px;
+    border-radius: 2px;
+    background: #e9ecef;
+    overflow: hidden;
+}
+
+.j-signup-strength-bar {
+    height: 100%;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .j-signup-card {
+        max-width: 100%;
+        margin: 1rem;
+        border-radius: 16px;
+    }
+    
+    .j-signup-card .j-signup-card-header {
+        padding: 2rem 1.5rem;
+    }
+    
+    .j-signup-card .j-signup-card-body {
+        padding: 2rem 1.5rem;
+    }
+    
+    .j-signup-btn-back,
+    .j-signup-btn-next {
+        min-height: 36px !important;
+        width: 36px !important;
+        max-width: 36px !important;
+        font-size: 0.9rem !important;
+    }
+    
+    .j-signup-form-control {
+        height: 3rem;
+        font-size: 0.8rem;
+    }
+    
+    .j-signup-radio-wrapper {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .j-signup-btn-back,
+    .j-signup-btn-next {
+        min-height: 32px !important;
+        width: 32px !important;
+        max-width: 32px !important;
+        font-size: 0.8rem !important;
+    }
+    
+    .j-signup-form-control {
+        height: 2.75rem;
+    }
+    
+    .j-signup-card .j-signup-card-header {
+        padding: 1.5rem 1rem;
+    }
+    
+    .j-signup-card .j-signup-card-body {
+        padding: 1.5rem 1rem 2rem;
+    }
+}
+
+/* Additional field animations */
+.j-signup-field-hidden {
+    display: none !important;
+}
+
+.j-signup-field-visible {
+    display: block !important;
+    animation: j-signup-slideDown 0.3s ease-out;
+}
+
+@keyframes j-signup-slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+        max-height: 0;
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        max-height: 100px;
+    }
+}
+
+/* Password toggle button */
+.j-signup-password-toggle {
+    position: absolute;
+    right: calc(0.375em + 0.1875rem);
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 0.25rem;
+    color: #6c757d;
+    cursor: pointer;
+    font-size: 0.9rem;
+    z-index: 3;
+}
+
+.j-signup-password-toggle:hover {
+    color: #495057;
+}
