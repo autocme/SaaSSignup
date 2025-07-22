@@ -33,10 +33,10 @@
                 <link rel="stylesheet" href="/j_signup_validation/static/src/css/j_signup_unique.css"/>
             </head>
             <body class="standalone-signup-body">
-                <div class="container-fluid d-flex align-items-center justify-content-center">
+                <div id="j-signup-form" class="container-fluid d-flex align-items-center justify-content-center">
                     <div class="row w-100 justify-content-center">
-                        <div class="shadow-lg card j-signup-card">
-                                <div class="j-signup-card-header text-center bg-primary text-white">
+                        <div class="card">
+                                <div class="card-header text-center text-white">
                                     <h3 class="mb-0">
                                         <i class="fa fa-user-plus me-2"></i>
                                         Create Your Account
@@ -59,7 +59,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="j-signup-card-body p-4">
+                                <div class="card-body p-4">
                                     <!-- Error Messages -->
                                     <t t-if="error">
                                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -89,20 +89,22 @@
                                         <div class="mb-4">
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <div class="d-flex justify-content-center gap-4">
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="radio" name="account_type" 
-                                                                   id="individual" value="individual" checked="checked"/>
-                                                            <label class="form-check-label" for="individual">
-                                                                <i class="fa fa-user me-2"></i>Individual
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="radio" name="account_type" 
-                                                                   id="company" value="company"/>
-                                                            <label class="form-check-label" for="company">
-                                                                <i class="fa fa-building me-2"></i>Company
-                                                            </label>
+                                                    <div class="j-signup-account-type">
+                                                        <div class="j-signup-radio-wrapper">
+                                                            <div class="j-signup-radio-card selected" data-value="individual">
+                                                                <input type="radio" name="account_type" id="individual" value="individual" 
+                                                                       class="j-signup-radio-input" checked="checked"/>
+                                                                <div class="j-signup-radio-icon"></div>
+                                                                <i class="fa fa-user"></i>
+                                                                <span>Individual</span>
+                                                            </div>
+                                                            <div class="j-signup-radio-card" data-value="company">
+                                                                <input type="radio" name="account_type" id="company" value="company" 
+                                                                       class="j-signup-radio-input"/>
+                                                                <div class="j-signup-radio-icon"></div>
+                                                                <i class="fa fa-building"></i>
+                                                                <span>Company</span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -124,7 +126,6 @@
                                                     <label for="first_name">
                                                         <i class="fa fa-user me-1"></i>First Name *
                                                     </label>
-                                                    <div class="invalid-feedback"></div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -138,7 +139,6 @@
                                                     <label for="last_name">
                                                         <i class="fa fa-user me-1"></i>Last Name *
                                                     </label>
-                                                    <div class="invalid-feedback"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -154,7 +154,6 @@
                                             <label for="company_name">
                                                 <i class="fa fa-building me-1"></i>Company Name *
                                             </label>
-                                            <div class="invalid-feedback"></div>
                                         </div>
 
                                         <!-- Email Field -->
@@ -169,7 +168,6 @@
                                             <label for="email">
                                                 <i class="fa fa-envelope me-1"></i>Email Address *
                                             </label>
-                                            <div class="invalid-feedback"></div>
                                             <div class="form-text">
                                                 <span class="email-validation-status"></span>
                                             </div>
@@ -186,7 +184,6 @@
                                             <label for="vat_cr_number">
                                                 <i class="fa fa-file-text me-1"></i>VAT/CR Number *
                                             </label>
-                                            <div class="invalid-feedback"></div>
                                         </div>
 
                                         <!-- Phone Fields in Same Row -->
@@ -227,7 +224,6 @@
                                                     <label for="phone">
                                                         <i class="fa fa-phone me-1"></i>Phone Number *
                                                     </label>
-                                                    <div class="invalid-feedback"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -235,11 +231,6 @@
                                         <!-- Phone validation feedback -->
                                         <div class="form-text mb-3">
                                             <span class="phone-validation-status"></span>
-                                            <div class="phone-preview mt-2">
-                                                <small class="text-muted">Full number:
-                                                    <span id="phone-preview-text">+966</span>
-                                                </small>
-                                            </div>
                                         </div>
 
                                         <!-- Next Button for Step 1 -->
