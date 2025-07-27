@@ -98,7 +98,7 @@
                                                                 <i class="fa fa-user me-2"></i>Individual
                                                             </label>
                                                         </div>
-                                                        <div class="form-check">
+                                                        <div class="j-form-check form-check">
                                                             <input class="j-form-check-input form-check-input" type="radio" name="account_type"
                                                                    id="company" value="company"/>
                                                             <label class="j-form-check-label form-check-label" for="company">
