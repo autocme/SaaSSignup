@@ -1,7 +1,7 @@
 /* J Signup Validation - Custom Signup Form Styles */
 
 /* Step Progress Indicator */
-.j-signup-step-progress {
+.step-progress {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -9,7 +9,7 @@
     padding: 1rem 0;
 }
 
-.j-signup-step-item {
+.step-item {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -17,7 +17,7 @@
     transition: all 0.3s ease;
 }
 
-.j-signup-step-circle {
+.step-circle {
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -31,54 +31,54 @@
     transition: all 0.3s ease;
 }
 
-.j-signup-step-label {
+.step-label {
     font-size: 0.8rem;
     color: rgba(255, 255, 255, 0.7);
     text-align: center;
     transition: all 0.3s ease;
 }
 
-.j-signup-step-item.active .j-signup-step-circle {
+.step-item.active .step-circle {
     background-color: white;
     border-color: white;
     color: #667eea;
     transform: scale(1.1);
 }
 
-.j-signup-step-item.active .j-signup-step-label {
+.step-item.active .step-label {
     color: white;
     font-weight: 600;
 }
 
-.j-signup-step-item.completed .j-signup-step-circle {
+.step-item.completed .step-circle {
     background-color: #28a745;
     border-color: #28a745;
     color: white;
 }
 
-.j-signup-step-item.completed .j-signup-step-label {
+.step-item.completed .step-label {
     color: white;
 }
 
 /* Form Steps */
-.j-signup-form-step {
+.form-step {
     display: none;
-    animation: j-signup-fadeIn 0.4s ease-in-out;
+    animation: fadeIn 0.4s ease-in-out;
 }
 
-.j-signup-form-step.active {
+.form-step.active {
     display: block;
 }
 
-.j-signup-step-final-buttons {
+.step-final-buttons {
     display: none;
 }
 
-.j-signup-step-final-buttons.active {
+.step-final-buttons.active {
     display: block;
 }
 
-@keyframes j-signup-fadeIn {
+@keyframes fadeIn {
     from {
         opacity: 0;
         transform: translateY(20px);
@@ -101,8 +101,8 @@
     align-items: center;
 }
 
-/* Unique J-Signup layout containers */
-.j-signup-container-fluid {
+/* Container and layout fixes */
+.container-fluid {
     width: 100%;
     padding: 2rem 15px;
     margin-right: auto;
@@ -113,13 +113,12 @@
     justify-content: center;
 }
 
-.j-signup-justify-center {
+.justify-content-center {
     justify-content: center !important;
 }
 
-/* Ensure proper centering in signup layouts only */
-.j-signup-wrapper .oe_signup,
-.j-signup-wrapper .oe_signup_form {
+/* Ensure proper centering in all layouts */
+.oe_signup, .oe_signup_form {
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
@@ -130,7 +129,7 @@
     margin-right: auto !important;
 }
 
-.j-signup-card {
+.custom-signup-card {
     border: none;
     border-radius: 20px;
     overflow: hidden;
@@ -145,7 +144,7 @@
     background: #ffffff;
 }
 
-.j-signup-card .j-signup-card-header {
+.custom-signup-card .card-header {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     padding: 2.5rem 2rem;
     border: none;
@@ -153,18 +152,18 @@
     position: relative;
 }
 
-.j-signup-card .j-signup-card-body {
+.custom-signup-card .card-body {
     padding: 2.5rem 2rem 3rem 2rem;
     background: #ffffff;
 }
 
-/* J-Signup Form styling */
-.j-signup-form-floating {
+/* Form styling */
+.form-floating {
     position: relative;
     margin-bottom: 1.5rem;
 }
 
-.j-signup-form-floating > .j-signup-form-control {
+.form-floating > .form-control {
     padding: 1rem 0.875rem;
     border: 2px solid #e9ecef;
     border-radius: 12px;
@@ -172,39 +171,30 @@
     font-size: 0.85rem;
     height: 3.5rem;
     line-height: 1.5;
-    width: 100%;
-    background-color: #fff;
-    appearance: none;
 }
 
-.j-signup-form-floating > .j-signup-form-control:hover {
+.form-floating > .form-control:hover {
     border-color: #adb5bd;
     transform: translateY(-1px);
 }
 
-.j-signup-form-floating > .j-signup-form-control:focus {
+.form-floating > .form-control:focus {
     border-color: #667eea !important;
     box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.15), 0 8px 20px rgba(102, 126, 234, 0.1) !important;
     transform: translateY(-2px);
     z-index: 2 !important;
-    outline: 0;
 }
 
-.j-signup-form-floating > .j-signup-form-label {
-    position: absolute;
-    top: 0;
-    left: 0;
+.form-floating > label {
     padding: 1rem 0.875rem;
     color: #6c757d;
     font-weight: 500;
     font-size: 0.8rem;
     transition: all 0.3s ease;
-    pointer-events: none;
-    transform-origin: 0 0;
 }
 
-.j-signup-form-floating > .j-signup-form-control:focus ~ .j-signup-form-label,
-.j-signup-form-floating > .j-signup-form-control:not(:placeholder-shown) ~ .j-signup-form-label {
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label {
     color: #667eea;
     font-size: 0.75rem;
     transform: scale(0.85) translateY(-0.3rem) translateX(0.15rem);
@@ -810,13 +800,13 @@ input[name="confirm_password"].form-control.is-valid {
     background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
 }
 /* Account Type Radio Button Styling */
-.form-check {
+.j-form-check {
     display: flex !important;
     align-items: center !important;
     gap: 0.5rem !important;
 }
 
-.form-check-input[type="radio"] {
+.j-form-check-input[type="radio"] {
     width: 22px !important;
     height: 22px !important;
     margin: 0 !important;
@@ -825,17 +815,17 @@ input[name="confirm_password"].form-control.is-valid {
     transition: all 0.3s ease !important;
 }
 
-.form-check-input[type="radio"]:hover {
+.j-form-check-input[type="radio"]:hover {
     border-color: #667eea !important;
     transform: scale(1.1) !important;
 }
 
-.form-check-input[type="radio"]:checked {
+.j-form-check-input[type="radio"]:checked {
     background-color: #667eea !important;
     border-color: #667eea !important;
 }
 
-.form-check-label {
+.j-form-check-label {
     font-size: 0.9rem !important;
     font-weight: 500 !important;
     color: #495057 !important;
@@ -847,7 +837,7 @@ input[name="confirm_password"].form-control.is-valid {
     transition: all 0.3s ease !important;
 }
 
-.form-check-input[type="radio"]:checked + .form-check-label {
+.j-form-check-input[type="radio"]:checked + .j-form-check-label {
     color: #667eea !important;
     font-weight: 600 !important;
     transform: translateX(2px) !important;
@@ -1032,23 +1022,23 @@ input[name="confirm_password"].form-control.is-valid {
 }
 
 /* Button layout improvements for arrow navigation */
-.d-flex.gap-2 {
+.j-d-flex.gap-2 {
     align-items: center !important;
     flex-wrap: nowrap !important;
     justify-content: space-between !important;
 }
 
-.d-flex.gap-2 .btn-back-navigation {
+.j-d-flex.gap-2 .btn-back-navigation {
     flex: 0 0 auto !important;
     margin-right: auto !important;
 }
 
-.d-flex.gap-2 .btn-next-navigation {
+.j-d-flex.gap-2 .btn-next-navigation {
     flex: 0 0 auto !important;
     margin-left: auto !important;
 }
 
-.d-flex.gap-2 .btn-primary.btn-lg {
+.j-d-flex.gap-2 .btn-primary.btn-lg {
     flex: 1 1 auto !important;
     min-width: 0 !important;
     margin-left: 1rem !important;
